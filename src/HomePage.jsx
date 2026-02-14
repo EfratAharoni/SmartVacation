@@ -161,10 +161,13 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="hero" id="home">
         <h1 className="floating">החופשה המושלמת שלך מתחילה כאן</h1>
-        <p>
-          תכנון חכם, חופשה כלתי נשכחת. גלה את היעדים המדהימים בעולם עם Smart
-          Vacation Planner
-        </p>
+        <div class="hero-slogans">
+            <span>תכנון חכם</span>
+            <span class="hero-icon">  ✦  </span>
+            <span>חופשה בלתי נשכחת</span>
+            <span class="hero-icon">  ✦  </span>
+            <span>היעדים הכי מדהימים בעולם</span>
+        </div>
         <div className="hero-buttons">
           <button className="btn btn-primary" onClick={startPlanning}>
             התחל לתכנן עכשיו
@@ -172,43 +175,6 @@ const HomePage = () => {
           <button className="btn btn-secondary" onClick={explorePlaces}>
             גלה יעדים
           </button>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="features" id="about">
-        <h2 className="section-title">?למה לבחור בנו</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <div className="feature-icon">🌍</div>
-            <h3>יעדים מגוונים</h3>
-            <p>מגוון רחב של יעדים ברחבי העולם, מאירופה ועד אסיא ואמריקה</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">💰</div>
-            <h3>מחירים משתלמים</h3>
-            <p>חבילות נופש במחירים תחרותיים עם אפשרות לסינון לפי תקציב</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">📅</div>
-            <h3>תכנון אוטומטי</h3>
-            <p>מערכת חכמה ליצירת לוח זמנים יומי מותאם אישית</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">🎯</div>
-            <h3>אטרקציות מובחרות</h3>
-            <p>מגוון אטרקציות ופעילויות בכל יעד, מותאמות להעדפות שלך</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">⭐</div>
-            <h3>חוויה אישית</h3>
-            <p>התאמה אישית מלאה לפי תקציב, תאריכים והעדפות אישיות</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">🔒</div>
-            <h3>בטוח ואמין</h3>
-            <p>מערכת מאובטחת לשמירת הטיולים והפרטים האישיים שלך</p>
-          </div>
         </div>
       </section>
 
@@ -255,8 +221,92 @@ const HomePage = () => {
               <p>גן עדן טרופי עם חופים מדהימים</p>
             </div>
           </div>
+
+          <div className="destination-card">
+            <div className="destination-image">
+              <img src="/images/new-york.jpg"  />
+            </div>
+            <div className="destination-info">
+              <h3>ניו יורק, ארה"ב</h3>
+              <p>התפוח הגדול - גורדי שחקים, שופינג ואנרגיה ללא הפסקה</p>
+            </div>
+          </div>
+
+          <div className="destination-card">
+            <div className="destination-image">
+              <img src="/images/london.jpg" alt="לונדון, אנגליה" />
+            </div>
+            <div className="destination-info">
+              <h3>לונדון, אנגליה</h3>
+              <p>שילוב מלכותי של מסורת, אופנה ותרבות תוססת</p>
+            </div>
+          </div>
+
+          <div className="destination-card">
+            <div className="destination-image">
+              <img src="/images/amsterdam.jpg" alt="אמסטרדם, הולנד" />
+            </div>
+            <div className="destination-info">
+              <h3>אמסטרדם, הולנד</h3>
+              <p>תעלות ציוריות, רכיבה על אופניים ואווירה חופשית</p>
+            </div>
+          </div>
+
+          <div className="destination-card">
+            <div className="destination-image">
+              <img src="/images/barcelona.jpg" alt="ברצלונה, ספרד" />
+            </div>
+            <div className="destination-info">
+              <h3>ברצלונה, ספרד</h3>
+              <p>אדריכלות מופלאה, חופים זהובים וחיי לילה סוערים</p>
+            </div>
+          </div>
+
+        </div>
+        <div className="more-destinations-container">
+          <a href="#" className="discover-more-link">
+          <span className="arrow-icon">←</span>
+            גלה עוד יעדים לחופשה
+          </a>
         </div>
       </section>
+      {/* Features Section */}
+      <section className="split-section">
+    {/* חצי כהה - אודות */}
+    <div className="side about-side">
+        <div className="side-content">
+            <h2 className="title-light">הסיפור שלנו</h2>
+            <p className="text-light">
+                אנחנו ב-SmartVacation מאמינים שתכנון טיול לא צריך להיות עבודה שנייה. 
+                יצרנו מערכת חכמה שחוסכת לכם זמן, כסף וכאבי ראש, כדי שתוכלו להתמקד במה שחשוב באמת – החופשה שלכם.
+            </p>
+            <div className="mini-bullets">
+                <div className="bullet">✦ תכנון אוטומטי</div>
+                <div className="bullet">✦ מחירים ללא תיווך</div>
+                <div className="bullet">✦ ביטחון מלא</div>
+            </div>
+        </div>
+    </div>
+
+    {/* חצי בהיר - צור קשר */}
+    <div className="side contact-side">
+        <div className="side-content">
+            <h2 className="title-dark">דברו איתנו</h2>
+            <form className="split-form">
+                <input type="text" placeholder="שם מלא" required />
+                <input type="tel" placeholder="טלפון" required />
+                <button type="submit">שלחו הודעה</button>
+            </form>
+            
+            <div className="social-links-minimal">
+                <a href="#">WhatsApp</a>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+        </div>
+    </div>
+</section>
+
 
       {/* Footer */}
       <footer id="contact">

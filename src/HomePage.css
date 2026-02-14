@@ -9,6 +9,7 @@
     background: #f5f5f5;
     min-height: 100vh;
     overflow-x: hidden;
+
 }
 
 /* Header Styles */
@@ -16,7 +17,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    height: 120px;
+    height: 85px;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
@@ -48,6 +49,10 @@ nav {
     gap: 0.5rem;
     position: absolute;
     left: 3%;
+    position: absolute;
+    left: 3%;
+    top: 50%; /* מוריד את הקצה העליון של הלוגו לאמצע הדיב */
+    transform: translateY(-50%);
 }
 
 .nav-center {
@@ -142,10 +147,19 @@ nav {
 
 /* Hero Section */
 .hero {
+    display: flex;
     margin-top: 85px;
     padding: 8rem 5% 6rem;
     text-align: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    
+    /* הנתיב מתחיל מהסלאש של ה-root כי התמונה ב-public */
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url("/images/44038.jpg");    
+    /* התאמת התמונה למסך */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* יוצר אפקט גלילה יפה (Parallax) */
     color: white;
     position: relative;
     min-height: 500px;
@@ -154,7 +168,11 @@ nav {
     justify-content: center;
     align-items: center;
 }
-
+.hero h1, .hero-slogans span {
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8), 
+                 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
 .hero h1 {
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
@@ -169,14 +187,37 @@ nav {
     animation: fadeInUp 1s ease 0.2s backwards;
     max-width: 800px;
 }
-
-.hero-buttons {
+.hero-icon {
+    font-size: 1.5rem;
+    display: inline-block;
+    /* המרווח שביקשת - 1.5rem לכל צד */
+    margin: 0 1.5rem; 
+    
+    filter: drop-shadow(0 0 5px );
+    animation: pulse 2s infinite ease-in-out;
+    vertical-align: middle; /* שומר שהכוכב יהיה בדיוק באמצע גובה הטקסט */
+}
+/* .hero-buttons {
     display: flex;
     gap: 1.5rem;
     justify-content: center;
     animation: fadeInUp 1s ease 0.4s backwards;
+} */
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    /* הקסם: דוחף את הכפתורים הכי למטה שאפשר בתוך הדיב */
+    margin-top: auto; 
+    /* מרווח קטן מהתחתית של ה-Hero כדי שלא ייגעו ממש בקצה */
+    margin-bottom: 0.1rem; 
+    animation: fadeInUp 1s ease 0.4s backwards;
 }
 
+.hero-buttons .btn {
+    /* אותו גודל לשניהם */
+    min-width: 220px;
+}
 .btn-primary {
     background: white;
     color: #667eea;
@@ -256,8 +297,7 @@ nav {
 /* Destinations Preview */
 .destinations {
     padding: 6rem 5%;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
+    color: #212121;
 }
 
 .destinations-grid {
@@ -265,21 +305,49 @@ nav {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2.5rem;
 }
-
 .destination-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    /* רקע לבן נקי כדי שהמסגרת תבלוט */
+    background: #ffffff; 
     border-radius: 20px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     cursor: pointer;
+    position: relative;
+
+    /* המסגרת הדקה מאוד - כמעט שחור בשקיפות גבוהה */
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    /* צל עדין מאוד שכמעט לא מרגישים */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .destination-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    /* ב-Hover המסגרת נהיית טיפה יותר נוכחת */
+    border-color: rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
+.destination-info {
+    padding: 1.8rem;
+    /* שימוש בצבע ה"כמעט שחור" החדש שלך לטקסט */
+    color: #1a1c20; 
+    padding-top: 5rem;
+}
+
+.destination-info h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.7rem;
+    font-weight: 700;
+}
+
+.destination-info p {
+    /* צבע משני לסלוגן בתוך הכרטיס */
+    color: #666;
+    opacity: 0.8;
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
 .destination-image {
     width: 100%;
     height: 220px;
@@ -288,7 +356,37 @@ nav {
     align-items: center;
     justify-content: center;
     font-size: 4.5rem;
+    
 }
+.destination-image img {
+    width: 100%;
+    height: 330px;
+    object-fit: cover;
+    
+    /* הפקודה הספציפית שחסרה לך: */
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.destination-card:hover .destination-image img {
+    /* השורה שחיפשת - כאן היא צריכה להיות! */
+    transform: scale(1.1); 
+}
+/* 
+.destination-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    
+}
+
+.destination-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+
 
 .destination-info {
     padding: 1.8rem;
@@ -302,7 +400,7 @@ nav {
 .destination-info p {
     opacity: 0.9;
     font-size: 1.05rem;
-}
+} */
 
 /* Footer */
 footer {
@@ -312,8 +410,6 @@ footer {
     text-align: center;
 }
 
-.footer-content {
-}
 
 .footer-links {
     display: flex;
@@ -462,15 +558,122 @@ footer {
         grid-template-columns: 1fr;
     }
 }
-.destination-image {
+
+
+.split-section {
+    display: flex;
+    min-height: 500px; /* גובה מינימלי לכל הסקציה */
     width: 100%;
-    height: 200px; /* אפשר לשנות לפי הצורך */
-    overflow: hidden;
-    border-radius: 12px;
+    direction: rtl;
 }
 
-.destination-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* ממלא את הדיב בלי לעוות את התמונה */
+.side {
+    flex: 1; /* כל צד לוקח בדיוק חצי */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+}
+
+.side-content {
+    max-width: 450px; /* שומר שהטקסט לא יימרח מדי לרוחב */
+}
+
+/* הצד הכהה - אודות */
+.about-side {
+    background-color: #1a1a1a; /* שחור מודרני או כחול כהה */
+    color: #ffffff;
+}
+
+.title-light {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.text-light {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.mini-bullets {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    font-weight: 600;
+    color: #007bff; /* צבע דגש */
+}
+
+/* הצד הבהיר - צור קשר */
+.contact-side {
+    background-color: #fcfcfc;
+    color: #1a1a1a;
+}
+
+.title-dark {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.split-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.split-form input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    padding: 12px 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.split-form input:focus {
+    border-bottom-color: #1a1a1a;
+}
+
+.split-form button {
+    margin-top: 15px;
+    padding: 15px;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.split-form button:hover {
+    background: #333;
+}
+
+.social-links-minimal {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.social-links-minimal a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+}
+
+.social-links-minimal a:hover {
+    border-bottom-color: #1a1a1a;
+}
+
+/* התאמה למובייל - הופך את זה לאחד מעל השני */
+@media (max-width: 768px) {
+    .split-section {
+        flex-direction: column;
+    }
+    .side {
+        padding: 40px 20px;
+    }
 }
