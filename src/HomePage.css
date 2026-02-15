@@ -683,3 +683,13 @@ footer {
     direction: rtl;
     text-align: right;
 }
+
+/* HomePage.css */
+.home-page .nav-center ul.nav-links {
+  display: flex;
+  flex-direction: row-reverse; /* רק בעמוד הבית */
+  gap: 40px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

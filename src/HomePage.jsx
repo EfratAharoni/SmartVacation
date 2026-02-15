@@ -82,68 +82,30 @@ const HomePage = () => {
   return (
     <div className="home-page">
       {/* Header */}
-      <header className={`header ${isScrolled ? "scrolled" : ""}`} id="header">
+      <header className={`header ${isScrolled ? "scrolled" : ""}`}>
         <nav>
-          <div className="logo">Smart Vacation ✈️</div>
+          <div className="logo" onClick={() => scrollToSection("#home")}>
+            Smart Vacation ✈️
+          </div>
           <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
             ☰
           </button>
           <div className={`nav-center ${isMobileMenuOpen ? "active" : ""}`}>
             <ul className="nav-links">
               <li>
-                <a
-                  href="#home"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("#home");
-                  }}
-                >
-                  עמוד הבית
-                </a>
+                <a onClick={() => scrollToSection("#home")}>עמוד הבית</a>
               </li>
               <li>
-                <a
-                  href="#about"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("#about");
-                  }}
-                >
-                  קצת עלינו
-                </a>
+                <a onClick={() => scrollToSection("#about")}>קצת עלינו</a>
               </li>
               <li>
-                <a
-                  href="#packages"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("#packages");
-                  }}
-                >
-                  חבילות נופש
-                </a>
+                <a onClick={() => scrollToSection("#packages")}>חבילות נופש</a>
               </li>
               <li>
-                <a
-                  href="#attractions"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("#attractions");
-                  }}
-                >
-                  אטרקציות
-                </a>
+                <a onClick={() => navigate("/attractions")}>אטרקציות</a>
               </li>
               <li>
-                <a
-                  href="#contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection("#contact");
-                  }}
-                >
-                  צור קשר
-                </a>
+                <a onClick={() => scrollToSection("#contact")}>צור קשר</a>
               </li>
             </ul>
             <div className="auth-buttons">
@@ -263,12 +225,12 @@ const HomePage = () => {
           </div>
 
         </div>
-        <div className="more-destinations-container">
+        {/* <div className="more-destinations-container">
           <a href="#" className="discover-more-link">
           <span className="arrow-icon">←</span>
             גלה עוד יעדים לחופשה
           </a>
-        </div>
+        </div> */}
       </section>
       {/* Features Section */}
       <section className="split-section">
@@ -307,45 +269,14 @@ const HomePage = () => {
     </div>
 </section>
 
-
-      {/* Footer */}
-      <footer id="contact">
+  {/* Footer */}
+      <footer>
         <div className="footer-content">
           <div className="footer-links">
-            <a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("#home");
-              }}
-            >
-              עמוד הבית
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("#about");
-              }}
-            >
-              אודות
-            </a>
-            <a
-              href="#packages"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("#packages");
-              }}
-            >
-              חבילות
-            </a>
-            <a
-              href="#attractions"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection("#attractions");
-              }}
-            >
+            <a onClick={() => scrollToSection("#home")}>עמוד הבית</a>
+            <a onClick={() => scrollToSection("#about")}>אודות</a>
+            <a onClick={() => scrollToSection("#packages")}>חבילות</a>
+            <a onClick={() => navigate("/attractions")} style={{ cursor: "pointer" }}>
               אטרקציות
             </a>
             <a href="#">תנאי שימוש</a>
