@@ -302,7 +302,8 @@ nav {
 
 .destinations-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+    grid-template-columns: repeat(4, minmax(300px, 1fr));
     gap: 2.5rem;
 }
 .destination-card {
@@ -676,4 +677,9 @@ footer {
     .side {
         padding: 40px 20px;
     }
+}
+
+.split-form input {
+    direction: rtl;
+    text-align: right;
 }

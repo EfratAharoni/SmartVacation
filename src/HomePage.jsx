@@ -277,7 +277,7 @@ const HomePage = () => {
         <div className="side-content">
             <h2 className="title-light">הסיפור שלנו</h2>
             <p className="text-light">
-                אנחנו ב-SmartVacation מאמינים שתכנון טיול לא צריך להיות עבודה שנייה. 
+                אנחנו ב-SmartVacation מאמינים שתכנון טיול לא צריך להיות עבודה קשה. 
                 יצרנו מערכת חכמה שחוסכת לכם זמן, כסף וכאבי ראש, כדי שתוכלו להתמקד במה שחשוב באמת – החופשה שלכם.
             </p>
             <div className="mini-bullets">
