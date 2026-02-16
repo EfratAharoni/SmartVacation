@@ -1,5 +1,6 @@
+import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 const HomePage = () => {
@@ -124,11 +125,11 @@ const HomePage = () => {
       <section className="hero" id="home">
         <h1 className="floating">החופשה המושלמת שלך מתחילה כאן</h1>
         <div class="hero-slogans">
-            <span>תכנון חכם</span>
-            <span class="hero-icon">  ✦  </span>
-            <span>חופשה בלתי נשכחת</span>
-            <span class="hero-icon">  ✦  </span>
-            <span>היעדים הכי מדהימים בעולם</span>
+          <span>תכנון חכם</span>
+          <span class="hero-icon"> ✦ </span>
+          <span>חופשה בלתי נשכחת</span>
+          <span class="hero-icon"> ✦ </span>
+          <span>היעדים הכי מדהימים בעולם</span>
         </div>
         <div className="hero-buttons">
           <button className="btn btn-primary" onClick={startPlanning}>
@@ -186,7 +187,7 @@ const HomePage = () => {
 
           <div className="destination-card">
             <div className="destination-image">
-              <img src="/images/new-york.jpg"  />
+              <img src="/images/new-york.jpg" />
             </div>
             <div className="destination-info">
               <h3>ניו יורק, ארה"ב</h3>
@@ -223,7 +224,6 @@ const HomePage = () => {
               <p>אדריכלות מופלאה, חופים זהובים וחיי לילה סוערים</p>
             </div>
           </div>
-
         </div>
         {/* <div className="more-destinations-container">
           <a href="#" className="discover-more-link">
@@ -234,49 +234,64 @@ const HomePage = () => {
       </section>
       {/* Features Section */}
       <section className="split-section">
-    {/* חצי כהה - אודות */}
-    <div className="side about-side">
-        <div className="side-content">
+        {/* חצי כהה - אודות */}
+        <div className="side about-side">
+          <div className="side-content">
             <h2 className="title-light">הסיפור שלנו</h2>
             <p className="text-light">
-                אנחנו ב-SmartVacation מאמינים שתכנון טיול לא צריך להיות עבודה קשה. 
-                יצרנו מערכת חכמה שחוסכת לכם זמן, כסף וכאבי ראש, כדי שתוכלו להתמקד במה שחשוב באמת – החופשה שלכם.
+              אנחנו ב-SmartVacation מאמינים שתכנון טיול לא צריך להיות עבודה קשה.
+              יצרנו מערכת חכמה שחוסכת לכם זמן, כסף וכאבי ראש, כדי שתוכלו להתמקד
+              במה שחשוב באמת – החופשה שלכם.
             </p>
             <div className="mini-bullets">
-                <div className="bullet">✦ תכנון אוטומטי</div>
-                <div className="bullet">✦ מחירים ללא תיווך</div>
-                <div className="bullet">✦ ביטחון מלא</div>
+              <div className="bullet">✦ תכנון אוטומטי</div>
+              <div className="bullet">✦ מחירים ללא תיווך</div>
+              <div className="bullet">✦ ביטחון מלא</div>
             </div>
+          </div>
         </div>
-    </div>
 
-    {/* חצי בהיר - צור קשר */}
-    <div className="side contact-side">
-        <div className="side-content">
+        {/* חצי בהיר - צור קשר */}
+        <div className="side contact-side">
+          <div className="side-content">
             <h2 className="title-dark">דברו איתנו</h2>
             <form className="split-form">
-                <input type="text" placeholder="שם מלא" required />
-                <input type="tel" placeholder="טלפון" required />
-                <button type="submit">שלחו הודעה</button>
+              <input type="text" placeholder="שם מלא" required />
+              <input type="tel" placeholder="טלפון" required />
+              <button type="submit">שלחו הודעה</button>
             </form>
-            
-            <div className="social-links-minimal">
-                <a href="#">WhatsApp</a>
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
-            </div>
-        </div>
-    </div>
-</section>
 
-  {/* Footer */}
+            <div className="social-links-minimal">
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                <FaWhatsapp />
+                <span>WhatsApp</span>
+              </a>
+
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                <FaInstagram />
+                <span>Instagram</span>
+              </a>
+
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                <FaFacebook />
+                <span>Facebook</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
       <footer>
         <div className="footer-content">
           <div className="footer-links">
             <a onClick={() => scrollToSection("#home")}>עמוד הבית</a>
             <a onClick={() => scrollToSection("#about")}>אודות</a>
             <a onClick={() => scrollToSection("#packages")}>חבילות</a>
-            <a onClick={() => navigate("/attractions")} style={{ cursor: "pointer" }}>
+            <a
+              onClick={() => navigate("/attractions")}
+              style={{ cursor: "pointer" }}
+            >
               אטרקציות
             </a>
             <a href="#">תנאי שימוש</a>

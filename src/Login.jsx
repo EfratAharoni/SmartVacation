@@ -96,7 +96,7 @@ const Login = () => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    placeholder="example@email.com"
+                                    placeholder="userName@email.com"
                                     className={errors.email ? 'error' : ''}
                                 />
                             </div>
@@ -114,7 +114,7 @@ const Login = () => {
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
-                                    placeholder="הזן סיסמה"
+                                    placeholder="Password"
                                     className={errors.password ? 'error' : ''}
                                 />
                                 <button

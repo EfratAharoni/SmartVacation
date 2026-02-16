@@ -234,7 +234,7 @@ const Register = () => {
                                             name="fullName"
                                             value={formData.fullName}
                                             onChange={handleChange}
-                                            placeholder="הזן שם מלא"
+                                            placeholder= "Enter your full name"
                                             className={errors.fullName ? 'error' : ''}
                                         />
                                     </div>
@@ -252,7 +252,7 @@ const Register = () => {
                                             name="email"
                                             value={formData.email}
                                             onChange={handleChange}
-                                            placeholder="example@email.com"
+                                            placeholder="userName@email.com"
                                             className={errors.email ? 'error' : ''}
                                         />
                                     </div>
@@ -270,7 +270,7 @@ const Register = () => {
                                             name="phone"
                                             value={formData.phone}
                                             onChange={handleChange}
-                                            placeholder="050-1234567"
+                                            placeholder="Enter your phone number"
                                             className={errors.phone ? 'error' : ''}
                                         />
                                     </div>
