@@ -1,12 +1,11 @@
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
 import "./HomePage.css";
 
 const HomePage = () => {
-  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,20 +48,6 @@ const HomePage = () => {
     };
   }, []);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const handleLogin = () => {
-    navigate("/login"); // נווט לדף התחברות
-    // כאן תוסיף ניווט לדף התחברות
-  };
-
-  const handleRegister = () => {
-    navigate("/register"); // נווט לדף הרשמה
-    // כאן תוסיף ניווט לדף הרשמה
-  };
-
   const startPlanning = () => {
     alert("מתחיל תכנון חופשה...");
     // כאן תוסיף ניווט לדף תכנון החופשה
@@ -72,54 +57,9 @@ const HomePage = () => {
     document.querySelector("#packages").scrollIntoView({ behavior: "smooth" });
   };
 
-  const scrollToSection = (sectionId) => {
-    const element = document.querySelector(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsMobileMenuOpen(false);
-    }
-  };
-
   return (
     <div className="home-page">
-      {/* Header */}
-      <header className={`header ${isScrolled ? "scrolled" : ""}`}>
-        <nav>
-          <div className="logo" onClick={() => scrollToSection("#home")}>
-            Smart Vacation ✈️
-          </div>
-          <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
-            ☰
-          </button>
-          <div className={`nav-center ${isMobileMenuOpen ? "active" : ""}`}>
-            <ul className="nav-links">
-              <li>
-                <a onClick={() => scrollToSection("#home")}>עמוד הבית</a>
-              </li>
-              <li>
-                <a onClick={() => scrollToSection("#about")}>קצת עלינו</a>
-              </li>
-              <li>
-                <a onClick={() => scrollToSection("#packages")}>חבילות נופש</a>
-              </li>
-              <li>
-                <a onClick={() => navigate("/attractions")}>אטרקציות</a>
-              </li>
-              <li>
-                <a onClick={() => scrollToSection("#contact")}>צור קשר</a>
-              </li>
-            </ul>
-            <div className="auth-buttons">
-              <button className="btn btn-login" onClick={handleLogin}>
-                התחברות
-              </button>
-              <button className="btn btn-register" onClick={handleRegister}>
-                הרשמה
-              </button>
-            </div>
-          </div>
-        </nav>
-      </header>
+      <Header currentPage="home" />
 
       {/* Hero Section */}
       <section className="hero" id="home">
@@ -282,24 +222,7 @@ const HomePage = () => {
       </section>
 
       {/* Footer */}
-      <footer>
-        <div className="footer-content">
-          <div className="footer-links">
-            <a onClick={() => scrollToSection("#home")}>עמוד הבית</a>
-            <a onClick={() => scrollToSection("#about")}>אודות</a>
-            <a onClick={() => scrollToSection("#packages")}>חבילות</a>
-            <a
-              onClick={() => navigate("/attractions")}
-              style={{ cursor: "pointer" }}
-            >
-              אטרקציות
-            </a>
-            <a href="#">תנאי שימוש</a>
-            <a href="#">פרטיות</a>
-          </div>
-          <p>&copy; 2026 Smart Vacation Planner. כל הזכויות שמורות.</p>
-        </div>
-      </footer>
+      <Footer currentPage="home" />
     </div>
   );
 };
