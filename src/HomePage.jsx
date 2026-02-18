@@ -62,7 +62,10 @@ const HomePage = () => {
     navigate("/register"); // נווט לדף הרשמה
     // כאן תוסיף ניווט לדף הרשמה
   };
-
+  const handleDeals = () => {
+    navigate("/deals");
+    setIsMobileMenuOpen(false);
+  };
   const startPlanning = () => {
     alert("מתחיל תכנון חופשה...");
     // כאן תוסיף ניווט לדף תכנון החופשה
@@ -100,7 +103,7 @@ const HomePage = () => {
                 <a onClick={() => scrollToSection("#about")}>קצת עלינו</a>
               </li>
               <li>
-                <a onClick={() => scrollToSection("#packages")}>חבילות נופש</a>
+                <a onClick={handleDeals}>חבילות נופש</a>
               </li>
               <li>
                 <a onClick={() => navigate("/attractions")}>אטרקציות</a>

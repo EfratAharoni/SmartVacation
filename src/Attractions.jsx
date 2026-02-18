@@ -548,7 +548,7 @@ const Attractions = () => {
                 <a onClick={() => navigate("/")}>קצת עלינו</a>
               </li>
               <li>
-                <a onClick={() => navigate("/")}>חבילות נופש</a>
+                <a onClick={() => navigate("/deals")}>חבילות נופש</a>
               </li>
               <li>
                 <a className="active">אטרקציות</a>
