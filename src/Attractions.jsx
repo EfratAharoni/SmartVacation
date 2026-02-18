@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
 import "./Attractions.css";
 
 const Attractions = () => {
-  const navigate = useNavigate();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredAttractions, setFilteredAttractions] = useState([]);
@@ -465,14 +463,6 @@ const Attractions = () => {
     filterAttractions();
   }, [selectedCategory, searchTerm]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const filterAttractions = () => {
   let filtered = attractions;
 
@@ -494,18 +484,6 @@ const Attractions = () => {
 
   setFilteredAttractions(filtered);
 };
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  const handleRegister = () => {
-    navigate("/register");
-  };
 
   const scrollToSection = (sectionId) => {
     const element = document.querySelector(sectionId);
@@ -530,44 +508,7 @@ const Attractions = () => {
 
   return (
     <div className="attractions-page">
-      {/* Header */}
-      <header className={`header ${isScrolled ? "scrolled" : ""}`}>
-        <nav>
-          <div className="logo" onClick={() => navigate("/")}>
-            Smart Vacation ✈️
-          </div>
-          <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
-            ☰
-          </button>
-          <div className={`nav-center ${isMobileMenuOpen ? "active" : ""}`}>
-            <ul className="nav-links">
-              <li>
-                <a onClick={() => navigate("/")}>עמוד הבית</a>
-              </li>
-              <li>
-                <a onClick={() => navigate("/")}>קצת עלינו</a>
-              </li>
-              <li>
-                <a onClick={() => navigate("/deals")}>חבילות נופש</a>
-              </li>
-              <li>
-                <a className="active">אטרקציות</a>
-              </li>
-              <li>
-                <a onClick={() => navigate("/")}>צור קשר</a>
-              </li>
-            </ul>
-            <div className="auth-buttons">
-              <button className="btn btn-login" onClick={handleLogin}>
-                התחברות
-              </button>
-              <button className="btn btn-register" onClick={handleRegister}>
-                הרשמה
-              </button>
-            </div>
-          </div>
-        </nav>
-      </header>
+      <Header currentPage="attractions" />
 
       {/* Hero Section */}
       <section className="attractions-hero">
@@ -695,6 +636,7 @@ const Attractions = () => {
             <a onClick={() => navigate("/")}>אודות</a>
             <a onClick={() => navigate("/")}>חבילות</a>
             <a className="active">אטרקציות</a>
+            <a onClick={() => navigate("/contact")}>צור קשר</a>
             <a href="#">תנאי שימוש</a>
             <a href="#">פרטיות</a>
           </div>
