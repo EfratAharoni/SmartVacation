@@ -254,6 +254,7 @@ nav {
     font-size: 1rem;
     background: #f8f9fa;
     transition: all 0.3s ease;
+    color: #000;
 }
 
 .price-inputs input:focus {
@@ -723,4 +724,21 @@ footer {
     .current-price {
         font-size: 1.7rem;
     }
+}
+
+input,
+textarea {
+    color: #000;
+}
+
+.filter-select {
+    color: #000;
+}
+
+.price-inputs input {
+    color: #000;
+}
+
+.deal-dates {
+    color: #000;
 }

@@ -16,7 +16,7 @@ const Deals = () => {
         {
             id: 1,
             destination: 'פריז, צרפת',
-            image: '/images/paris.jpg',
+            image: '/images/parisZ.jpg',
             price: 2499,
             originalPrice: 3499,
             discount: 29,
@@ -32,7 +32,7 @@ const Deals = () => {
         {
             id: 2,
             destination: 'רומא, איטליה',
-            image: '/images/rome.jpg',
+            image: '/images/romeI.jpg',
             price: 2199,
             originalPrice: 2999,
             discount: 27,
@@ -48,7 +48,7 @@ const Deals = () => {
         {
             id: 3,
             destination: 'ברצלונה, ספרד',
-            image: '/images/barcelona.jpg',
+            image: '/images/barcelonaS.jpg',
             price: 2299,
             originalPrice: 3199,
             discount: 28,
@@ -64,7 +64,7 @@ const Deals = () => {
         {
             id: 4,
             destination: 'אמסטרדם, הולנד',
-            image: '/images/amsterdam.jpg',
+            image: '/images/amsterdamH.jpg',
             price: 2699,
             originalPrice: 3599,
             discount: 25,
@@ -80,7 +80,7 @@ const Deals = () => {
         {
             id: 5,
             destination: 'לונדון, אנגליה',
-            image: '/images/london.jpg',
+            image: '/images/londonA.jpg',
             price: 2899,
             originalPrice: 3899,
             discount: 26,
@@ -112,7 +112,7 @@ const Deals = () => {
         {
             id: 7,
             destination: 'באלי, אינדונזיה',
-            image: '/images/bali.jpg',
+            image: '/images/baliI.jpg',
             price: 4299,
             originalPrice: 5799,
             discount: 26,
@@ -128,7 +128,7 @@ const Deals = () => {
         {
             id: 8,
             destination: 'טוקיו, יפן',
-            image: '/images/tokyo.jpg',
+            image: '/images/tokyoY.jpg',
             price: 5499,
             originalPrice: 7299,
             discount: 25,
@@ -144,7 +144,7 @@ const Deals = () => {
         {
             id: 9,
             destination: 'ניו יורק, ארה"ב',
-            image: '/images/new-york.jpg',
+            image: '/images/new-yorkA.jpg',
             price: 4799,
             originalPrice: 6299,
             discount: 24,
