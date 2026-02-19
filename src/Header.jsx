@@ -89,7 +89,7 @@ const Header = ({ currentPage = "home" }) => {
                   setIsMobileMenuOpen(false);
                 }}
               >
-                חבילות נופש
+                יעדים מומלצים
               </a>
             </li>
             <li>

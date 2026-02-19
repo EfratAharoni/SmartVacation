@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import "./HomePage.css";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -49,9 +50,9 @@ const HomePage = () => {
   }, []);
 
   const startPlanning = () => {
-    alert("מתחיל תכנון חופשה...");
-    // כאן תוסיף ניווט לדף תכנון החופשה
+    navigate("/deals");
   };
+  
 
   const explorePlaces = () => {
     document.querySelector("#packages").scrollIntoView({ behavior: "smooth" });
