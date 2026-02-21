@@ -19,7 +19,8 @@
 /* Contact Hero Section */
 
 .contact-hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+    background:  #1a1c40;
     color: white;
     padding: 8rem 5% 4rem;
     text-align: center;
@@ -95,7 +96,8 @@
     margin-top: 85px;
     padding: 5rem 5% 4rem;
     text-align: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
+    /* background:  #1a1c40; */
     color: white;
     position: relative;
 }

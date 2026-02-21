@@ -60,7 +60,6 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-      <Header currentPage="home" />
 
       {/* Hero Section */}
       <section className="hero" id="home">
@@ -222,8 +221,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer currentPage="home" />
     </div>
   );
 };

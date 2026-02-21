@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
 import "./Attractions.css";
 
 const Attractions = () => {
@@ -448,6 +446,159 @@ const Attractions = () => {
       description: "חוף פופולרי לגלישה ושקיעות",
       highlights: ["גלים טובים לגלישה", "חיי לילה"],
     },
+    {
+      id: 37,
+      name: "ספארי במדבר",
+      location: "דובאי, איחוד האמירויות",
+      category: "nature",
+      price: 220,
+      duration: "5-6 שעות",
+      rating: 4.9,
+      image: "/images/desert-safari.jpg",
+      description: "נסיעה ברכבי שטח בדיונות כולל ארוחת ערב ומופעים",
+      highlights: ["גלישת דיונות", "רכיבה על גמלים", "טיול גיפים בנסיעה עצמית"],
+    },
+    {
+      id: 38,
+      name: "תצפית אי הדקלים",
+      location: "דובאי, איחוד האמירויות",
+      category: "landmarks",
+      price: 160,
+      duration: "1-2 שעות",
+      rating: 4.8,
+      image: "/images/palm-view.jpg",
+      description: "תצפית מרהיבה על אי הדקלים המלאכותי",
+      highlights: ["נוף פנורמי", "צילום מגבוה", "מבנה ייחודי"],
+    },
+    {
+      id: 39,
+      name: "מסגרת דובאי",
+      location: "דובאי, איחוד האמירויות",
+      category: "landmarks",
+      price: 80,
+      duration: "1-2 שעות",
+      rating: 4.7,
+      image: "/images/dubai-frame.jpg",
+      description: "מבנה ענק בצורת מסגרת עם רצפת זכוכית",
+      highlights: ["רצפת זכוכית", "נוף לעיר הישנה והחדשה"],
+    },
+    {
+      id: 49,
+      name: "בורג' ח'ליפה והמזרקות (מבחוץ)",
+      location: "דובאי, איחוד האמירויות",
+      category: "landmarks",
+      price: 0,
+      duration: "1-2 שעות",
+      rating: 4.9,
+      image: "/images/burj-khalifa-fountain.jpg",
+      description: "צפייה במגדל הגבוה בעולם ובמופע המזרקות המפורסם למרגלותיו",
+      highlights: [
+        "מופע מים ואורות",
+        "תצפית על המגדל מבחוץ",
+        "אווירה ערב קסומה",
+        "מתאים לכל המשפחה",
+      ],
+    },
+    {
+      id: 40,
+      name: "סאות' ביץ'",
+      location: 'מיאמי, ארה"ב',
+      category: "nature",
+      price: 0,
+      duration: "3-4 שעות",
+      rating: 4.8,
+      image: "/images/south-beach.jpg",
+      description: "חוף מפורסם עם מים טורקיז ואווירה תוססת",
+      highlights: ["חול לבן", "ספורט ימי", "טיילת יפה"],
+    },
+    {
+      id: 41,
+      name: "צ'יצ'ן איצה",
+      location: "קנקון, מקסיקו",
+      category: "landmarks",
+      price: 210,
+      duration: "יום שלם",
+      rating: 4.9,
+      image: "/images/chichen-itza.jpg",
+      description: "אתר מאיה עתיק ואחד משבעת פלאי העולם",
+      highlights: ["פירמידת קוקולקן", "היסטוריה עתיקה"],
+    },
+    {
+      id: 42,
+      name: "כפר אויה",
+      location: "סנטוריני, יוון",
+      category: "landmarks",
+      price: 0,
+      duration: "2-3 שעות",
+      rating: 4.9,
+      image: "/images/oia.jpg",
+      description: "כפר לבן מפורסם עם שקיעות מרהיבות",
+      highlights: ["בתים לבנים", "כיפות כחולות", "שקיעה"],
+    },
+    {
+      id: 43,
+      name: "גשר קארל",
+      location: "פראג, צ'כיה",
+      category: "landmarks",
+      price: 0,
+      duration: "1-2 שעות",
+      rating: 4.8,
+      image: "/images/charles-bridge.jpg",
+      description: "גשר היסטורי עם פסלים ונוף לעיר העתיקה",
+      highlights: ["אמני רחוב", "נוף לנהר", "אווירה רומנטית"],
+    },
+    {
+      id: 44,
+      name: "הארמון המלכותי",
+      location: "בנגקוק, תאילנד",
+      category: "landmarks",
+      price: 130,
+      duration: "2-3 שעות",
+      rating: 4.8,
+      image: "/images/grand-palace.jpg",
+      description: "מתחם מפואר הכולל מקדשים וזהב",
+      highlights: ["בודהה האזמרגד", "אדריכלות תאילנדית"],
+    },
+    {
+      id: 45,
+      name: "שנירקול עם דולפינים",
+      location: "מלדיביים",
+      category: "nature",
+      price: 260,
+      duration: "3 שעות",
+      rating: 4.9,
+      image: "/images/dolphins.jpg",
+      description: "שחייה עם דולפינים ושוניות אלמוגים",
+      highlights: ["מים צלולים", "דגים טרופיים", "חוויה ייחודית"],
+    },
+    {
+      id: 47,
+      name: "איה סופיה",
+      location: "איסטנבול, טורקיה",
+      category: "landmarks",
+      price: 0,
+      duration: "1-2 שעות",
+      rating: 4.9,
+      image: "/images/hagia-sophia.jpg",
+      description: "מבנה היסטורי מרשים שהיה כנסייה ומסגד",
+      highlights: ["כיפה ענקית", "פסיפסים עתיקים"],
+    },
+    {
+      id: 48,
+      name: "משחק של ברצלונה בקאמפ נואו",
+      location: "ברצלונה, ספרד",
+      category: "sports",
+      price: 420,
+      duration: "2-3 שעות",
+      rating: 4.9,
+      image: "/images/barcelona-match.jpg",
+      description: "צפייה במשחק בית של ברצלונה באווירה מטורפת",
+      highlights: [
+        "אצטדיון מהגדולים בעולם",
+        "אוהדים מכל העולם",
+        "חוויית כדורגל אמיתית",
+      ],
+    },
   ];
 
   const categories = [
@@ -464,26 +615,28 @@ const Attractions = () => {
   }, [selectedCategory, searchTerm]);
 
   const filterAttractions = () => {
-  let filtered = attractions;
+    let filtered = attractions;
 
-  if (selectedCategory !== "all") {
-    if (selectedCategory === "free") {
-      filtered = filtered.filter((attr) => attr.price === 0); 
-    } else {
-      filtered = filtered.filter((attr) => attr.category === selectedCategory);
+    if (selectedCategory !== "all") {
+      if (selectedCategory === "free") {
+        filtered = filtered.filter((attr) => attr.price === 0);
+      } else {
+        filtered = filtered.filter(
+          (attr) => attr.category === selectedCategory,
+        );
+      }
     }
-  }
 
-  if (searchTerm) {
-    filtered = filtered.filter(
-      (attr) =>
-        attr.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        attr.location.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (attr) =>
+          attr.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          attr.location.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+    }
 
-  setFilteredAttractions(filtered);
-};
+    setFilteredAttractions(filtered);
+  };
 
   const scrollToSection = (sectionId) => {
     const element = document.querySelector(sectionId);
@@ -508,7 +661,7 @@ const Attractions = () => {
 
   return (
     <div className="attractions-page">
-      <Header currentPage="attractions" />
+      {/* <Header currentPage="attractions" /> */}
 
       {/* Hero Section */}
       <section className="attractions-hero">
@@ -628,21 +781,6 @@ const Attractions = () => {
         </div>
       )}
 
-      {/* Footer */}
-      <footer>
-        <div className="footer-content">
-          <div className="footer-links">
-            <a onClick={() => navigate("/")}>עמוד הבית</a>
-            <a onClick={() => navigate("/")}>אודות</a>
-            <a onClick={() => navigate("/")}>חבילות</a>
-            <a className="active">אטרקציות</a>
-            <a onClick={() => navigate("/contact")}>צור קשר</a>
-            <a href="#">תנאי שימוש</a>
-            <a href="#">פרטיות</a>
-          </div>
-          <p>&copy; 2026 Smart Vacation Planner. כל הזכויות שמורות.</p>
-        </div>
-      </footer>
     </div>
   );
 };

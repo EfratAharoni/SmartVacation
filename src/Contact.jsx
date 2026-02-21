@@ -8,8 +8,6 @@ import {
   FaPhone,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import Header from "./Header";
-import Footer from "./Footer";
 import "./Contact.css";
 
 const Contact = () => {
@@ -108,22 +106,22 @@ const Contact = () => {
 
   const faqItems = [
     {
-      question: "?מה זמני התגובה שלכם",
+      question: "מה זמני התגובה שלכם",
       answer:
         ".אנחנו עונים לכל הפניות תוך 24 שעות בימי עסקים. בשבתות ובחגים העסק סגור",
     },
     {
-      question: "?האם אפשר לבטל או לשנות הזמנה",
+      question: "האם אפשר לבטל או לשנות הזמנה",
       answer:
         ".כן, ניתן לבטל או לשנות הזמנה בהתאם לתנאי הביטול של כל חבילה. צור איתנו קשר ונשמח לעזור",
     },
     {
-      question: "?האם המחירים כוללים מיסים",
+      question: "האם המחירים כוללים מיסים",
       answer:
         '.כן, כל המחירים המוצגים באתר כוללים מע"מ ומיסים. אין עלויות נסתרות',
     },
     {
-      question: "?איך מתבצע התשלום",
+      question: "איך מתבצע התשלום",
       answer:
         "ניתן לשלם בכרטיס אשראי, העברה בנקאית או במזומן במשרדנו. התשלום מאובטח ומוצפן",
     },
@@ -131,7 +129,6 @@ const Contact = () => {
 
   return (
     <div className="contact-page" dir="rtl">
-      <Header currentPage="contact" />
 
       {/* Hero Section */}
       <section className="contact-hero">
@@ -402,8 +399,6 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer currentPage="contact" />
     </div>
   );
 };

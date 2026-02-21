@@ -401,36 +401,6 @@ const Deals = () => {
 
     return (
         <div className="deals-page">
-            {/* Header */}
-            <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
-                <nav>
-                    <div className="logo" onClick={() => navigate('/')}>Smart Vacation ✈️</div>
-                    <button className="mobile-menu-btn" onClick={toggleMobileMenu}>☰</button>
-                    <div className={`nav-center ${isMobileMenuOpen ? 'active' : ''}`}>
-                        <ul className="nav-links">
-                            <li>
-                                <a onClick={() => navigate("/")}>עמוד הבית</a>
-                            </li>
-                            <li>
-                                 <a onClick={() => navigate("/")}>קצת עלינו</a>
-                            </li>
-                            <li>
-                                <a className="active">חבילות נופש </a>
-                            </li>
-                            <li>
-                                <a onClick={() => navigate("/attractions")}>אטרקציות</a>
-                            </li>
-                            <li>
-                                <a onClick={() => navigate("/")}>צור קשר</a>
-                            </li>
-                            </ul>
-                        <div className="auth-buttons">
-                            <button className="btn btn-login" onClick={handleLogin}>התחברות</button>
-                            <button className="btn btn-register" onClick={handleRegister}>הרשמה</button>
-                        </div>
-                    </div>
-                </nav>
-            </header>
 
             {/* Hero Section */}
             <section className="deals-hero">
@@ -589,22 +559,6 @@ const Deals = () => {
                     </div>
                 )}
             </section>
-
-            {/* Footer */}
-            <footer>
-                <div className="footer-content">
-                    <div className="footer-links">
-                        <a onClick={() => navigate('/')}>עמוד הבית</a>
-                        <a onClick={() => navigate('/')}>אודות</a>
-                        <a onClick={() => navigate('/')}>חבילות</a>
-                        <a onClick={() => navigate('/attractions')}>אטרקציות</a>
-                        <a className="active">דילים</a>
-                        <a href="#">תנאי שימוש</a>
-                        <a href="#">פרטיות</a>
-                    </div>
-                    <p>&copy; 2026 Smart Vacation Planner. כל הזכויות שמורות.</p>
-                </div>
-            </footer>
         </div>
     );
 };
