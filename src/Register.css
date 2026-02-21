@@ -4,14 +4,14 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    /* padding: 2rem; */
+    padding: 0.7rem; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .register-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    max-width: 1200px;
+    max-width: 1500px;
     width: 100%;
     background: white;
     border-radius: 20px;
@@ -637,4 +637,8 @@
     .form-buttons {
         grid-template-columns: 1fr;
     }
+}
+
+body {
+  zoom: 0.75; /* מציג את כל הדף ב-80% */
 }

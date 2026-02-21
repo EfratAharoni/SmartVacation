@@ -572,3 +572,7 @@
 .social-links-minimal a:nth-child(3):hover {
   color: #1877F2; /* Facebook */
 }
+
+body {
+  zoom: 0.95; /* מציג את כל הדף ב-95% */
+}
