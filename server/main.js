@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./DB/db.js";
 import * as userController from "./controllers/User.js";
+import * as attractionController from "./controllers/Attraction.js";
 
 const app = express();
 
@@ -21,6 +22,14 @@ app.delete("/users/removeAll", userController.removeAllUsers);
 app.put("/users/update/:id", userController.updateUser);
 app.post("/users/login", userController.login);
 app.put("/users/change-password", userController.changePassword);
+
+//attraction 
+app.get("/attractions", attractionController.getAttractions);
+app.get("/attractions/:id", attractionController.getAttraction);
+app.post("/attractions/add", attractionController.createAttraction);
+app.post("/attractions/addMany", attractionController.addManyAttractions);
+app.delete("/attractions/:id", attractionController.removeAttraction);
+app.put("/attractions/:id", attractionController.updateAttraction);
 
 const startServer = async () => {
   try {
