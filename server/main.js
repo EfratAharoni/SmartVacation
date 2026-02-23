@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./DB/db.js";
 import * as userController from "./controllers/User.js";
 import * as attractionController from "./controllers/Attraction.js";
+import * as dealController from "./controllers/Deal.js";
 
 const app = express();
 
@@ -30,6 +31,14 @@ app.post("/attractions/add", attractionController.createAttraction);
 app.post("/attractions/addMany", attractionController.addManyAttractions);
 app.delete("/attractions/:id", attractionController.removeAttraction);
 app.put("/attractions/:id", attractionController.updateAttraction);
+
+//deals
+app.get("/deals", dealController.getDeals);
+app.get("/deals/:id", dealController.getDeal);
+app.post("/deals/add", dealController.createDeal);
+app.post("/deals/addMany", dealController.addManyDeals);
+app.put("/deals/:id", dealController.updateDeal);
+app.delete("/deals/:id", dealController.removeDeal);
 
 const startServer = async () => {
   try {
