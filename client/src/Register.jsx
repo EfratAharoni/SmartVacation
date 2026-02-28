@@ -147,60 +147,8 @@ const Register = () => {
   return (
     <div className="register-page">
       <div className="register-container">
-        {/* Left Side - Visual */}
-        <div className="register-visual-section">
-          <div className="visual-content">
-            {/* <div className="logo">Smart Vacation ✈️</div> */}
-            <h2>הצטרף אלינו היום</h2>
-            <p>צור חשבון חינם והתחל לתכנן את החופשה הבאה שלך בקלות ובמהירות</p>
 
-            <div className="benefits-list">
-              <div className="benefit-item">
-                <div className="benefit-number">1</div>
-                <div className="benefit-content">
-                  <h4>צור חשבון</h4>
-                  <p>הרשמה פשוטה ומהירה</p>
-                </div>
-              </div>
-              <div className="benefit-item">
-                <div className="benefit-number">2</div>
-                <div className="benefit-content">
-                  <h4>בחר יעד</h4>
-                  <p>מאות יעדים ברחבי העולם</p>
-                </div>
-              </div>
-              <div className="benefit-item">
-                <div className="benefit-number">3</div>
-                <div className="benefit-content">
-                  <h4>תכנן חופשה</h4>
-                  <p>תכנון אוטומטי ומותאם אישית</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="stats">
-              <div className="stat-item">
-                <h3>10,000+</h3>
-                <p>משתמשים פעילים</p>
-              </div>
-              <div className="stat-item">
-                <h3>150+</h3>
-                <p>יעדים ברחבי העולם</p>
-              </div>
-              <div className="stat-item">
-                <h3>4.9⭐</h3>
-                <p>דירוג ממוצע</p>
-              </div>
-            </div>
-          </div>
-          <div className="decorative-shapes">
-            <div className="shape shape-1"></div>
-            <div className="shape shape-2"></div>
-            <div className="shape shape-3"></div>
-          </div>
-        </div>
-
-        {/* Right Side - Form */}
+              {/* Right Side - Form */}
         <div className="register-form-section">
           <div className="register-header">
             <h1>הרשמה</h1>
@@ -461,6 +409,61 @@ const Register = () => {
             </div>
           </form>
         </div>
+        
+        {/* Left Side - Visual */}
+        <div className="register-visual-section">
+          <div className="visual-content">
+            {/* <div className="logo">Smart Vacation ✈️</div> */}
+            <h2>הצטרף אלינו היום</h2>
+            <p>צור חשבון חינם והתחל לתכנן את החופשה הבאה שלך בקלות ובמהירות</p>
+
+            <div className="benefits-list">
+              <div className="benefit-item">
+                <div className="benefit-number">1</div>
+                <div className="benefit-content">
+                  <h4>צור חשבון</h4>
+                  <p>הרשמה פשוטה ומהירה</p>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-number">2</div>
+                <div className="benefit-content">
+                  <h4>בחר יעד</h4>
+                  <p>מאות יעדים ברחבי העולם</p>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <div className="benefit-number">3</div>
+                <div className="benefit-content">
+                  <h4>תכנן חופשה</h4>
+                  <p>תכנון אוטומטי ומותאם אישית</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="stats">
+              <div className="stat-item">
+                <h3>10,000+</h3>
+                <p>משתמשים פעילים</p>
+              </div>
+              <div className="stat-item">
+                <h3>150+</h3>
+                <p>יעדים ברחבי העולם</p>
+              </div>
+              <div className="stat-item">
+                <h3>4.9⭐</h3>
+                <p>דירוג ממוצע</p>
+              </div>
+            </div>
+          </div>
+          <div className="decorative-shapes">
+            <div className="shape shape-1"></div>
+            <div className="shape shape-2"></div>
+            <div className="shape shape-3"></div>
+          </div>
+        </div>
+
+
       </div>
     </div>
   );

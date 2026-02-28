@@ -639,6 +639,10 @@
     }
 }
 
+.benefits-list {
+    text-align: right;
+}
+
 body {
   zoom: 0.75; /* מציג את כל הדף ב-80% */
 }
