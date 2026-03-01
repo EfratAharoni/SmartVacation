@@ -87,7 +87,8 @@ nav {
     width: 100%;
 }
 
-.auth-buttons {
+/* Auth Section */
+.auth-section {
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -95,6 +96,131 @@ nav {
     right: 3%;
 }
 
+/* User Greeting */
+.user-greeting {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 25px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.user-greeting:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+}
+
+.greeting-text {
+    color: #666;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.user-name {
+    color: #667eea;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Header Icons Container */
+.header-icons {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+/* Shared Icon Button */
+.icon-btn {
+    position: relative;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+}
+
+.icon-btn:focus,
+.icon-btn:active {
+    outline: none;
+    box-shadow: none;
+}
+
+.icon-btn:hover {
+    border-color: #667eea;
+    background: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+/* Heart Icon (Favorites) */
+.heart-icon-header {
+    width: 22px;
+    height: 22px;
+    fill: #e63946;
+    stroke: none;
+    transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.favorites-btn:hover .heart-icon-header {
+    transform: scale(1.15);
+    fill: #ff4d6d;
+}
+
+/* Cart Icon */
+.cart-icon-svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: #667eea;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.3s ease, stroke 0.3s ease;
+}
+
+.cart-btn:hover .cart-icon-svg {
+    transform: scale(1.1);
+    stroke: #764ba2;
+}
+
+/* Badge */
+.icon-badge {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.3rem;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Buttons */
 .btn {
     padding: 0.65rem 1.8rem;
     border: none;
@@ -131,7 +257,27 @@ nav {
     box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
 
-/* Mobile Menu Button */
+.btn-logout {
+    background: transparent;
+    color: #e63946;
+    border: 2px solid #e63946;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+}
+
+.btn-logout:hover {
+    background: #e63946;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Mobile Menu */
 .mobile-menu-btn {
     display: none;
     background: none;
@@ -141,41 +287,20 @@ nav {
     color: #333;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 1024px) {
-    .nav-center {
-        gap: 2rem;
-    }
-    
-    .nav-links {
-        gap: 1.5rem;
-    }
-    
-    .nav-links a {
-        font-size: 0.9rem;
-    }
+    .nav-center { gap: 2rem; }
+    .nav-links { gap: 1.5rem; }
+    .nav-links a { font-size: 0.9rem; }
 }
 
 @media (max-width: 768px) {
-    nav {
-        padding: 1rem 5%;
-    }
-
-    .mobile-menu-btn {
-        display: block;
-        position: absolute;
-        left: 3%;
-    }
-
-    .logo {
-        position: relative;
-        left: auto;
-    }
+    nav { padding: 1rem 5%; }
 
     .nav-center {
         position: fixed;
         right: -100%;
-        top: 70px;
+        top: 85px;
         flex-direction: column;
         background: white;
         width: 100%;
@@ -185,31 +310,25 @@ nav {
         gap: 2rem;
     }
 
-    .nav-center.active {
-        right: 0;
-    }
+    .nav-center.active { right: 0; }
 
     .nav-links {
         flex-direction: column;
         gap: 1.5rem;
-        width: 100%;
     }
 
-    .nav-links a {
-        font-size: 1rem;
-        display: block;
+    .auth-section {
+        position: static;
+        flex-direction: column;
+        width: 100%;
     }
 
     .auth-buttons {
-        position: relative;
-        right: auto;
         flex-direction: column;
         width: 100%;
-        gap: 1rem;
     }
 
-    .btn {
-        width: 100%;
-        text-align: center;
-    }
+    .auth-buttons .btn { width: 100%; }
+
+    .mobile-menu-btn { display: block; }
 }

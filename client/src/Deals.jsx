@@ -2,15 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Deals.css';
 
+// Helper: get user-specific localStorage key
+const getUserKey = () => {
+    const name = localStorage.getItem('userName');
+    return name ? name.replace(/\s/g, '_') : 'guest';
+};
+
 const Deals = () => {
     const navigate = useNavigate();
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [selectedDestination, setSelectedDestination] = useState('all');
     const [priceRange, setPriceRange] = useState([0, 10000]);
     const [dateFilter, setDateFilter] = useState('all');
     const [filteredDeals, setFilteredDeals] = useState([]);
     const [sortBy, setSortBy] = useState('price-low');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [favorites, setFavorites] = useState(() => {
+        const name = localStorage.getItem('userName');
+        if (!name) return [];
+        const userKey = name.replace(/\s/g, '_');
+        const saved = localStorage.getItem(`favorites_${userKey}`);
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    const [cart, setCart] = useState(() => {
+        const name = localStorage.getItem('userName');
+        if (!name) return [];
+        const userKey = name.replace(/\s/g, '_');
+        const saved = localStorage.getItem(`cart_${userKey}`);
+        return saved ? JSON.parse(saved) : [];
+    });
 
     const deals = [
         {
@@ -303,32 +324,72 @@ const Deals = () => {
         { id: 'september', name: 'ספטמבר 2026' }
     ];
 
+    // Sync login state on mount and reload favorites/cart per user
+    useEffect(() => {
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(loggedIn);
+        if (loggedIn) {
+            const userKey = getUserKey();
+            const savedFavs = JSON.parse(localStorage.getItem(`favorites_${userKey}`) || '[]');
+            const savedCart = JSON.parse(localStorage.getItem(`cart_${userKey}`) || '[]');
+            setFavorites(savedFavs);
+            setCart(savedCart);
+        }
+    }, []);
+
     useEffect(() => {
         filterDeals();
     }, [selectedDestination, priceRange, dateFilter, sortBy]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    const toggleFavorite = (dealId) => {
+        if (!isLoggedIn) {
+            alert('כדי להוסיף למועדפים יש להתחבר תחילה');
+            navigate('/login');
+            return;
+        }
+        const userKey = getUserKey();
+        let updated;
+        if (favorites.includes(dealId)) {
+            updated = favorites.filter(id => id !== dealId);
+        } else {
+            updated = [...favorites, dealId];
+        }
+        setFavorites(updated);
+        localStorage.setItem(`favorites_${userKey}`, JSON.stringify(updated));
+        window.dispatchEvent(new Event('userDataUpdated'));
+    };
+
+    const addToCart = (deal, e) => {
+        e.stopPropagation();
+        if (!isLoggedIn) {
+            alert('כדי להוסיף לעגלה יש להתחבר תחילה');
+            navigate('/login');
+            return;
+        }
+        const userKey = getUserKey();
+        const existing = cart.find(item => item.id === deal.id && item.type === 'deal');
+        if (existing) {
+            alert(`${deal.destination} כבר נמצא בעגלה שלך!`);
+            return;
+        }
+        const updated = [...cart, { ...deal, type: 'deal', addedAt: new Date().toISOString() }];
+        setCart(updated);
+        localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
+        window.dispatchEvent(new Event('userDataUpdated'));
+        alert(`${deal.destination} נוסף לעגלה! 🛒`);
+    };
 
     const filterDeals = () => {
         let filtered = deals;
 
-        // Filter by destination
         if (selectedDestination !== 'all') {
             filtered = filtered.filter(deal => deal.category === selectedDestination);
         }
 
-        // Filter by price
-        filtered = filtered.filter(deal => 
+        filtered = filtered.filter(deal =>
             deal.price >= priceRange[0] && deal.price <= priceRange[1]
         );
 
-        // Filter by date
         if (dateFilter !== 'all') {
             const monthMap = {
                 'may': 'מאי',
@@ -337,48 +398,22 @@ const Deals = () => {
                 'august': 'אוגוסט',
                 'september': 'ספטמבר'
             };
-            filtered = filtered.filter(deal => 
+            filtered = filtered.filter(deal =>
                 deal.dates.includes(monthMap[dateFilter])
             );
         }
 
-        // Sort deals
         filtered.sort((a, b) => {
-            switch(sortBy) {
-                case 'price-low':
-                    return a.price - b.price;
-                case 'price-high':
-                    return b.price - a.price;
-                case 'rating':
-                    return b.rating - a.rating;
-                case 'discount':
-                    return b.discount - a.discount;
-                default:
-                    return 0;
+            switch (sortBy) {
+                case 'price-low': return a.price - b.price;
+                case 'price-high': return b.price - a.price;
+                case 'rating': return b.rating - a.rating;
+                case 'discount': return b.discount - a.discount;
+                default: return 0;
             }
         });
 
         setFilteredDeals(filtered);
-    };
-
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen);
-    };
-
-    const handleLogin = () => {
-        navigate('/login');
-    };
-
-    const handleRegister = () => {
-        navigate('/register');
-    };
-
-    const scrollToSection = (sectionId) => {
-        const element = document.querySelector(sectionId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setIsMobileMenuOpen(false);
-        }
     };
 
     const renderStars = (rating) => {
@@ -414,11 +449,10 @@ const Deals = () => {
             <section className="filter-section">
                 <div className="filter-container">
                     <div className="filter-row">
-                        {/* Destination Filter */}
                         <div className="filter-group">
                             <label>יעד</label>
-                            <select 
-                                value={selectedDestination} 
+                            <select
+                                value={selectedDestination}
                                 onChange={(e) => setSelectedDestination(e.target.value)}
                                 className="filter-select"
                             >
@@ -428,11 +462,10 @@ const Deals = () => {
                             </select>
                         </div>
 
-                        {/* Date Filter */}
                         <div className="filter-group">
                             <label>תאריכים</label>
-                            <select 
-                                value={dateFilter} 
+                            <select
+                                value={dateFilter}
                                 onChange={(e) => setDateFilter(e.target.value)}
                                 className="filter-select"
                             >
@@ -442,31 +475,29 @@ const Deals = () => {
                             </select>
                         </div>
 
-                        {/* Price Range Filter */}
                         <div className="filter-group price-filter">
                             <label>טווח מחיר: ₪{priceRange[0]} - ₪{priceRange[1]}</label>
                             <div className="price-inputs">
-                                <input 
-                                    type="number" 
-                                    value={priceRange[0]} 
-                                    onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
+                                <input
+                                    type="number"
+                                    value={priceRange[0]}
+                                    onChange={(e) => setPriceRange([parseInt(e.target.value) || 0, priceRange[1]])}
                                     placeholder="מינימום"
                                 />
                                 <span>-</span>
-                                <input 
-                                    type="number" 
-                                    value={priceRange[1]} 
-                                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                                <input
+                                    type="number"
+                                    value={priceRange[1]}
+                                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 10000])}
                                     placeholder="מקסימום"
                                 />
                             </div>
                         </div>
 
-                        {/* Sort By */}
                         <div className="filter-group">
                             <label>מיון לפי</label>
-                            <select 
-                                value={sortBy} 
+                            <select
+                                value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
                                 className="filter-select"
                             >
@@ -493,18 +524,31 @@ const Deals = () => {
                             <div className="deal-badge">
                                 <span className="discount">-{deal.discount}%</span>
                             </div>
-                            
+
+                            {/* Favorite Heart Button */}
+                            <button
+                                className={`favorite-heart ${favorites.includes(deal.id) ? 'active' : ''}`}
+                                onClick={(e) => { e.stopPropagation(); toggleFavorite(deal.id); }}
+                                aria-label="הוסף למועדפים"
+                            >
+                                <svg viewBox="0 0 24 24" className="heart-icon" aria-hidden="true">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                                             2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                                             C13.09 3.81 14.76 3 16.5 3
+                                             19.58 3 22 5.42 22 8.5
+                                             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                            </button>
+
                             <div className="deal-image">
                                 <img src={deal.image} alt={deal.destination} />
                             </div>
 
                             <div className="deal-content">
                                 <h3>{deal.destination}</h3>
-                                
+
                                 <div className="rating-section">
-                                    <div className="stars">
-                                        {renderStars(deal.rating)}
-                                    </div>
+                                    <div className="stars">{renderStars(deal.rating)}</div>
                                     <span className="rating-text">{deal.rating}</span>
                                     <span className="reviews">({deal.reviewsCount} ביקורות)</span>
                                 </div>
@@ -544,7 +588,9 @@ const Deals = () => {
                                         <span className="original-price">₪{deal.originalPrice}</span>
                                         <span className="current-price">₪{deal.price}</span>
                                     </div>
-                                    <button className="book-btn">הזמן עכשיו</button>
+                                    <button className="book-btn" onClick={(e) => addToCart(deal, e)}>
+                                        הזמן עכשיו
+                                    </button>
                                 </div>
                             </div>
                         </div>
