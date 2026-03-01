@@ -869,14 +869,14 @@ const Attractions = () => {
   ];
 
   // טען נתוני משתמש בעת עליית הקומפוננטה
-  useEffect(() => {
+useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
 
     if (loggedIn) {
       const userKey = getUserKey();
       const savedFavs = JSON.parse(
-        localStorage.getItem(`favorites_attractions_${userKey}`) || "[]"
+        localStorage.getItem(`favorites_${userKey}`) || "[]"  // ✅ מפתח תואם
       );
       const savedCart = JSON.parse(
         localStorage.getItem(`cart_${userKey}`) || "[]"
@@ -884,7 +884,7 @@ const Attractions = () => {
       setFavorites(savedFavs);
       setCart(savedCart);
     }
-  }, []);
+}, []);
 
   useEffect(() => {
     filterAttractions();
@@ -910,24 +910,32 @@ const Attractions = () => {
   };
 
   // ─── פונקציית מועדפים ─────────────────────────────────────────
-  const toggleFavorite = (attractionId) => {
+const toggleFavorite = (attractionId) => {
     if (!isLoggedIn) {
       alert("כדי להוסיף למועדפים יש להתחבר תחילה");
       navigate("/login");
       return;
     }
+    
     const userKey = getUserKey();
-    const updated = favorites.includes(attractionId)
-      ? favorites.filter((id) => id !== attractionId)
-      : [...favorites, attractionId];
+    const attraction = attractions.find(a => a.id === attractionId);
+    
+    if (!attraction) return;
+    
+    // בדוק אם האטרקציה כבר במועדפים
+    const isAlreadyFavorite = favorites.some(fav => fav.id === attractionId);
+    
+    const updated = isAlreadyFavorite
+      ? favorites.filter(fav => fav.id !== attractionId)
+      : [...favorites, { ...attraction, type: 'attraction' }];  // ✅ שומר את כל האובייקט
 
     setFavorites(updated);
     localStorage.setItem(
-      `favorites_attractions_${userKey}`,
+      `favorites_${userKey}`,  // ✅ מפתח תואם
       JSON.stringify(updated)
     );
     window.dispatchEvent(new Event("userDataUpdated"));
-  };
+};
 
   // ─── פונקציית עגלה ────────────────────────────────────────────
   const addToCart = (attraction) => {
@@ -1027,7 +1035,7 @@ const Attractions = () => {
 
         <div className="attractions-grid">
           {filteredAttractions.map((attraction) => {
-            const isFav = favorites.includes(attraction.id);
+            const isFav = favorites.some(fav => fav.id === attraction.id);
             return (
               <div
                 key={attraction.id}
@@ -1129,11 +1137,11 @@ const Attractions = () => {
               {/* כפתורי פעולה במודל */}
               <div style={{ display: "flex", gap: "1rem", marginTop: "0.5rem" }}>
                 <button
-                  className={`modal-favorite-btn ${favorites.includes(selectedAttraction.id) ? "active" : ""}`}
+                  className={`modal-favorite-btn ${favorites.some(fav => fav.id === selectedAttraction.id) ? "active" : ""}`}
                   onClick={() => toggleFavorite(selectedAttraction.id)}
                 >
-                  <HeartSVG filled={favorites.includes(selectedAttraction.id)} />
-                  {favorites.includes(selectedAttraction.id)
+                  <HeartSVG filled={favorites.some(fav => fav.id === selectedAttraction.id)} />
+                  {favorites.some(fav => fav.id === selectedAttraction.id)
                     ? "הסר ממועדפים"
                     : "הוסף למועדפים"}
                 </button>

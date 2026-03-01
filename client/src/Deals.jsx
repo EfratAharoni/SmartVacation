@@ -348,11 +348,14 @@ const Deals = () => {
             return;
         }
         const userKey = getUserKey();
+        const deal = deals.find(d => d.id === dealId);
+        if (!deal) return;
+        
         let updated;
-        if (favorites.includes(dealId)) {
-            updated = favorites.filter(id => id !== dealId);
+        if (favorites.some(fav => fav.id === dealId)) {
+            updated = favorites.filter(fav => fav.id !== dealId);
         } else {
-            updated = [...favorites, dealId];
+            updated = [...favorites, { ...deal, type: 'deal' }];
         }
         setFavorites(updated);
         localStorage.setItem(`favorites_${userKey}`, JSON.stringify(updated));
@@ -527,7 +530,7 @@ const Deals = () => {
 
                             {/* Favorite Heart Button */}
                             <button
-                                className={`favorite-heart ${favorites.includes(deal.id) ? 'active' : ''}`}
+                                className={`favorite-heart ${favorites.some(fav => fav.id === deal.id) ? 'active' : ''}`}
                                 onClick={(e) => { e.stopPropagation(); toggleFavorite(deal.id); }}
                                 aria-label="הוסף למועדפים"
                             >
