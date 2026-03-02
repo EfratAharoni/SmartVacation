@@ -1186,8 +1186,46 @@ const DealDetails = () => {
         }
     ];
 
+    const destinationAttractionsMap = {
+        'פריז, צרפת': ['מגדל אייפל', 'לובר', 'שאנז אליזה'],
+        'רומא, איטליה': ['קולוסיאום', 'ותיקן', 'פונטנה די טרווי'],
+        'ברצלונה, ספרד': ['סגרדה פמיליה', 'פארק גואל', 'לה רמבלה'],
+        'אמסטרדם, הולנד': ['בית אנה פרנק', 'מוזיאון ואן גוך', 'שייט בתעלות'],
+        'לונדון, אנגליה': ['ביג בן', 'ארמון בקינגהאם', 'לונדון איי'],
+        'דובאי, איחוד האמירויות': ['בורג׳ חליפה', 'דובאי מול', 'ספארי במדבר'],
+        'באלי, אינדונזיה': ['אובוד', 'מקדש טנה לוט', 'חוף קוטה'],
+        'טוקיו, יפן': ['שיבויה', 'מקדש סנסו-ג׳י', 'טוקיו טאוור'],
+        'ניו יורק, ארה"ב': ['טיימס סקוור', 'סנטרל פארק', 'פסל החירות'],
+        'מיאמי, ארה"ב': ['סאות׳ ביץ׳', 'ליטל הוואנה', 'וינווד וולס'],
+        'קנקון, מקסיקו': ['צ׳יצ׳ן איצה', 'איסלה מוחרס', 'טולום'],
+        'סנטוריני, יוון': ['אויה', 'פירה', 'חופי סנטוריני'],
+        'פראג, צ\'כיה': ['גשר קארל', 'טירת פראג', 'העיר העתיקה'],
+        'בנגקוק, תאילנד': ['הארמון המלכותי', 'ואט פו', 'שווקים צפים'],
+        'מלדיביים': ['שנירקול', 'שייט שקיעה', 'ספא על המים'],
+        'פורטוגל - ליסבון': ['מגדל בלם', 'אלפמה', 'חשמלית 28'],
+        'איסטנבול, טורקיה': ['איה סופיה', 'המסגד הכחול', 'הבזאר הגדול'],
+        'ברלין, גרמניה': ['שער ברנדנבורג', 'חומת ברלין', 'אי המוזיאונים']
+    };
+
+    const allDealsWithAttractions = allDeals.map((deal) => {
+        const existingAttractions = Array.isArray(deal.attractions)
+            ? deal.attractions.filter(Boolean)
+            : [];
+
+        const fallbackAttractions = destinationAttractionsMap[deal.destination] || ['מרכז העיר', 'סיור מודרך'];
+        const mergedAttractions = [...new Set([...existingAttractions, ...fallbackAttractions])];
+        const safeAttractions = mergedAttractions.slice(0, 3);
+
+        return {
+            ...deal,
+            attractions: safeAttractions.length >= 2
+                ? safeAttractions
+                : [...safeAttractions, 'אטרקציה מומלצת נוספת'].slice(0, 2)
+        };
+    });
+
     // Filter deals for current destination
-    const destinationDeals = allDeals.filter(deal => 
+    const destinationDeals = allDealsWithAttractions.filter(deal => 
         deal.destination === decodeURIComponent(destination)
     );
 
@@ -1221,7 +1259,7 @@ const DealDetails = () => {
             return;
         }
         const userKey = getUserKey();
-        const deal = allDeals.find(d => d.id === dealId);
+        const deal = allDealsWithAttractions.find(d => d.id === dealId);
         if (!deal) return;
         
         let updated;
