@@ -1,7 +1,7 @@
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "../Header&Footer/Header";
+import Footer from "../Header&Footer/Footer";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 

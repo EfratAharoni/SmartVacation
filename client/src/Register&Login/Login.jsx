@@ -445,24 +445,21 @@ const Login = () => {
                 אין לך חשבון? <a href="/register">הירשם עכשיו</a>
               </p>
             </div>
-          </form>
 
-          {/* Guest Mode Button - Bottom */}
-          {/* <button className="guest-mode-btn bottom" onClick={handleGuestMode}>
-            <span className="guest-icon">👤</span>
-            לא רוצה להתחבר? המשך כאורח
-          </button> */}
+            {/* Guest Mode Button */}
+            <button 
+              className="guest-mode-btn bottom" 
+              onClick={handleGuestMode}
+              type="button"
+            >
+              <span className="guest-icon">👤</span>
+              לא רוצה להתחבר? המשך כאורח
+            </button>
+          </form>
         </div>
 
         {/* Right Side - Visual */}
         <div className="login-visual-section">
-
-                {/* Guest Mode Button - Top */}
-          <button className="guest-mode-btn top" onClick={handleGuestMode}>
-            <span className="guest-icon">👤</span>
-            לא רוצה להתחבר? המשך כאורח
-          </button>
-          
           <div className="visual-content">
             {/* <div className="logo">Smart Vacation ✈️</div> */}
             <h2>התחל את המסע שלך</h2>

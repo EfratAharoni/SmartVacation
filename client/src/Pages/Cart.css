@@ -1,5 +1,5 @@
-@import './Header.css';
-@import './Footer.css';
+@import '../Header&Footer/Header.css';
+@import '../Header&Footer/Footer.css';
 
 * {
     margin: 0;

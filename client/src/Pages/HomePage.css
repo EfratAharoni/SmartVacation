@@ -1,5 +1,5 @@
-@import './Header.css';
-@import './Footer.css';
+@import '../Header&Footer/Header.css';
+@import '../Header&Footer/Footer.css';
 
 * {
     margin: 0;
@@ -570,9 +570,5 @@
 }
 
 .social-links-minimal a:nth-child(3):hover {
-  color: #1877F2; /* Facebook */
-}
-
-body {
-  zoom: 0.95; /* מציג את כל הדף ב-95% */
+    color: #1877F2; /* Facebook */
 }

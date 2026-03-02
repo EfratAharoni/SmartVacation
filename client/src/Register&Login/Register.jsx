@@ -891,13 +891,17 @@ const Register = () => {
                 כבר יש לך חשבון? <a href="/login">התחבר עכשיו</a>
               </p>
             </div>
-          </form>
 
-          {/* Guest Mode Button - Bottom */}
-          {/* <button className="guest-mode-btn bottom" onClick={handleGuestMode} type="button">
-            <span className="guest-icon">👤</span>
-            לא רוצה להירשם? המשך כאורח
-          </button> */}
+            {/* Guest Mode Button */}
+            <button 
+              className="guest-mode-btn bottom" 
+              onClick={handleGuestMode} 
+              type="button"
+            >
+              <span className="guest-icon">👤</span>
+              לא רוצה להירשם? המשך כאורח
+            </button>
+          </form>
           {/* <div className="guest-link">
             <span className="guest-icon">👤</span>
             לא רוצה להירשם?{" "}
@@ -913,17 +917,6 @@ const Register = () => {
 
         {/* Left Side - Visual */}
         <div className="register-visual-section">
-          {/* Guest Mode Button - Top */}
-          {currentStep === 1 && (
-            <button
-              className="guest-mode-btn top"
-              onClick={handleGuestMode}
-              type="button"
-            >
-              <span className="guest-icon">👤</span>
-              לא רוצה להירשם? המשך כאורח
-            </button>
-          )}
           <div className="visual-content">
             {/* <div className="logo">Smart Vacation ✈️</div> */}
             <h2>הצטרף אלינו היום</h2>
