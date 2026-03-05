@@ -304,7 +304,7 @@
 }
 
 .discount-badge {
-    background: linear-gradient(135deg, #ff4d6d 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #ef5a6c 0%, #e63946 100%);
 }
 
 .best-seller {
@@ -440,7 +440,7 @@
 .current-price-large {
     font-size: 32px;
     font-weight: 800;
-    color: #f5576c;
+    color: #e63946;
 }
 
 .price-per {
@@ -488,7 +488,7 @@
 }
 
 /* Modal Styles */
-.modal-overlay {
+.deal-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -501,24 +501,42 @@
     justify-content: center;
     z-index: 1000;
     padding: 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
-.modal-content {
+.deal-modal-overlay::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.deal-modal-content {
     background: white;
     color: #1f2937;
     border-radius: 20px;
+    width: min(1100px, 95vw);
     max-width: 1100px;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-height: none;
+    overflow: visible;
     position: relative;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    direction: rtl;
+    text-align: right;
 }
 
-.comparison-modal {
+.deal-full-modal {
+    max-height: min(calc(100vh - 40px), 760px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.deal-comparison-modal {
     max-width: 1200px;
 }
 
-.close-btn {
+.deal-close-btn {
     position: absolute;
     top: 1.5rem;
     left: 1.5rem;
@@ -546,98 +564,105 @@
     color: #000;
 }
 
-.close-btn:focus,
-.close-btn:active {
+.deal-close-btn:focus,
+.deal-close-btn:active {
     outline: none;
     box-shadow: none;
 }
 
-.close-btn:hover {
+.deal-close-btn:hover {
     background: rgba(255, 255, 255, 0.7);
     transform: scale(1.08);
 }
 
-.modal-header {
+.deal-modal-header {
     padding: 30px;
     background: #f3f4f6;
     color: #111827;
 }
 
-.modal-hero {
+.deal-modal-hero {
     position: relative;
     width: 100%;
     overflow: hidden;
     border-radius: 15px 15px 0 0;
 }
 
-.modal-hero-image {
+.deal-modal-hero-image {
     width: 100%;
-    height: 300px;
+    height: clamp(195px, 28vh, 245px);
+    max-height: none;
     object-fit: cover;
     display: block;
 }
 
-.modal-header-overlay {
+.deal-modal-header-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 30px;
+    padding: 18px 22px;
     background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
     color: white;
     border-radius: 0;
     margin: 0;
 }
 
-.modal-header-overlay h2 {
+.deal-modal-header-overlay h2 {
     color: white;
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 6px;
 }
 
-.modal-header-overlay .modal-dates {
+.deal-modal-header-overlay .deal-modal-dates {
     color: rgba(255,255,255,0.95);
 }
 
-.modal-header h2 {
+.deal-modal-header h2 {
     font-size: 32px;
     margin-bottom: 10px;
 }
 
-.modal-dates {
-    font-size: 18px;
+.deal-modal-dates {
+    font-size: 16px;
     opacity: 0.9;
 }
 
-.modal-body {
-    padding: 20px;
+.deal-modal-body {
+    padding: 10px;
     color: #1f2937;
+    flex: 1;
+    overflow: hidden;
 }
 
-.modal-details {
+.deal-modal-details {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    height: auto;
 }
 
 .detail-section {
-    padding: 14px;
+    min-width: 0;
+    padding: 12px;
     background: #f8f9fa;
     border-radius: 12px;
 }
 
 .detail-section h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
+    font-size: 19px;
+    margin-bottom: 8px;
     color: #333;
     border-bottom: 2px solid #667eea;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
 }
 
 .detail-section p {
-    margin: 6px 0;
-    font-size: 15px;
+    margin: 5px 0;
+    font-size: 16px;
     color: #374151;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .detail-section ul {
@@ -647,11 +672,13 @@
 
 .detail-section li {
     padding: 4px 0;
-    font-size: 15px;
+    font-size: 16px;
     color: #374151;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
-.modal-price-section,
+.deal-modal-price-section,
 .price-breakdown,
 .price-breakdown p,
 .price-breakdown span,
@@ -659,22 +686,22 @@
     color: #1f2937;
 }
 
-.modal-price-section {
+.deal-modal-price-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 18px;
+    padding: 14px;
     border-radius: 12px;
-    margin-top: 6px;
+    margin-top: 4px;
     grid-column: 1 / -1;
 }
 
 .price-breakdown {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .price-breakdown p {
     display: flex;
     justify-content: space-between;
-    margin: 10px 0;
+    margin: 6px 0;
     font-size: 18px;
 }
 
@@ -684,25 +711,25 @@
 }
 
 .discount-amount {
-    color: #f5576c;
+    color: #e63946;
     font-weight: 700;
 }
 
 .final-price-line {
     font-size: 24px;
     font-weight: 700;
-    padding-top: 15px;
+    padding-top: 10px;
     border-top: 2px solid #ddd;
 }
 
 .final-price {
-    color: #f5576c;
-    font-size: 32px;
+    color: #e63946;
+    font-size: 30px;
 }
 
-.btn-modal-book {
+.deal-btn-modal-book {
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     background: #1f2937;
     color: white;
     border: none;
@@ -713,7 +740,7 @@
     transition: all 0.3s ease;
 }
 
-.btn-modal-book:hover {
+.deal-btn-modal-book:hover {
     background: #111827;
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(17, 24, 39, 0.28);
@@ -893,7 +920,32 @@
         font-size: 14px;
     }
 
-    .modal-details {
+    .deal-full-modal { max-height: 92vh; }
+    .deal-modal-overlay { align-items: flex-start; }
+    .deal-modal-hero-image { height: 160px; }
+
+    .deal-modal-body {
+        overflow: auto;
+        scrollbar-width: none;
+    }
+
+    .deal-modal-body::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .deal-modal-details {
         grid-template-columns: 1fr;
+        height: auto;
+    }
+}
+
+@media (max-width: 1100px) {
+    .deal-modal-content {
+        width: 96vw;
+    }
+
+    .deal-modal-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }

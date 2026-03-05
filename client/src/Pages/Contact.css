@@ -507,6 +507,8 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(102, 126, 234, 0.08);
+    direction: rtl;
+    text-align: right;
 }
 
 .faq-card::before {
@@ -555,13 +557,15 @@
     color: #1a202c;
     font-weight: 600;
     line-height: 1.5;
+    text-align: right;
 }
 
 .faq-answer {
     color: #4a5568;
     line-height: 1.8;
-    padding-right: 2.5rem;
+    padding-right: 0;
     font-size: 0.95rem;
+    text-align: right;
 }
 
 /* Mobile Menu */
@@ -712,7 +716,7 @@
     }
 
     .faq-answer {
-        padding-right: 1.5rem;
+        padding-right: 0;
     }
 
     .faq-question h3 {

@@ -1074,8 +1074,8 @@ const DealDetails = () => {
             destination: 'ברלין, גרמניה',
             image: '/images/berlin.jpg',
             price: 2199,
-            originalPrice: 2999,
-            discount: 27,
+            originalPrice: 3129,
+            discount: 30,
             dates: '5-10 מאי 2026',
             rating: 4.6,
             airline: 'Lufthansa',
@@ -1097,8 +1097,8 @@ const DealDetails = () => {
             destination: 'ברלין, גרמניה',
             image: '/images/berlin.jpg',
             price: 1999,
-            originalPrice: 2799,
-            discount: 29,
+            originalPrice: 2749,
+            discount: 27,
             dates: '18-23 יוני 2026',
             rating: 4.5,
             airline: 'easyJet',
@@ -1166,8 +1166,8 @@ const DealDetails = () => {
             destination: 'ברלין, גרמניה',
             image: '/images/berlin.jpg',
             price: 2099,
-            originalPrice: 2899,
-            discount: 28,
+            originalPrice: 3019,
+            discount: 30,
             dates: '5-10 דצמבר 2026',
             rating: 4.4,
             airline: 'Ryanair',
@@ -1512,18 +1512,18 @@ const DealDetails = () => {
 
             {/* Modal for Full Package Details */}
             {selectedPackage && selectedPackage !== 'compare' && (
-                <div className="modal-overlay" onClick={() => setSelectedPackage(null)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="close-btn" onClick={() => setSelectedPackage(null)}>✕</button>
-                        <div className="modal-hero">
-                            <img src={selectedPackage.image} alt={selectedPackage.destination} className="modal-hero-image" />
-                            <div className="modal-header modal-header-overlay">
+                <div className="deal-modal-overlay" onClick={() => setSelectedPackage(null)}>
+                    <div className="deal-modal-content deal-full-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="deal-close-btn" onClick={() => setSelectedPackage(null)}>✕</button>
+                        <div className="deal-modal-hero">
+                            <img src={selectedPackage.image} alt={selectedPackage.destination} className="deal-modal-hero-image" />
+                            <div className="deal-modal-header deal-modal-header-overlay">
                                 <h2>{selectedPackage.destination}</h2>
-                                <p className="modal-dates">{selectedPackage.dates}</p>
+                                <p className="deal-modal-dates">{selectedPackage.dates}</p>
                             </div>
                         </div>
-                        <div className="modal-body">
-                            <div className="modal-details">
+                        <div className="deal-modal-body">
+                            <div className="deal-modal-details">
                                 <div className="detail-section">
                                     <h3>פרטי טיסה</h3>
                                     <p><strong>חברת תעופה:</strong> {selectedPackage.airline}</p>
@@ -1560,14 +1560,14 @@ const DealDetails = () => {
                                     </div>
                                 )}
 
-                                <div className="modal-price-section">
+                                <div className="deal-modal-price-section">
                                     <div className="price-breakdown">
                                         <p className="original-price-line">מחיר מקורי: <span>₪{selectedPackage.originalPrice}</span></p>
                                         <p className="discount-line">הנחה: <span className="discount-amount">-{selectedPackage.discount}%</span></p>
                                         <p className="final-price-line">מחיר סופי: <span className="final-price">₪{selectedPackage.price}</span></p>
                                     </div>
                                     <button 
-                                        className="btn-modal-book"
+                                        className="deal-btn-modal-book"
                                         onClick={(e) => {
                                             addToCart(selectedPackage, e);
                                             setSelectedPackage(null);
@@ -1584,9 +1584,9 @@ const DealDetails = () => {
 
             {/* Comparison Modal */}
             {selectedPackage === 'compare' && compareSelection.length > 0 && (
-                <div className="modal-overlay" onClick={() => setSelectedPackage(null)}>
-                    <div className="modal-content comparison-modal" onClick={(e) => e.stopPropagation()}>
-                        <button className="close-btn" onClick={() => setSelectedPackage(null)}>✕</button>
+                <div className="deal-modal-overlay" onClick={() => setSelectedPackage(null)}>
+                    <div className="deal-modal-content deal-comparison-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="deal-close-btn" onClick={() => setSelectedPackage(null)}>✕</button>
                         <h2 className="comparison-title">השוואת חבילות - {mainDeal.destination}</h2>
                         
                         <div className="comparison-grid">

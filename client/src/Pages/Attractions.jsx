@@ -330,12 +330,13 @@ const toggleFavorite = (attractionId) => {
               <div className="modal-rating">
                 <span>⭐ {selectedAttraction.rating}</span>
               </div>
+
               <p className="modal-description">{selectedAttraction.description}</p>
 
               <div className="modal-highlights">
                 <h4>מה כלול:</h4>
                 <ul>
-                  {selectedAttraction.highlights.map((h, i) => (
+                  {selectedAttraction.highlights.slice(0, 3).map((h, i) => (
                     <li key={i}>✓ {h}</li>
                   ))}
                 </ul>
@@ -356,7 +357,7 @@ const toggleFavorite = (attractionId) => {
               </div>
 
               {/* כפתורי פעולה במודל */}
-              <div style={{ display: "flex", gap: "1rem", marginTop: "0.5rem" }}>
+              <div className="modal-actions-row">
                 <button
                   className={`modal-favorite-btn ${favorites.some(fav => fav.id === selectedAttraction.id) ? "active" : ""}`}
                   onClick={() => toggleFavorite(selectedAttraction.id)}
@@ -368,7 +369,6 @@ const toggleFavorite = (attractionId) => {
                 </button>
                 <button
                   className="modal-book-btn"
-                  style={{ flex: 1 }}
                   onClick={() => addToCart(selectedAttraction)}
                 >
                   הזמן עכשיו 🛒

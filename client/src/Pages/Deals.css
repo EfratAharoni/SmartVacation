@@ -364,13 +364,13 @@ nav {
 }
 
 .discount {
-background: #ff4d6d;
-color: #ffffff;
+    background: #e63946;
+    color: #ffffff;
     padding: 0.5rem 1rem;
     border-radius: 50px;
     font-weight: 700;
     font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 4px 15px rgba(230, 57, 70, 0.33);
     animation: pulse 2s infinite;
 }
 
@@ -549,7 +549,7 @@ color: #ffffff;
 .current-price {
     font-size: 2rem;
     font-weight: 700;
-    color: #667eea;
+    color: #e63946;
 }
 
 .book-btn {
