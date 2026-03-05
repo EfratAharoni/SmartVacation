@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Globe, Landmark, Images, Trees, Building2, Gift, Star, MapPin } from "lucide-react";
 import "./Attractions.css";
 
 const getUserKey = () => {
@@ -81,12 +82,18 @@ const Attractions = () => {
   ];
 
   const categories = [
-    { id: "all", name: "הכל", icon: "🌍" },
-    { id: "landmarks", name: "ציוני דרך", icon: "🏛️" },
-    { id: "museums", name: "מוזיאונים", icon: "🖼️" },
-    { id: "nature", name: "טבע", icon: "🏞️" },
-    { id: "temples", name: "מקדשים", icon: "⛩️" },
-    { id: "free", name: "חינם", icon: "🆓" },
+    // { id: "all", name: "הכל" },
+    // { id: "landmarks", name: "ציוני דרך" },
+    // { id: "museums", name: "מוזיאונים" },
+    // { id: "nature", name: "טבע" },
+    // { id: "temples", name: "מקדשים" },
+    // { id: "free", name: "חינם" },
+    { id: "all", name: "הכל", icon: Globe },
+    { id: "landmarks", name: "ציוני דרך", icon: Landmark },
+    { id: "museums", name: "מוזיאונים", icon: Images },
+    { id: "nature", name: "טבע", icon: Trees },
+    { id: "temples", name: "מקדשים", icon: Building2 },
+    { id: "free", name: "חינם", icon: Gift },
   ];
 
   // טען נתוני משתמש בעת עליית הקומפוננטה
@@ -234,16 +241,21 @@ const toggleFavorite = (attractionId) => {
             />
           </div>
           <div className="category-filters">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                className={`category-btn ${selectedCategory === cat.id ? "active" : ""}`}
-                onClick={() => setSelectedCategory(cat.id)}
-              >
-                <span className="cat-icon">{cat.icon}</span>
-                <span>{cat.name}</span>
-              </button>
-            ))}
+            {categories.map((cat) => {
+              const IconComponent = cat.icon;
+              return (
+                <button
+                  key={cat.id}
+                  className={`category-btn ${selectedCategory === cat.id ? "active" : ""}`}
+                  onClick={() => setSelectedCategory(cat.id)}
+                >
+                  <span className="cat-icon" aria-hidden="true">
+                    <IconComponent size={18} strokeWidth={2} />
+                  </span>
+                  <span>{cat.name}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -268,7 +280,10 @@ const toggleFavorite = (attractionId) => {
 
                   {/* דירוג */}
                   <div className="attraction-badge">
-                    <span>⭐ {attraction.rating}</span>
+                    <span className="rating-inline">
+                      <Star size={14} className="inline-icon" />
+                      {attraction.rating}
+                    </span>
                   </div>
 
                   {/* לב מועדפים — בתוך התמונה אבל עם stopPropagation חזק */}
@@ -288,7 +303,10 @@ const toggleFavorite = (attractionId) => {
 
                 <div className="attraction-content">
                   <h3>{attraction.name}</h3>
-                  <p className="location">📍 {attraction.location}</p>
+                  <p className="location location-inline">
+                    <MapPin size={15} className="inline-icon" />
+                    {attraction.location}
+                  </p>
                   <div className="attraction-details">
                     <span className="price">
                       {attraction.price === 0 ? "חינם" : `₪${attraction.price}`}
@@ -326,9 +344,15 @@ const toggleFavorite = (attractionId) => {
 
             <div className="modal-info">
               <h2>{selectedAttraction.name}</h2>
-              <p className="modal-location">📍 {selectedAttraction.location}</p>
+              <p className="modal-location location-inline">
+                <MapPin size={16} className="inline-icon" />
+                {selectedAttraction.location}
+              </p>
               <div className="modal-rating">
-                <span>⭐ {selectedAttraction.rating}</span>
+                <span className="rating-inline">
+                  <Star size={14} className="inline-icon" />
+                  {selectedAttraction.rating}
+                </span>
               </div>
 
               <p className="modal-description">{selectedAttraction.description}</p>

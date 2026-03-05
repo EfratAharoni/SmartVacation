@@ -58,6 +58,7 @@ const Header = () => {
     localStorage.removeItem('userName');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     setUserName('');
     setCartCount(0);
@@ -77,8 +78,30 @@ const Header = () => {
   return (
     <header className={`header ${isScrolled ? "scrolled" : ""}`}>
       <nav>
-        <div className="logo" onClick={() => navigate("/")}>
-          Smart Vacation ✈️
+        <div className="logo" onClick={() => navigate("/")} aria-label="Smart Vacation Home">
+          <span className="logo-badge" aria-hidden="true">
+            <svg className="logo-svg" viewBox="0 0 48 48" role="img">
+              <circle cx="24" cy="24" r="22" className="logo-svg-bg" />
+              <path
+                className="logo-svg-trail"
+                d="M9 30c3.5 0 6-1.5 8.4-4"
+              />
+              <path
+                className="logo-svg-trail light"
+                d="M11 34c2.7-.1 4.6-1.1 6.5-2.9"
+              />
+              <path
+                className="logo-svg-plane"
+                d="M12 27l11-5.4 11-5.2 2 2.1-9.2 7.3 8.6 2.2-2.3 2.1-10.2-1.1-4.2 7.6-2.2-1.2 2.1-7.2-7.7-3.2z"
+              />
+            </svg>
+          </span>
+          <span className="logo-text-group">
+            <span className="logo-title">
+              Smart <span>Vacation</span>
+            </span>
+            <span className="logo-subtitle">Plan Better Travel</span>
+          </span>
         </div>
 
         <button className="mobile-menu-btn" onClick={toggleMobileMenu}>☰</button>
@@ -132,8 +155,28 @@ const Header = () => {
               </>
             ) : (
               <div className="auth-buttons">
-                <button className="btn btn-login" onClick={handleLogin}>התחברות</button>
-                <button className="btn btn-register" onClick={handleRegister}>הרשמה</button>
+                <button className="btn btn-login" onClick={handleLogin}>
+                  <span className="btn-auth-content">
+                    <span className="btn-user-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" className="btn-user-icon-svg">
+                        <path d="M20 21a8 8 0 00-16 0" />
+                        <circle cx="12" cy="8" r="4" />
+                      </svg>
+                    </span>
+                    <span className="btn-auth-text">התחברות</span>
+                  </span>
+                </button>
+                <button className="btn btn-register" onClick={handleRegister}>
+                  <span className="btn-auth-content">
+                    <span className="btn-user-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" className="btn-user-icon-svg">
+                        <path d="M20 21a8 8 0 00-16 0" />
+                        <circle cx="12" cy="8" r="4" />
+                      </svg>
+                    </span>
+                    <span className="btn-auth-text">הרשמה</span>
+                  </span>
+                </button>
               </div>
             )}
           </div>

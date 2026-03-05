@@ -1,13 +1,62 @@
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Header from "../Header&Footer/Header";
 import Footer from "../Header&Footer/Footer";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
+import { BedDouble, CalendarDays, Search, X } from "lucide-react";
+import { DateRange } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 const HomePage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [destinationQuery, setDestinationQuery] = useState("");
+  const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000),
+      key: "selection",
+    },
+  ]);
+  const [isDateActive, setIsDateActive] = useState(false);
+  const destinationRef = useRef(null);
+  const datePickerRef = useRef(null);
   const navigate = useNavigate();
+
+  const availableDestinations = useMemo(
+    () => [
+      "פריז, צרפת",
+      "רומא, איטליה",
+      "ברצלונה, ספרד",
+      "אמסטרדם, הולנד",
+      "לונדון, אנגליה",
+      "דובאי, איחוד האמירויות",
+      "באלי, אינדונזיה",
+      "טוקיו, יפן",
+      "ניו יורק, ארה\"ב",
+      "מיאמי, ארה\"ב",
+      "קנקון, מקסיקו",
+      "סנטוריני, יוון",
+      "פראג, צ'כיה",
+      "בנגקוק, תאילנד",
+      "מלדיביים",
+      "איסטנבול, טורקיה",
+      "ברלין, גרמניה",
+      "ליסבון, פורטוגל",
+    ],
+    []
+  );
+
+  const destinationSuggestions = useMemo(() => {
+    const query = destinationQuery.trim();
+    if (!query) return availableDestinations.slice(0, 8);
+    return availableDestinations
+      .filter((item) => item.toLowerCase().includes(query.toLowerCase()))
+      .slice(0, 8);
+  }, [availableDestinations, destinationQuery]);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -50,13 +99,52 @@ const HomePage = () => {
   }, []);
 
   const startPlanning = () => {
-    navigate("/deals");
+    const params = new URLSearchParams();
+    if (destinationQuery.trim()) {
+      params.set("destination", destinationQuery.trim());
+    }
+    if (isDateActive) {
+      const start = dateRange[0].startDate.toISOString().slice(0, 10);
+      const end = dateRange[0].endDate.toISOString().slice(0, 10);
+      params.set("startDate", start);
+      params.set("endDate", end);
+    }
+
+    const query = params.toString();
+    navigate(query ? `/deals?${query}` : "/deals");
   };
-  
 
   const explorePlaces = () => {
     document.querySelector("#packages").scrollIntoView({ behavior: "smooth" });
   };
+
+  const formatDateLabel = (date) =>
+    new Intl.DateTimeFormat("he-IL", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(date);
+
+  const dateLabel = isDateActive
+    ? `${formatDateLabel(dateRange[0].startDate)} - ${formatDateLabel(
+        dateRange[0].endDate
+      )}`
+    : "תאריך צ'ק-אין - תאריך צ'ק-אאוט";
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (destinationRef.current && !destinationRef.current.contains(event.target)) {
+        setIsDestinationsOpen(false);
+      }
+
+      if (datePickerRef.current && !datePickerRef.current.contains(event.target)) {
+        setIsDatePickerOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
 
   return (
     <div className="home-page">
@@ -64,19 +152,117 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="hero" id="home">
         <h1 className="floating">החופשה המושלמת שלך מתחילה כאן</h1>
-        <div class="hero-slogans">
+        <div className="hero-slogans">
           <span>תכנון חכם</span>
-          <span class="hero-icon"> ✦ </span>
+          <span className="hero-icon"> ✦ </span>
           <span>חופשה בלתי נשכחת</span>
-          <span class="hero-icon"> ✦ </span>
+          <span className="hero-icon"> ✦ </span>
           <span>היעדים הכי מדהימים בעולם</span>
         </div>
-        <div className="hero-buttons">
-          <button className="btn btn-primary" onClick={startPlanning}>
-            התחל לתכנן עכשיו
-          </button>
-          <button className="btn btn-secondary" onClick={explorePlaces}>
-            גלה יעדים
+        <div className="hero-search-bar" role="search" aria-label="חיפוש חופשה">
+          <div className="search-cell destination-cell" ref={destinationRef}>
+            <BedDouble size={18} className="search-cell-icon" />
+            <input
+              type="text"
+              className="search-input"
+              placeholder="לאן נוסעים?"
+              value={destinationQuery}
+              onChange={(e) => {
+                setDestinationQuery(e.target.value);
+                setIsDestinationsOpen(true);
+              }}
+              onFocus={() => setIsDestinationsOpen(true)}
+            />
+
+            {isDestinationsOpen && (
+              <div className="search-popover">
+                {destinationSuggestions.length > 0 ? (
+                  destinationSuggestions.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className="search-suggestion-item"
+                      onClick={() => {
+                        setDestinationQuery(item);
+                        setIsDestinationsOpen(false);
+                      }}
+                    >
+                      {item}
+                    </button>
+                  ))
+                ) : (
+                  <div className="search-suggestion-empty">לא נמצאו יעדים</div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="search-cell date-cell" ref={datePickerRef}>
+            <CalendarDays size={18} className="search-cell-icon" />
+            <button
+              type="button"
+              className="date-trigger-btn"
+              onClick={() => setIsDatePickerOpen((prev) => !prev)}
+            >
+              {dateLabel}
+            </button>
+
+            {isDatePickerOpen && (
+              <div className="search-popover date-popover">
+                <div className="search-popover-header">
+                  <span>בחר תאריכים</span>
+                  <button
+                    type="button"
+                    className="popover-close"
+                    onClick={() => setIsDatePickerOpen(false)}
+                    aria-label="סגירה"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+
+                <DateRange
+                  ranges={dateRange}
+                  onChange={(ranges) => {
+                    setDateRange([ranges.selection]);
+                    setIsDateActive(true);
+                  }}
+                  minDate={new Date(2026, 0, 1)}
+                  maxDate={new Date(2032, 11, 31)}
+                  months={1}
+                  direction="horizontal"
+                  showDateDisplay={false}
+                  editableDateInputs={false}
+                  moveRangeOnFirstSelection={false}
+                  rangeColors={["#667eea"]}
+                />
+
+                <div className="date-popover-actions">
+                  <button
+                    type="button"
+                    className="popover-action-btn ghost"
+                    onClick={() => {
+                      setIsDateActive(false);
+                      setIsDatePickerOpen(false);
+                    }}
+                  >
+                    נקה
+                  </button>
+                  <button
+                    type="button"
+                    className="popover-action-btn"
+                    onClick={() => setIsDatePickerOpen(false)}
+                  >
+                    אישור
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <button type="button" className="search-submit-btn" onClick={startPlanning}>
+            <Search size={18} />
+            חיפוש
           </button>
         </div>
       </section>

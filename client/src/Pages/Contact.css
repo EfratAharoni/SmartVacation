@@ -471,7 +471,7 @@
 
 /* FAQ Section */
 .faq-section {
-    padding: 5rem 5%;
+    padding: 4rem 5%;
     background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f7 100%);
 }
 
@@ -491,11 +491,10 @@
 
 .faq-grid {
     display: grid;
-    /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
-    grid-template-columns: repeat(4, minmax(300px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 2rem;
     margin: 0 auto;
-    width: fit-content;
+    width: 100%;
 }
 
 .faq-card {

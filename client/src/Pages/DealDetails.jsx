@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { CalendarDays, Hotel, PlaneTakeoff, Sparkles, BadgeDollarSign, Star } from 'lucide-react';
 import './DealDetails.css';
 
 const getUserKey = () => {
@@ -1348,9 +1349,18 @@ const DealDetails = () => {
                     <h1 className="destination-title">{mainDeal.destination}</h1>
                     <p className="destination-subtitle">{destinationDeals.length} חבילות נופש זמינות</p>
                     <div className="destination-meta">
-                        <span className="meta-item">✈️ זמן טיסה: {mainDeal.flightTime}</span>
-                        <span className="meta-item">💰 החל מ-₪{Math.min(...destinationDeals.map(d => d.price))}</span>
-                        <span className="meta-item">⭐ דירוג ממוצע: {(destinationDeals.reduce((sum, d) => sum + d.rating, 0) / destinationDeals.length).toFixed(1)}</span>
+                        <span className="meta-item">
+                            <PlaneTakeoff size={16} className="meta-icon" />
+                            זמן טיסה: {mainDeal.flightTime}
+                        </span>
+                        <span className="meta-item">
+                            <BadgeDollarSign size={16} className="meta-icon money" />
+                            החל מ-₪{Math.min(...destinationDeals.map(d => d.price))}
+                        </span>
+                        <span className="meta-item">
+                            <Star size={16} className="meta-icon star" />
+                            דירוג ממוצע: {(destinationDeals.reduce((sum, d) => sum + d.rating, 0) / destinationDeals.length).toFixed(1)}
+                        </span>
                     </div>
                 </div>
             </section>
@@ -1392,18 +1402,20 @@ const DealDetails = () => {
                 <div className="compare-bar">
                     <div className="compare-content">
                         <span>נבחרו {compareSelection.length} חבילות להשוואה</span>
-                        <button 
-                            className="btn-view-comparison"
-                            onClick={() => setSelectedPackage('compare')}
-                        >
-                            צפה בהשוואה
-                        </button>
-                        <button 
-                            className="btn-clear-comparison"
-                            onClick={() => setCompareSelection([])}
-                        >
-                            נקה
-                        </button>
+                        <div className="compare-actions">
+                            <button 
+                                className="btn-view-comparison"
+                                onClick={() => setSelectedPackage('compare')}
+                            >
+                                צפה בהשוואה
+                            </button>
+                            <button 
+                                className="btn-clear-comparison"
+                                onClick={() => setCompareSelection([])}
+                            >
+                                נקה
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -1439,7 +1451,9 @@ const DealDetails = () => {
 
                             <div className="package-header">
                                 <div className="dates-prominent">
-                                    <span className="calendar-icon">📅</span>
+                                    <span className="calendar-icon" aria-hidden="true">
+                                        <CalendarDays size={20} />
+                                    </span>
                                     <span className="dates-text">{deal.dates}</span>
                                 </div>
                                 <div className="package-rating">
@@ -1451,7 +1465,9 @@ const DealDetails = () => {
 
                             <div className="package-details-grid">
                                 <div className="detail-item">
-                                    <span className="detail-icon">✈️</span>
+                                    <span className="detail-icon" aria-hidden="true">
+                                        <PlaneTakeoff size={20} />
+                                    </span>
                                     <div className="detail-text">
                                         <strong>{deal.airline}</strong>
                                         <span>{deal.flightDetails?.departure || 'N/A'} - {deal.flightDetails?.arrival || 'N/A'}</span>
@@ -1459,7 +1475,9 @@ const DealDetails = () => {
                                 </div>
 
                                 <div className="detail-item">
-                                    <span className="detail-icon">🏨</span>
+                                    <span className="detail-icon" aria-hidden="true">
+                                        <Hotel size={20} />
+                                    </span>
                                     <div className="detail-text">
                                         <strong>{deal.hotelName || deal.hotel}</strong>
                                         <span>{deal.hotel}</span>
@@ -1467,7 +1485,9 @@ const DealDetails = () => {
                                 </div>
 
                                 <div className="detail-item full-width">
-                                    <span className="detail-icon">🎯</span>
+                                    <span className="detail-icon" aria-hidden="true">
+                                        <Sparkles size={20} />
+                                    </span>
                                     <div className="detail-text">
                                         <strong>אטרקציות מומלצות:</strong>
                                         <span>{deal.attractions?.join(', ') || 'מגוון אטרקציות'}</span>
@@ -1554,7 +1574,10 @@ const DealDetails = () => {
                                         <h3>אטרקציות מומלצות</h3>
                                         <ul>
                                             {selectedPackage.attractions.map((attr, idx) => (
-                                                <li key={idx}>🎯 {attr}</li>
+                                                <li key={idx} className="attraction-list-item">
+                                                    <Sparkles size={16} className="attraction-list-icon" />
+                                                    {attr}
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
@@ -1619,7 +1642,7 @@ const DealDetails = () => {
                                                 <strong>מלון:</strong>
                                                 <span>{deal.hotelName || deal.hotel}</span>
                                             </div>
-                                            <div className="comparison-row">
+                                            <div className="comparison-row includes-row">
                                                 <strong>כולל:</strong>
                                                 <ul className="comparison-list">
                                                     {deal.included.map((item, idx) => (

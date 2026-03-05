@@ -140,7 +140,21 @@
     box-shadow: 0 5px 15px rgba(102,126,234,0.3);
 }
 
-.cat-icon { font-size: 1.3rem; }
+.cat-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: currentColor;
+}
+
+.cat-icon svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+    stroke: currentColor;
+}
 
 /* ── Grid ─────────────────────────────────────────────────── */
 .attractions-grid-section {
@@ -218,6 +232,28 @@
 }
 
 .attraction-badge * { color: black !important; }
+
+.rating-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.location-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.inline-icon {
+    flex-shrink: 0;
+    stroke: currentColor;
+}
+
+.rating-inline .inline-icon {
+    stroke: #d4a017;
+    fill: #f4c542;
+}
 
 /* ── לב מועדפים ───────────────────────────────────────────── */
 .attraction-favorite-heart {

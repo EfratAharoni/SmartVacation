@@ -257,19 +257,40 @@
     align-self: center;
     margin-top: 0.5rem;
     background: none;
-    border: none;
+    border: 1px solid transparent;
+    border-radius: 9999px;
     color: #667eea;
     padding: 0.4rem 0.8rem;
     font-size: 0.76rem;
     font-weight: 600;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .guest-mode-btn.bottom:hover {
     background: none;
     color: #764ba2;
+    border-color: transparent;
     transform: none;
     box-shadow: none;
     text-decoration: underline;
+}
+
+.guest-mode-btn.bottom:focus {
+    outline: none;
+    border-color: transparent;
+}
+
+.guest-mode-btn.bottom:focus-visible {
+    outline: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.guest-mode-btn.bottom:active {
+    outline: none;
+    border-color: #764ba2;
+    box-shadow: 0 0 0 2px rgba(122, 92, 230, 0.3);
 }
 
 .guest-icon {
@@ -418,6 +439,10 @@
     color: #aaa;
 }
 
+.input-wrapper input.has-icon {
+    padding-right: 2.4rem;
+}
+
 .toggle-password {
     position: absolute;
     left: 1rem;
@@ -559,8 +584,23 @@
 
 .form-buttons {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
+    align-items: stretch;
+}
+
+.form-buttons .back-btn,
+.form-buttons .submit-btn {
+    margin: 0;
+    width: 100%;
+    height: 52px;
+    min-height: 52px;
+    padding: 0 1rem;
+    line-height: 1;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .spinner {

@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { DateRange } from 'react-date-range';
+import { CalendarDays, X } from 'lucide-react';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import './Deals.css';
 
 // Helper: get user-specific localStorage key
@@ -8,14 +12,53 @@ const getUserKey = () => {
     return name ? name.replace(/\s/g, '_') : 'guest';
 };
 
+const HEBREW_MONTH_MAP = {
+    ינואר: 0,
+    פברואר: 1,
+    מרץ: 2,
+    אפריל: 3,
+    מאי: 4,
+    יוני: 5,
+    יולי: 6,
+    אוגוסט: 7,
+    ספטמבר: 8,
+    אוקטובר: 9,
+    נובמבר: 10,
+    דצמבר: 11,
+};
+
+const parseDealStartDate = (dateText) => {
+    if (!dateText) return null;
+    const match = dateText.match(/(\d{1,2})\s*-\s*\d{1,2}\s+([^\s]+)\s+(\d{4})/);
+    if (!match) return null;
+
+    const day = Number(match[1]);
+    const month = HEBREW_MONTH_MAP[match[2]];
+    const year = Number(match[3]);
+    if (Number.isNaN(day) || Number.isNaN(year) || month === undefined) return null;
+
+    return new Date(year, month, day);
+};
+
 const Deals = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [selectedDestination, setSelectedDestination] = useState('all');
+    const [destinationKeyword, setDestinationKeyword] = useState('');
     const [priceRange, setPriceRange] = useState([0, 10000]);
-    const [dateFilter, setDateFilter] = useState('all');
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const [isDateRangeActive, setIsDateRangeActive] = useState(false);
+    const [dateRangeSelection, setDateRangeSelection] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000),
+            key: 'selection',
+        },
+    ]);
     const [filteredDestinations, setFilteredDestinations] = useState([]);
     const [sortBy, setSortBy] = useState('price-low');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const datePickerRef = useRef(null);
 
     const [favorites, setFavorites] = useState(() => {
         const name = localStorage.getItem('userName');
@@ -843,15 +886,6 @@ const Deals = () => {
         { id: 'america', name: 'אמריקה' }
     ];
 
-    const dateFilters = [
-        { id: 'all', name: 'כל התאריכים' },
-        { id: 'may', name: 'מאי 2026' },
-        { id: 'june', name: 'יוני 2026' },
-        { id: 'july', name: 'יולי 2026' },
-        { id: 'august', name: 'אוגוסט 2026' },
-        { id: 'september', name: 'ספטמבר 2026' }
-    ];
-
     // Sync login state on mount and reload favorites/cart per user
     useEffect(() => {
         const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -867,7 +901,44 @@ const Deals = () => {
 
     useEffect(() => {
         filterDeals();
-    }, [selectedDestination, priceRange, dateFilter, sortBy]);
+    }, [selectedDestination, destinationKeyword, priceRange, sortBy, dateRangeSelection, isDateRangeActive]);
+
+    useEffect(() => {
+        const destinationFromQuery = (searchParams.get('destination') || '').trim();
+        const startDateQuery = searchParams.get('startDate');
+        const endDateQuery = searchParams.get('endDate');
+
+        if (destinationFromQuery) {
+            setDestinationKeyword(destinationFromQuery);
+        }
+
+        if (startDateQuery && endDateQuery) {
+            const start = new Date(startDateQuery);
+            const end = new Date(endDateQuery);
+
+            if (!Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime())) {
+                setDateRangeSelection([
+                    {
+                        startDate: start,
+                        endDate: end,
+                        key: 'selection',
+                    },
+                ]);
+                setIsDateRangeActive(true);
+            }
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (datePickerRef.current && !datePickerRef.current.contains(event.target)) {
+                setIsDatePickerOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const toggleFavorite = (dealId) => {
         if (!isLoggedIn) {
@@ -944,21 +1015,26 @@ const Deals = () => {
             filtered = filtered.filter(deal => deal.category === selectedDestination);
         }
 
+        if (destinationKeyword.trim()) {
+            filtered = filtered.filter((deal) =>
+                deal.destination.toLowerCase().includes(destinationKeyword.toLowerCase())
+            );
+        }
+
         filtered = filtered.filter(deal =>
             deal.price >= priceRange[0] && deal.price <= priceRange[1]
         );
 
-        if (dateFilter !== 'all') {
-            const monthMap = {
-                'may': 'מאי',
-                'june': 'יוני',
-                'july': 'יולי',
-                'august': 'אוגוסט',
-                'september': 'ספטמבר'
-            };
-            filtered = filtered.filter(deal =>
-                deal.dates.includes(monthMap[dateFilter])
-            );
+        if (isDateRangeActive) {
+            const startDate = new Date(dateRangeSelection[0].startDate);
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date(dateRangeSelection[0].endDate);
+            endDate.setHours(23, 59, 59, 999);
+
+            filtered = filtered.filter((deal) => {
+                const dealStart = parseDealStartDate(deal.dates);
+                return dealStart && dealStart >= startDate && dealStart <= endDate;
+            });
         }
 
         // Group deals by destination
@@ -1044,6 +1120,17 @@ const Deals = () => {
         </svg>
     );
 
+    const formatDateLabel = (date) =>
+        new Intl.DateTimeFormat('he-IL', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }).format(date);
+
+    const dateRangeLabel = isDateRangeActive
+        ? `${formatDateLabel(dateRangeSelection[0].startDate)} - ${formatDateLabel(dateRangeSelection[0].endDate)}`
+        : 'כל התאריכים';
+
     return (
         <div className="deals-page">
 
@@ -1072,17 +1159,68 @@ const Deals = () => {
                             </select>
                         </div>
 
-                        <div className="filter-group">
+                        <div className="filter-group date-filter" ref={datePickerRef}>
                             <label>תאריכים</label>
-                            <select
-                                value={dateFilter}
-                                onChange={(e) => setDateFilter(e.target.value)}
-                                className="filter-select"
+                            <button
+                                type="button"
+                                className="date-picker-trigger"
+                                onClick={() => setIsDatePickerOpen((prev) => !prev)}
                             >
-                                {dateFilters.map(date => (
-                                    <option key={date.id} value={date.id}>{date.name}</option>
-                                ))}
-                            </select>
+                                <CalendarDays size={18} className="date-trigger-icon" />
+                                <span>{dateRangeLabel}</span>
+                            </button>
+
+                            {isDatePickerOpen && (
+                                <div className="date-picker-popover">
+                                    <div className="date-picker-popover-header">
+                                        <span>בחר תאריכים</span>
+                                        <button
+                                            type="button"
+                                            className="date-picker-close"
+                                            onClick={() => setIsDatePickerOpen(false)}
+                                            aria-label="סגירה"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                    </div>
+
+                                    <DateRange
+                                        ranges={dateRangeSelection}
+                                        onChange={(ranges) => {
+                                            setDateRangeSelection([ranges.selection]);
+                                            setIsDateRangeActive(true);
+                                        }}
+                                        minDate={new Date(2026, 0, 1)}
+                                        maxDate={new Date(2032, 11, 31)}
+                                        months={1}
+                                        direction="horizontal"
+                                        showDateDisplay={false}
+                                        editableDateInputs={false}
+                                        moveRangeOnFirstSelection={false}
+                                        rangeColors={['#667eea']}
+                                    />
+
+                                    <div className="date-picker-actions">
+                                        <button
+                                            type="button"
+                                            className="date-action-btn ghost"
+                                            onClick={() => {
+                                                setIsDateRangeActive(false);
+                                                setIsDatePickerOpen(false);
+                                            }}
+                                        >
+                                            נקה
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="date-action-btn"
+                                            onClick={() => setIsDatePickerOpen(false)}
+                                        >
+                                            סגירה
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="filter-group price-filter">

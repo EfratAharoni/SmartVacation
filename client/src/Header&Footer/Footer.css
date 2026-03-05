@@ -1,9 +1,10 @@
 /* Footer Styles */
 footer {
-    background: #2d3748;
-    color: white;
+    background: #f8fafc;
+    color: #334155;
     padding: 3.5rem 5%;
     text-align: center;
+    border-top: 1px solid #e2e8f0;
 }
 
 .footer-content {
@@ -20,10 +21,10 @@ footer {
 }
 
 .footer-links a {
-    color: white;
+    color: #64748b;
     text-decoration: none;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
+    opacity: 0.95;
+    transition: color 0.3s ease, opacity 0.3s ease;
     font-size: 1rem;
     cursor: pointer;
 }
@@ -31,11 +32,12 @@ footer {
 .footer-links a:hover,
 .footer-links a.active {
     opacity: 1;
+    color: #0f172a;
     font-weight: 500;
 }
 
 footer p {
-    opacity: 0.8;
+    opacity: 0.9;
     margin: 0;
     font-size: 0.95rem;
 }
