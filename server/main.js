@@ -1,10 +1,17 @@
-import "dotenv/config"; // טוען את המשתנים מקובץ ה-.env לסביבת העבודה
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import connectDB from "./DB/db.js";
 import * as userController from "./controllers/User.js";
 import * as attractionController from "./controllers/Attraction.js";
 import * as dealController from "./controllers/Deal.js";
+import authenticateToken from "./middleware/auth.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 
@@ -22,6 +29,7 @@ app.delete("/users/remove/:id", userController.removeUser);
 app.delete("/users/removeAll", userController.removeAllUsers);
 app.put("/users/update/:id", userController.updateUser);
 app.post("/users/login", userController.login);
+app.get("/users/me", authenticateToken, userController.getMe);
 app.put("/users/change-password", userController.changePassword);
 
 //attraction 
