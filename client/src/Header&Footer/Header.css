@@ -327,9 +327,9 @@ nav {
 .btn-login:hover {
     background: #f2f4f7;
     color: #1f2937;
-    border-color: #7a5ce6;
+    border-color: #27b4d3;
     transform: none;
-    box-shadow: 0 0 0 2px rgba(122, 92, 230, 0.3);
+    box-shadow: 0 0 0 2px rgba(20, 78, 165, 0.3);
 }
 
 .btn-register {
@@ -342,9 +342,9 @@ nav {
 .btn-register:hover {
     background: #f2f4f7;
     color: #1f2937;
-    border-color: #7a5ce6;
+    border-color: #27b4d3;
     transform: none;
-    box-shadow: 0 0 0 2px rgba(122, 92, 230, 0.3);
+    box-shadow: 0 0 0 2px rgba(20, 78, 165, 0.3);
 }
 
 .btn:active {
@@ -353,17 +353,17 @@ nav {
 }
 
 .btn-logout {
-    background: transparent;
-    color: #e63946;
-    border: 2px solid #e63946;
-    padding: 0.5rem 1.2rem;
-    font-size: 0.9rem;
+    background: #f2f4f7;
+    color: #1f2937;
+    border-color: #eceff3;
 }
 
 .btn-logout:hover {
-    background: #e63946;
-    color: white;
-    transform: translateY(-2px);
+    background: #f2f4f7;
+    color: #1f2937;
+    border-color: #27b4d3;
+    transform: none;
+    box-shadow: 0 0 0 2px rgba(20, 78, 165, 0.3);
 }
 
 .auth-buttons {

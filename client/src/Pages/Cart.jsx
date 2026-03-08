@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+    ShoppingCart,
+    MapPin,
+    Clock3,
+    CalendarDays,
+    Star,
+    Trash2,
+    CreditCard,
+    ArrowRight,
+    Sparkles,
+    BadgeCheck,
+    Flame,
+} from 'lucide-react';
 import Header from '../Header&Footer/Header';
 import Footer from '../Header&Footer/Footer';
 import './Cart.css';
@@ -53,12 +66,22 @@ const Cart = () => {
         alert('תכונת התשלום בפיתוח - בקרוב תוכל להשלים את ההזמנה!');
     };
 
+    const getItemDisplayName = (item) => {
+        return item?.name || item?.destination || item?.title || item?.location || 'פריט ללא שם';
+    };
+
+    const getItemDisplayLocation = (item) => {
+        return item?.location || item?.destination || '';
+    };
+
     if (!isLoggedIn) {
         return (
             <div className="cart-page">
                 <Header />
                 <div className="cart-empty-state">
-                    <div className="empty-icon">🛒</div>
+                    <div className="empty-icon">
+                        <ShoppingCart className="empty-icon-svg" />
+                    </div>
                     <h2>עליך להתחבר כדי לצפות בעגלה</h2>
                     <p>התחבר כדי לראות את הפריטים שהוספת</p>
                     <button className="btn btn-primary" onClick={() => navigate('/login')}>
@@ -75,7 +98,9 @@ const Cart = () => {
             <div className="cart-page">
                 <Header />
                 <div className="cart-empty-state">
-                    <div className="empty-icon">🛒</div>
+                    <div className="empty-icon">
+                        <ShoppingCart className="empty-icon-svg" />
+                    </div>
                     <h2>העגלה שלך ריקה</h2>
                     <p>הוסף דילים ואטרקציות כדי להתחיל לתכנן את החופשה שלך</p>
                     <div className="empty-actions">
@@ -98,7 +123,10 @@ const Cart = () => {
             
             <section className="cart-hero">
                 <div className="hero-content">
-                    <h1>🛒 העגלה שלי</h1>
+                    <h1 className="hero-title">
+                        <ShoppingCart className="title-icon" />
+                        העגלה שלי
+                    </h1>
                     <p>{cartItems.length} פריטים בעגלה</p>
                 </div>
             </section>
@@ -116,27 +144,30 @@ const Cart = () => {
                         {cartItems.map((item, index) => (
                             <div key={`${item.id}-${item.type}-${index}`} className="cart-item">
                                 <div className="item-image">
-                                    <img src={item.image} alt={item.name} />
+                                    <img src={item.image} alt={getItemDisplayName(item)} />
                                     <span className="item-type-badge">
-                                        {item.type === 'attraction' ? '🎯 אטרקציה' : '🔥 דיל'}
+                                        {item.type === 'attraction' ? <MapPin className="type-badge-icon attraction-icon" /> : <Flame className="type-badge-icon deal-icon" />}
+                                        {item.type === 'attraction' ? 'אטרקציה' : 'דיל'}
                                     </span>
                                 </div>
 
                                 <div className="item-details">
-                                    <h3>{item.name}</h3>
-                                    <p className="item-location">📍 {item.location}</p>
+                                    <h3>{getItemDisplayName(item)}</h3>
+                                    {getItemDisplayLocation(item) && (
+                                        <p className="item-location"><MapPin className="meta-icon" />{getItemDisplayLocation(item)}</p>
+                                    )}
                                     
                                     {item.type === 'attraction' && item.duration && (
-                                        <p className="item-duration">⏱️ משך: {item.duration}</p>
+                                        <p className="item-duration"><Clock3 className="meta-icon" />משך: {item.duration}</p>
                                     )}
                                     
                                     {item.type === 'deal' && item.dates && (
-                                        <p className="item-dates">📅 {item.dates}</p>
+                                        <p className="item-dates"><CalendarDays className="meta-icon" />{item.dates}</p>
                                     )}
                                     
                                     {item.rating && (
                                         <div className="item-rating">
-                                            <span>⭐ {item.rating}</span>
+                                            <span><Star className="meta-icon star-icon" />{item.rating}</span>
                                         </div>
                                     )}
                                 </div>
@@ -150,7 +181,8 @@ const Cart = () => {
                                         className="remove-btn" 
                                         onClick={() => removeFromCart(item.id, item.type)}
                                     >
-                                        🗑️ הסר
+                                        <Trash2 className="btn-icon" />
+                                        הסר
                                     </button>
                                 </div>
                             </div>
@@ -186,23 +218,28 @@ const Cart = () => {
                             </div>
 
                             <button className="checkout-btn" onClick={handleCheckout}>
-                                המשך לתשלום 💳
+                                <CreditCard className="btn-icon" />
+                                המשך לתשלום
                             </button>
 
                             <div className="continue-shopping">
                                 <button onClick={() => navigate('/deals')}>
-                                    ← המשך לקניות
+                                    <ArrowRight className="btn-icon" />
+                                    המשך לקניות
                                 </button>
                             </div>
                         </div>
 
                         <div className="benefits-card">
-                            <h4>✨ יתרונות ההזמנה שלך</h4>
+                            <h4>
+                                <Sparkles className="title-icon" />
+                                יתרונות ההזמנה שלך
+                            </h4>
                             <ul>
-                                <li>✓ ביטול חינם עד 24 שעות לפני</li>
-                                <li>✓ מחירים מובטחים</li>
-                                <li>✓ שירות לקוחות 24/7</li>
-                                <li>✓ אישור מיידי</li>
+                                <li><BadgeCheck className="benefit-icon" />ביטול חינם עד 24 שעות לפני</li>
+                                <li><BadgeCheck className="benefit-icon" />מחירים מובטחים</li>
+                                <li><BadgeCheck className="benefit-icon" />שירות לקוחות 24/7</li>
+                                <li><BadgeCheck className="benefit-icon" />אישור מיידי</li>
                             </ul>
                         </div>
                     </div>

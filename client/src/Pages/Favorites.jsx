@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Heart,
+  MapPin,
+  Clock3,
+  CalendarDays,
+  Star,
+  ShoppingCart,
+  Flame,
+  Trash2,
+} from "lucide-react";
 import Header from "../Header&Footer/Header";
 import Footer from "../Header&Footer/Footer";
 import "./Favorites.css";
@@ -9,6 +19,14 @@ const Favorites = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [filter, setFilter] = useState("all"); // all, attractions, deals
+
+  const getItemDisplayName = (item) => {
+    return item?.name || item?.destination || item?.title || item?.location || "פריט ללא שם";
+  };
+
+  const getItemDisplayLocation = (item) => {
+    return item?.location || item?.destination || "";
+  };
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -62,14 +80,14 @@ const Favorites = () => {
     );
 
     if (alreadyIn) {
-      alert(`${item.name} כבר נמצא בעגלה שלך!`);
+      alert(`${getItemDisplayName(item)} כבר נמצא בעגלה שלך!`);
       return;
     }
 
     const updated = [...cart, { ...item, addedAt: new Date().toISOString() }];
     localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
     window.dispatchEvent(new Event("userDataUpdated"));
-    alert(`${item.name} נוסף לעגלה! 🛒`);
+    alert(`${getItemDisplayName(item)} נוסף לעגלה! 🛒`);
   };
 
   const clearAllFavorites = () => {
@@ -95,7 +113,9 @@ const Favorites = () => {
       <div className="favorites-page">
         <Header />
         <div className="favorites-empty-state">
-          <div className="empty-icon">❤️</div>
+          <div className="empty-icon">
+            <Heart className="empty-icon-svg" />
+          </div>
           <h2>עליך להתחבר כדי לצפות במועדפים</h2>
           <p>התחבר כדי לראות את הדילים והאטרקציות שאהבת</p>
           <button
@@ -115,7 +135,9 @@ const Favorites = () => {
       <div className="favorites-page">
         <Header />
         <div className="favorites-empty-state">
-          <div className="empty-icon">❤️</div>
+          <div className="empty-icon">
+            <Heart className="empty-icon-svg" />
+          </div>
           <h2>עדיין אין לך מועדפים</h2>
           <p>התחל לחפש דילים ואטרקציות ושמור את האהובים עליך</p>
           <div className="empty-actions">
@@ -144,7 +166,10 @@ const Favorites = () => {
 
       <section className="favorites-hero">
         <div className="hero-content">
-          <h1>❤️ המועדפים שלי</h1>
+          <h1 className="hero-title">
+            <Heart className="title-icon" />
+            המועדפים שלי
+          </h1>
           <p>{favoriteItems.length} פריטים שאהבת</p>
         </div>
       </section>
@@ -163,14 +188,14 @@ const Favorites = () => {
                 className={`filter-tab ${filter === "attraction" ? "active" : ""}`}
                 onClick={() => setFilter("attraction")}
               >
-                🎯 אטרקציות (
+                <MapPin className="tab-icon attraction-icon" /> אטרקציות (
                 {favoriteItems.filter((i) => i.type === "attraction").length})
               </button>
               <button
                 className={`filter-tab ${filter === "deal" ? "active" : ""}`}
                 onClick={() => setFilter("deal")}
               >
-                🔥 דילים (
+                <Flame className="tab-icon deal-icon" /> דילים (
                 {favoriteItems.filter((i) => i.type === "deal").length})
               </button>
             </div>
@@ -191,32 +216,35 @@ const Favorites = () => {
                   onClick={() => removeFromFavorites(item.id, item.type)}
                   title="הסר מהמועדפים"
                 >
-                  ×
+                  <Trash2 className="remove-icon" />
                 </button>
 
                 <div className="favorite-image">
-                  <img src={item.image} alt={item.name} />
+                  <img src={item.image} alt={getItemDisplayName(item)} />
                   <span className="type-badge">
-                    {item.type === "attraction" ? "🎯 אטרקציה" : "🔥 דיל"}
+                    {item.type === "attraction" ? <MapPin className="type-badge-icon attraction-icon" /> : <Flame className="type-badge-icon deal-icon" />}
+                    {item.type === "attraction" ? "אטרקציה" : "דיל"}
                   </span>
                 </div>
 
                 <div className="favorite-content">
-                  <h3>{item.name}</h3>
-                  <p className="favorite-location">📍 {item.location}</p>
+                  <h3>{getItemDisplayName(item)}</h3>
+                  {getItemDisplayLocation(item) && (
+                    <p className="favorite-location"><MapPin className="meta-icon" />{getItemDisplayLocation(item)}</p>
+                  )}
 
                   {item.rating && (
                     <div className="favorite-rating">
-                      <span>⭐ {item.rating}</span>
+                      <span><Star className="meta-icon star-icon" />{item.rating}</span>
                     </div>
                   )}
 
                   {item.type === "attraction" && item.duration && (
-                    <p className="favorite-duration">⏱️ {item.duration}</p>
+                    <p className="favorite-duration"><Clock3 className="meta-icon" />{item.duration}</p>
                   )}
 
                   {item.type === "deal" && item.dates && (
-                    <p className="favorite-dates">📅 {item.dates}</p>
+                    <p className="favorite-dates"><CalendarDays className="meta-icon" />{item.dates}</p>
                   )}
 
                   <div className="favorite-footer">
@@ -225,7 +253,7 @@ const Favorites = () => {
                       className="add-to-cart-btn"
                       onClick={() => addToCart(item)}
                     >
-                      🛒 הוסף לעגלה
+                      <ShoppingCart className="btn-icon" /> הוסף לעגלה
                     </button>
                   </div>
                 </div>

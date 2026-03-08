@@ -21,7 +21,7 @@
     margin-top: 85px;
     padding: 5rem 5% 4rem;
     text-align: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
 }
 
@@ -53,9 +53,28 @@
 }
 
 .empty-icon {
-    font-size: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 2rem;
-    opacity: 0.5;
+}
+
+.empty-icon-svg {
+    width: 6rem;
+    height: 6rem;
+    stroke: #27b4d3;
+    opacity: 0.65;
+}
+
+.hero-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.title-icon {
+    width: 1.2em;
+    height: 1.2em;
 }
 
 .cart-empty-state h2 {
@@ -89,13 +108,13 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 25px rgba(20, 78, 165, 0.4);
 }
 
 .btn-secondary {
@@ -206,6 +225,22 @@
     font-weight: 700;
     color: #333;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.type-badge-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+}
+
+.attraction-icon {
+    color: #1f8ec1;
+}
+
+.deal-icon {
+    color: #ff7a1a;
 }
 
 .item-details {
@@ -224,6 +259,19 @@
 .item-dates {
     color: #666;
     font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.meta-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+.star-icon {
+    color: #f5b301;
 }
 
 .item-rating {
@@ -234,6 +282,12 @@
     font-weight: 600;
     width: fit-content;
     color: #333;
+}
+
+.item-rating span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
 }
 
 .item-actions {
@@ -270,6 +324,9 @@
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
 .remove-btn:hover {
@@ -333,7 +390,7 @@
     width: 100%;
     padding: 1.2rem;
     margin-top: 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: none;
     border-radius: 12px;
@@ -341,11 +398,15 @@
     font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
 }
 
 .checkout-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 25px rgba(20, 78, 165, 0.4);
 }
 
 .continue-shopping {
@@ -362,6 +423,14 @@
     cursor: pointer;
     padding: 0.5rem;
     transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.btn-icon {
+    width: 1.05rem;
+    height: 1.05rem;
 }
 
 .continue-shopping button:hover {
@@ -379,6 +448,9 @@
     font-size: 1.3rem;
     color: #333;
     margin-bottom: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
 }
 
 .benefits-card ul {
@@ -392,6 +464,16 @@
     color: #555;
     font-size: 1rem;
     padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.benefit-icon {
+    width: 1rem;
+    height: 1rem;
+    color: #27b4d3;
+    flex-shrink: 0;
 }
 
 /* Responsive */

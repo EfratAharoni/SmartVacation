@@ -27,9 +27,10 @@
     max-width: 1280px;
     width: 100%;
     background: white;
+    border: 2px solid #27b4d3;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(20, 78, 165, 0.28);
     animation: slideUp 0.6s ease;
 }
 

@@ -501,11 +501,11 @@
     background: linear-gradient(135deg, #ffffff 0%, #f9fbff 100%);
     padding: 2.5rem;
     border-radius: 16px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(20, 78, 165, 0.12);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(102, 126, 234, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(20, 78, 165, 0.1);
     direction: rtl;
     text-align: right;
 }
@@ -517,7 +517,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #27b4d3 0%, #144ea5 100%);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -525,8 +525,8 @@
 
 .faq-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15), 0 8px 16px rgba(0, 0, 0, 0.08);
-    border-color: rgba(102, 126, 234, 0.2);
+    box-shadow: 0 12px 24px rgba(20, 78, 165, 0.2), 0 8px 16px rgba(0, 0, 0, 0.08);
+    border-color: rgba(20, 78, 165, 0.28);
 }
 
 .faq-card:hover::before {
@@ -732,17 +732,17 @@
 }
 
 /* WhatsApp */
-.social-link-icon:nth-child(1) svg {
+.social-link-icon:nth-child(1) {
     color: #25D366;
 }
 
 /* Instagram */
-.social-link-icon:nth-child(2) svg {
+.social-link-icon:nth-child(2) {
     color: #E4405F;
 }
 
 /* Facebook */
-.social-link-icon:nth-child(3) svg {
+.social-link-icon:nth-child(3) {
     color: #1877F2;
 }
 
@@ -767,6 +767,11 @@
     border-radius: 14px;
     transition: all 0.25s ease;
     flex: 1; /* שכל אחד יתפוס רוחב שווה */
+}
+
+.social-link-icon span {
+    color: currentColor;
+    font-weight: 600;
 }
 
 /* Contact Details Card */
