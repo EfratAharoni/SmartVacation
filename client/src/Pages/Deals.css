@@ -5,6 +5,8 @@
 }
 
 .deals-page {
+    --deals-brand-gradient: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
+    --deals-brand-shadow: rgba(20, 78, 165, 0.35);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f5f5f5;
     min-height: 100vh;
@@ -123,26 +125,26 @@ nav {
 
 .btn-login {
     background: transparent;
-    color: #667eea;
-    border: 2px solid #667eea;
+    color: #144ea5;
+    border: 2px solid #1f8ec1;
 }
 
 .btn-login:hover {
-    background: #667eea;
+    background: var(--deals-brand-gradient);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 5px 15px var(--deals-brand-shadow);
 }
 
 .btn-register {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--deals-brand-gradient);
     color: white;
     border: 2px solid transparent;
 }
 
 .btn-register:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 20px var(--deals-brand-shadow);
 }
 
 /* Hero Section */
@@ -150,7 +152,7 @@ nav {
     margin-top: 85px;
     padding: 5rem 5% 4rem;
     text-align: center;
-    background:  #1a1c40;
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     position: relative;
     overflow: hidden;
@@ -231,9 +233,9 @@ nav {
 
 .filter-select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1f8ec1;
     background: white;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 4px rgba(39, 180, 211, 0.18);
 }
 
 .date-filter {
@@ -262,7 +264,7 @@ nav {
 }
 
 .date-trigger-icon {
-    color: #6366f1;
+    color: #1f8ec1;
     flex-shrink: 0;
 }
 
@@ -371,13 +373,14 @@ nav {
     padding: 0.55rem 0.9rem;
     font-weight: 700;
     cursor: pointer;
-    background: #1f2937;
+    background: var(--deals-brand-gradient);
     color: #fff;
 }
 
 .date-action-btn.ghost {
-    background: #eef2ff;
-    color: #374151;
+    background: var(--deals-brand-gradient);
+    color: #ffffff;
+    opacity: 0.88;
 }
 
 .price-filter {
@@ -403,9 +406,9 @@ nav {
 
 .price-inputs input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1f8ec1;
     background: white;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 4px rgba(39, 180, 211, 0.18);
 }
 
 .price-inputs span {
@@ -699,7 +702,7 @@ nav {
 
 .book-btn {
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--deals-brand-gradient);
     color: white;
     border: none;
     border-radius: 12px;
@@ -711,7 +714,7 @@ nav {
 
 .book-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 25px var(--deals-brand-shadow);
 }
 
 /* No Results */
@@ -1018,6 +1021,17 @@ textarea {
     box-shadow: 0 3px 10px rgba(79, 172, 254, 0.3);
 }
 
+.kosher-destination-badge {
+    background: linear-gradient(135deg, #15829e 0%, #08dcca 100%);
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(22, 83, 163, 0.35);
+}
+
 .destination-highlights {
     display: flex;
     gap: 20px;
@@ -1060,7 +1074,7 @@ textarea {
 
 .view-packages-btn {
     padding: 12px 28px;
-    background: #1f2937;
+    background: var(--deals-brand-gradient);
     color: white;
     border: none;
     border-radius: 10px;
@@ -1074,7 +1088,7 @@ textarea {
 }
 
 .view-packages-btn:hover {
-    background: #111827;
+    background: var(--deals-brand-gradient);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(31, 41, 55, 0.4);
+    box-shadow: 0 5px 15px var(--deals-brand-shadow);
 }

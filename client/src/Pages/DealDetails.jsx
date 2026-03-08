@@ -1184,6 +1184,126 @@ const DealDetails = () => {
                 class: 'תיירים'
             },
             attractions: ['שווקי חג המולד', 'Gendarmenmarkt', 'סיור אורות חורף']
+        },
+        {
+            id: 55,
+            destination: 'פריז, צרפת',
+            image: '/images/parisZ.jpg',
+            price: 2799,
+            originalPrice: 3699,
+            discount: 24,
+            dates: '14-20 יוני 2026',
+            rating: 4.9,
+            airline: 'אל על',
+            flightTime: '4.5 שעות',
+            category: 'europe',
+            isKosherFriendly: true,
+            hotel: 'מלון כשר ליד בית חב"ד',
+            hotelName: 'Hôtel Le Marais Kosher Stay',
+            included: ['טיסה ביום ראשון וחזרה ביום שישי לפני שבת', 'ארוחות כשרות מלאות', 'מלון במרחק הליכה מבית חב"ד', 'ערכת שבת בחדר'],
+            reviewsCount: 173,
+            flightDetails: {
+                departure: '09:20',
+                arrival: '13:50',
+                class: 'תיירים'
+            },
+            attractions: ['מגדל אייפל', 'המארה', 'מוזיאון הלובר']
+        },
+        {
+            id: 56,
+            destination: 'רומא, איטליה',
+            image: '/images/romeI.jpg',
+            price: 2599,
+            originalPrice: 3499,
+            discount: 26,
+            dates: '7-13 ספטמבר 2026',
+            rating: 4.8,
+            airline: 'ITA Airways',
+            flightTime: '4 שעות',
+            category: 'europe',
+            isKosherFriendly: true,
+            hotel: 'מלון 4 כוכבים ליד בית חב"ד',
+            hotelName: 'Roma Centro Kosher Hotel',
+            included: ['טיסות באמצע השבוע בלבד', 'ארוחות כשרות ארוזות לטיסה', 'ארוחות כשרות במלון', 'סיור ברובע היהודי'],
+            reviewsCount: 149,
+            flightDetails: {
+                departure: '11:10',
+                arrival: '15:10',
+                class: 'תיירים'
+            },
+            attractions: ['בית הכנסת הגדול ברומא', 'הגטו היהודי', 'קולוסיאום']
+        },
+        {
+            id: 57,
+            destination: 'לונדון, אנגליה',
+            image: '/images/londonA.jpg',
+            price: 3199,
+            originalPrice: 4299,
+            discount: 26,
+            dates: '21-27 יוני 2026',
+            rating: 4.8,
+            airline: 'British Airways',
+            flightTime: '5.5 שעות',
+            category: 'europe',
+            isKosherFriendly: true,
+            hotel: 'מלון במרחק הליכה מבית חב"ד',
+            hotelName: 'Kensington Kosher Suites',
+            included: ['יציאה ביום ראשון וחזרה ביום שישי בצהריים', 'ארוחות בוקר וערב כשרות', 'פלטת שבת ומיחם בחדר', 'גישה לבית כנסת קרוב'],
+            reviewsCount: 162,
+            flightDetails: {
+                departure: '10:05',
+                arrival: '15:35',
+                class: 'תיירים'
+            },
+            attractions: ['גולדרס גרין', 'ביג בן', 'ארמון בקינגהאם']
+        },
+        {
+            id: 58,
+            destination: 'דובאי, איחוד האמירויות',
+            image: '/images/dubai.jpg',
+            price: 3799,
+            originalPrice: 5199,
+            discount: 27,
+            dates: '9-15 נובמבר 2026',
+            rating: 4.9,
+            airline: 'Emirates',
+            flightTime: '4.5 שעות',
+            category: 'asia',
+            isKosherFriendly: true,
+            hotel: 'מלון 5 כוכבים ליד בית חב"ד',
+            hotelName: 'Dubai Marina Kosher Premium',
+            included: ['טיסות בימים שני עד חמישי בלבד', 'ארוחות גלאט כשר', 'הסעות לבית חב"ד', 'סיור קהילה יהודית'],
+            reviewsCount: 198,
+            flightDetails: {
+                departure: '08:40',
+                arrival: '13:10',
+                class: 'עסקים'
+            },
+            attractions: ['בית חב"ד דובאי', 'בורג׳ חליפה', 'דובאי מול']
+        },
+        {
+            id: 59,
+            destination: 'ניו יורק, ארה"ב',
+            image: '/images/new-yorkA.jpg',
+            price: 5099,
+            originalPrice: 6699,
+            discount: 24,
+            dates: '6-13 יולי 2026',
+            rating: 4.9,
+            airline: 'United',
+            flightTime: '13 שעות',
+            category: 'america',
+            isKosherFriendly: true,
+            hotel: 'מלון במנהטן ליד בית חב"ד',
+            hotelName: 'Manhattan Kosher Grand',
+            included: ['טיסה יוצאת ביום שני וחוזרת ביום שני', 'ארוחות כשרות בכל ימי השהות', 'חבילת שבת מלאה במלון', 'סיור ברובע היהודי בברוקלין'],
+            reviewsCount: 211,
+            flightDetails: {
+                departure: '07:25',
+                arrival: '11:35',
+                class: 'תיירים'
+            },
+            attractions: ['קראון הייטס', 'טיימס סקוור', 'סנטרל פארק']
         }
     ];
 
@@ -1438,6 +1558,7 @@ const DealDetails = () => {
                             <div className="package-badge">
                                 <span className="discount-badge">-{deal.discount}%</span>
                                 {deal.rating >= 4.8 && <span className="best-seller">מבוקש ביותר</span>}
+                                {deal.isKosherFriendly && <span className="kosher-package-badge">מותאם לשומרי כשרות</span>}
                             </div>
 
                             <button

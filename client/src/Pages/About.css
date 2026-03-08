@@ -134,7 +134,7 @@ nav {
 }
 
 .btn-register {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: 2px solid transparent;
 }
@@ -149,8 +149,7 @@ nav {
     margin-top: 85px;
     padding: 6rem 5% 5rem;
     text-align: center;
-    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
-    background:  #1a1c40;
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
 }
 
@@ -269,8 +268,7 @@ nav {
 /* Stats Section */
 .stats-section {
     padding: 6rem 5%;
-    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
-    background: #1a1c40;
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
 }
 
@@ -423,7 +421,7 @@ nav {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     padding: 1.1rem 2.5rem;
     font-size: 1.1rem;
@@ -431,7 +429,7 @@ nav {
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 30px rgba(39, 180, 211, 0.4);
 }
 
 .btn-secondary {

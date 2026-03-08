@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     padding: clamp(0.75rem, 1.5vw, 1.25rem);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-sizing: border-box;
@@ -17,7 +17,7 @@
     content: '';
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     z-index: -1;
 }
 
@@ -47,7 +47,7 @@
 
 /* Visual Section */
 .register-visual-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     padding: 2.2rem;
     display: flex;
@@ -235,18 +235,18 @@
     z-index: 10;
     top: 1.5rem;
     left: 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: none;
     font-size: 0.88rem;
     padding: 0.85rem 1.3rem;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(20, 78, 165, 0.3);
 }
 
 .guest-mode-btn.top:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 8px 25px rgba(20, 78, 165, 0.4);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
 }
 
 .guest-mode-btn.top:active {
@@ -259,7 +259,7 @@
     background: none;
     border: 1px solid transparent;
     border-radius: 9999px;
-    color: #667eea;
+    color: #27b4d3;
     padding: 0.4rem 0.8rem;
     font-size: 0.76rem;
     font-weight: 600;
@@ -269,7 +269,7 @@
 
 .guest-mode-btn.bottom:hover {
     background: none;
-    color: #764ba2;
+    color: #144ea5;
     border-color: transparent;
     transform: none;
     box-shadow: none;
@@ -289,8 +289,8 @@
 
 .guest-mode-btn.bottom:active {
     outline: none;
-    border-color: #764ba2;
-    box-shadow: 0 0 0 2px rgba(122, 92, 230, 0.3);
+    border-color: #144ea5;
+    box-shadow: 0 0 0 2px rgba(20, 78, 165, 0.3);
 }
 
 .guest-icon {
@@ -341,9 +341,9 @@
 }
 
 .progress-step.active .step-circle {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 5px 15px rgba(20, 78, 165, 0.3);
 }
 
 .progress-step span {
@@ -353,7 +353,7 @@
 }
 
 .progress-step.active span {
-    color: #667eea;
+    color: #27b4d3;
 }
 
 .progress-line {
@@ -426,9 +426,9 @@
 
 .input-wrapper input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #27b4d3;
     background: white;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 4px rgba(20, 78, 165, 0.1);
 }
 
 .input-wrapper input.error {
@@ -517,7 +517,7 @@
 }
 
 .checkbox-label a {
-    color: #667eea;
+    color: #27b4d3;
     text-decoration: none;
     font-weight: 600;
 }
@@ -529,7 +529,7 @@
 /* Buttons */
 .next-btn,
 .submit-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: none;
     padding: 0.95rem;
@@ -547,7 +547,7 @@
 .next-btn:hover,
 .submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 25px rgba(20, 78, 165, 0.4);
 }
 
 .next-btn:active,
@@ -566,8 +566,8 @@
 
 .back-btn {
     background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
+    color: #27b4d3;
+    border: 2px solid #27b4d3;
     padding: 0.95rem;
     border-radius: 12px;
     font-size: 1rem;
@@ -577,7 +577,7 @@
 }
 
 .back-btn:hover {
-    background: #667eea;
+    background: #27b4d3;
     color: white;
     transform: translateY(-2px);
 }
@@ -662,7 +662,7 @@
 }
 
 .social-btn:hover {
-    border-color: #667eea;
+    border-color: #27b4d3;
     background: #f8f9fa;
     transform: translateY(-2px);
 }
@@ -706,14 +706,14 @@
 }
 
 .login-link a {
-    color: #667eea;
+    color: #27b4d3;
     font-weight: 700;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .login-link a:hover {
-    color: #764ba2;
+    color: #144ea5;
     text-decoration: underline;
 }
 
@@ -794,7 +794,7 @@
   margin: 0;
 
   font: inherit;
-  color: #667eea;
+  color: #27b4d3;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
@@ -802,7 +802,7 @@
 
 /* hover זהה לקישור */
 .guest-link-btn:hover {
-  color: #764ba2;
+  color: #144ea5;
   text-decoration: underline;
 }
 

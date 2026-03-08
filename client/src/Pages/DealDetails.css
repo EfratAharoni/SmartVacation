@@ -1,6 +1,8 @@
 /* Deal Details Page - Modern Design */
 
 .deal-details-page {
+    --details-brand-gradient: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
+    --details-brand-shadow: rgba(20, 78, 165, 0.35);
     min-height: 100vh;
     background: #f5f5f5;
     padding-bottom: 60px;
@@ -189,7 +191,7 @@
 
 .btn-compare {
     padding: 0.9rem 1.2rem;
-    background: #1f2937;
+    background: var(--details-brand-gradient);
     color: white;
     border: none;
     border-radius: 12px;
@@ -200,11 +202,12 @@
 }
 
 .btn-compare:hover {
-    background: #111827;
+    background: var(--details-brand-gradient);
+    box-shadow: 0 6px 16px var(--details-brand-shadow);
 }
 
 .btn-compare.active {
-    background: #374151;
+    background: var(--details-brand-gradient);
 }
 
 /* Compare Bar */
@@ -244,12 +247,13 @@
 }
 
 .btn-view-comparison {
-    background: #1f2937;
+    background: var(--details-brand-gradient);
     color: #fff;
 }
 
 .btn-view-comparison:hover {
-    background: #111827;
+    background: var(--details-brand-gradient);
+    box-shadow: 0 6px 16px var(--details-brand-shadow);
 }
 
 .btn-clear-comparison {
@@ -334,23 +338,37 @@
 }
 
 .discount-badge,
-.best-seller {
+.best-seller,
+.kosher-package-badge {
     color: white;
-    padding: 8px 16px;
+    padding: 7px 14px;
     border-radius: 25px;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 12px;
     box-shadow: 0 3px 10px rgba(245, 87, 108, 0.3);
 }
 
 .discount-badge {
     background: linear-gradient(135deg, #ef5a6c 0%, #e63946 100%);
+    min-width: 76px;
+    padding: 6px 0;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 0.2px;
 }
 
 .best-seller {
-    background: #e5e7eb;
-    color: #111827;
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+    color: #ffffff;
     font-size: 12px;
+    box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35);
+}
+
+.kosher-package-badge {
+    background: linear-gradient(135deg, #15829e 0%, #08dcca 100%);
+    color: #ffffff;
+    font-size: 12px;
+    box-shadow: 0 3px 10px rgba(21, 128, 61, 0.35);
 }
 
 .package-header {
@@ -551,25 +569,25 @@
 }
 
 .btn-details {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    background: var(--details-brand-gradient);
     color: white;
 }
 
 .btn-details:hover {
-    background: #111827;
+    background: var(--details-brand-gradient);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.25);
+    box-shadow: 0 4px 12px var(--details-brand-shadow);
 }
 
 .btn-book-now {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    background: var(--details-brand-gradient);
     color: white;
 }
 
 .btn-book-now:hover {
-    background: #111827;
+    background: var(--details-brand-gradient);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.25);
+    box-shadow: 0 4px 12px var(--details-brand-shadow);
 }
 
 /* Modal Styles */
@@ -817,7 +835,7 @@
 .deal-btn-modal-book {
     width: 100%;
     padding: 12px;
-    background: #1f2937;
+    background: var(--details-brand-gradient);
     color: white;
     border: none;
     border-radius: 12px;
@@ -828,9 +846,9 @@
 }
 
 .deal-btn-modal-book:hover {
-    background: #111827;
+    background: var(--details-brand-gradient);
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(17, 24, 39, 0.28);
+    box-shadow: 0 6px 16px var(--details-brand-shadow);
 }
 
 /* Comparison Grid */
@@ -952,7 +970,7 @@
     width: calc(100% - 24px);
     margin: 0 12px 12px;
     padding: 13px 16px;
-    background: linear-gradient(135deg, #1f2937 0%, #0f172a 100%);
+    background: var(--details-brand-gradient);
     color: white;
     border: none;
     border-radius: 12px;
@@ -960,14 +978,14 @@
     font-size: 17px;
     font-weight: 700;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.2);
+    box-shadow: 0 6px 14px var(--details-brand-shadow);
     margin-top: auto;
 }
 
 .btn-select-package:hover {
-    background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+    background: var(--details-brand-gradient);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.28);
+    box-shadow: 0 10px 20px var(--details-brand-shadow);
 }
 
 /* No Destination */
@@ -984,7 +1002,7 @@
 
 .btn-back {
     padding: 15px 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--details-brand-gradient);
     color: white;
     border: none;
     border-radius: 10px;
@@ -996,7 +1014,7 @@
 
 .btn-back:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 15px var(--details-brand-shadow);
 }
 
 /* Responsive */

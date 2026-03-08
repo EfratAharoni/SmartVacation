@@ -20,7 +20,7 @@
     margin-top: 85px;
     padding: 6rem 5% 4rem;
     text-align: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     position: relative;
     min-height: 350px;
@@ -100,9 +100,9 @@
 
 .search-box input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #27b4d3;
     background: white;
-    box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+    box-shadow: 0 0 0 4px rgba(39,180,211,0.15);
 }
 
 .category-filters {
@@ -128,16 +128,16 @@
 }
 
 .category-btn:hover {
-    border-color: #667eea;
+    border-color: #27b4d3;
     background: #f8f9fa;
     transform: translateY(-2px);
 }
 
 .category-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border-color: transparent;
-    box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+    box-shadow: 0 5px 15px rgba(20,78,165,0.3);
 }
 
 .cat-icon {
@@ -329,7 +329,7 @@
 .price {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #667eea;
+    color: #27b4d3;
 }
 
 .duration {
@@ -337,10 +337,10 @@
     font-size: 0.9rem;
 }
 
-.book-btn {
+.attractions-page .book-btn {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: none;
     border-radius: 12px;
@@ -350,9 +350,9 @@
     transition: all 0.3s ease;
 }
 
-.book-btn:hover {
+.attractions-page .book-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+    box-shadow: 0 10px 25px rgba(20,78,165,0.4);
 }
 
 /* ── Modal ────────────────────────────────────────────────── */
@@ -536,7 +536,7 @@
 .price-value {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #667eea;
+    color: #27b4d3;
 }
 
 .modal-duration { color: #666; font-size: 0.98rem; }
@@ -572,9 +572,9 @@
     background: #fff5f5;
 }
 
-.modal-book-btn {
+.attractions-page .modal-book-btn {
     padding: 0.82rem 1.05rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: none;
     border-radius: 10px;
@@ -585,9 +585,9 @@
     flex: 1;
 }
 
-.modal-book-btn:hover {
+.attractions-page .modal-book-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+    box-shadow: 0 10px 25px rgba(20,78,165,0.4);
 }
 
 /* ── Responsive ───────────────────────────────────────────── */

@@ -336,7 +336,7 @@
 }
 
 .submit-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: none;
     padding: 1.2rem;
@@ -544,7 +544,7 @@
 .faq-icon {
     font-size: 1.8rem;
     flex-shrink: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -847,11 +847,11 @@
 
 .contact-item a:hover {
     text-decoration: underline;
-    color: #764ba2;
+    color: #2e2c95;
 }
 
 .contact-item:nth-child(4) span:last-of-type {
-    color: #667eea;
+    color: #4c2ed4;
     font-weight: 500;
 }
 
