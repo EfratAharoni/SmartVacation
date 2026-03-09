@@ -1,59 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Users, HeartHandshake, Trophy, ShieldCheck } from "lucide-react";
-import { useRef } from "react";
 import "./About.css";
 
 const About = () => {
-  const navigate = useNavigate();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  const handleRegister = () => {
-    navigate("/register");
-  };
-
-  const scrollToSection = (sectionId) => {
-    const element = document.querySelector(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsMobileMenuOpen(false);
-    }
-  };
-
 const [index, setIndex] = useState(0);
-const [isHovered, setIsHovered] = useState(false);
 
 const nextSlide = () => {
   setIndex((prev) => (prev + 1) % reviews.length);
 };
 
-const prevSlide = () => {
-  setIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
-};
-
 useEffect(() => {
-  if (isHovered) return;
-
   const interval = setInterval(nextSlide, 4000);
   return () => clearInterval(interval);
-}, [isHovered]);
+}, []);
 
   const values = [
     {
