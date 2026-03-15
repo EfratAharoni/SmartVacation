@@ -21,32 +21,32 @@ app.use(cors());
 app.use(express.json());
 
 // Users Routes
-app.get("/users", userController.getUsers);
-app.get("/users/:id", userController.getUser);
-app.post("/users/add", userController.createUser);
-app.post("/users/addMany", userController.addManyUsers);
-app.delete("/users/remove/:id", userController.removeUser);
-app.delete("/users/removeAll", userController.removeAllUsers);
-app.put("/users/update/:id", userController.updateUser);
-app.post("/users/login", userController.login);
-app.get("/users/me", authenticateToken, userController.getMe);
-app.put("/users/change-password", userController.changePassword);
+app.get("/api/users", userController.getUsers);
+app.get("/api/users/:id", userController.getUser);
+app.post("/api/users/add", userController.createUser);
+app.post("/api/users/addMany", userController.addManyUsers);
+app.delete("/api/users/remove/:id", userController.removeUser);
+app.delete("/api/users/removeAll", userController.removeAllUsers);
+app.put("/api/users/update/:id", userController.updateUser);
+app.post("/api/users/login", userController.login);
+app.get("/api/users/me", authenticateToken, userController.getMe);
+app.put("/api/users/change-password", userController.changePassword);
 
-//attraction 
-app.get("/attractions", attractionController.getAttractions);
-app.get("/attractions/:id", attractionController.getAttraction);
-app.post("/attractions/add", attractionController.createAttraction);
-app.post("/attractions/addMany", attractionController.addManyAttractions);
-app.delete("/attractions/:id", attractionController.removeAttraction);
-app.put("/attractions/:id", attractionController.updateAttraction);
+// Attraction Routes
+app.get("/api/attractions", attractionController.getAttractions);
+app.get("/api/attractions/:id", attractionController.getAttraction);
+app.post("/api/attractions/add", attractionController.createAttraction);
+app.post("/api/attractions/addMany", attractionController.addManyAttractions);
+app.delete("/api/attractions/:id", attractionController.removeAttraction);
+app.put("/api/attractions/:id", attractionController.updateAttraction);
 
-//deals
-app.get("/deals", dealController.getDeals);
-app.get("/deals/:id", dealController.getDeal);
-app.post("/deals/add", dealController.createDeal);
-app.post("/deals/addMany", dealController.addManyDeals);
-app.put("/deals/:id", dealController.updateDeal);
-app.delete("/deals/:id", dealController.removeDeal);
+// Deals Routes
+app.get("/api/deals", dealController.getDeals);
+app.get("/api/deals/:id", dealController.getDeal);
+app.post("/api/deals/add", dealController.createDeal);
+app.post("/api/deals/addMany", dealController.addManyDeals);
+app.put("/api/deals/:id", dealController.updateDeal);
+app.delete("/api/deals/:id", dealController.removeDeal);
 
 const startServer = async () => {
   try {
