@@ -14,6 +14,17 @@
       "hotel": "מלון 4 כוכבים",
       "included": ["טיסות הלוך חזור", "מלון + ארוחת בוקר", "העברות"],
       "reviewsCount": 342
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
     },
     {
       "id": 2,
@@ -30,6 +41,7 @@
       "hotel": "מלון 5 כוכבים",
       "included": ["טיסות הלוך חזור", "מלון במרכז העיר", "סיור חינם"],
       "reviewsCount": 428
+      ,"isKosherFriendly": false
     },
     {
       "id": 3,
@@ -46,6 +58,18 @@
       "hotel": "מלון בוטיק",
       "included": ["טיסות", "מלון ליד החוף", "ארוחת בוקר"],
       "reviewsCount": 289
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
     },
     {
       "id": 4,
@@ -62,6 +86,7 @@
       "hotel": "מלון 4 כוכבים",
       "included": ["טיסות", "מלון במרכז", "כרטיס למוזיאונים"],
       "reviewsCount": 315
+      ,"isKosherFriendly": false
     },
     {
       "id": 5,
@@ -78,6 +103,17 @@
       "hotel": "מלון 4 כוכבים",
       "included": ["טיסות", "מלון במרכז לונדון", "ארוחות בוקר"],
       "reviewsCount": 502
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
     },
     {
       "id": 6,
@@ -142,6 +178,16 @@
       "hotel": "מלון במנהטן",
       "included": ["טיסות", "מלון 4 כוכבים", "סיור בעיר"],
       "reviewsCount": 629
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
     },
     {
       "id": 10,
@@ -190,6 +236,16 @@
       "hotel": "מלון מול הים",
       "included": ["טיסות", "מלון רומנטי", "שייט בשקיעה"],
       "reviewsCount": 591
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
+      ,"isKosherFriendly": true
     },
     {
       "id": 13,
@@ -238,6 +294,7 @@
       "hotel": "בונגלו על המים",
       "included": ["טיסות", "בונגלו פרטי", "הכל כלול", "ספא"],
       "reviewsCount": 734
+      ,"isKosherFriendly": false
     },
     {
       "id": 16,
@@ -270,6 +327,7 @@
       "hotel": "מלון 4 כוכבים",
       "included": ["טיסות", "מלון במרכז", "סיור בוספורוס"],
       "reviewsCount": 468
+      ,"isKosherFriendly": false
     },
     {
       "id": 55,

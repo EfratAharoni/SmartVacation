@@ -1,3 +1,11 @@
+        // פונקציה להצגת מיקום/יעד של פריט בעגלה
+        const getItemDisplayLocation = (item) => {
+            return item?.location || item?.destination || '';
+        };
+    // פונקציה להצגת שם פריט בעגלה
+    const getItemDisplayName = (item) => {
+        return item?.name || item?.destination || item?.title || item?.location || 'פריט ללא שם';
+    };
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -18,9 +26,14 @@ import Footer from '../Header&Footer/Footer';
 import './Cart.css';
 
 const Cart = () => {
+        // פונקציה להצגת מיקום/יעד של פריט בעגלה
+        const getItemDisplayLocation = (item) => {
+            return item?.location || item?.destination || '';
+        };
     const navigate = useNavigate();
     const [cartItems, setCartItems] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // לא צריך יותר את הסטייטים של טופס התשלום כאן
 
     useEffect(() => {
         const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -62,65 +75,57 @@ const Cart = () => {
         return cartItems.reduce((sum, item) => sum + (item.price || 0), 0);
     };
 
+
     const handleCheckout = () => {
-        alert('תכונת התשלום בפיתוח - בקרוב תוכל להשלים את ההזמנה!');
+        navigate('/checkout');
     };
 
-    const getItemDisplayName = (item) => {
-        return item?.name || item?.destination || item?.title || item?.location || 'פריט ללא שם';
+    const handleFormChange = (e, idx) => {
+        const { name, value, type, checked } = e.target;
+        if (name.startsWith('passenger')) {
+            const passengers = [...form.passengers];
+            passengers[idx]["name"] = value;
+            setForm({ ...form, passengers });
+        } else if (type === 'checkbox') {
+            setForm({ ...form, [name]: checked });
+        } else {
+            setForm({ ...form, [name]: value });
+        }
     };
 
-    const getItemDisplayLocation = (item) => {
-        return item?.location || item?.destination || '';
+    const addPassenger = () => {
+        setForm({ ...form, passengers: [...form.passengers, { name: '' }] });
     };
 
-    if (!isLoggedIn) {
-        return (
-            <div className="cart-page">
-                <Header />
-                <div className="cart-empty-state">
-                    <div className="empty-icon">
-                        <ShoppingCart className="empty-icon-svg" />
-                    </div>
-                    <h2>עליך להתחבר כדי לצפות בעגלה</h2>
-                    <p>התחבר כדי לראות את הפריטים שהוספת</p>
-                    <button className="btn btn-primary" onClick={() => navigate('/login')}>
-                        התחבר עכשיו
-                    </button>
-                </div>
-                <Footer />
-            </div>
-        );
-    }
+    const removePassenger = (idx) => {
+        const passengers = form.passengers.filter((_, i) => i !== idx);
+        setForm({ ...form, passengers });
+    };
 
-    if (cartItems.length === 0) {
-        return (
-            <div className="cart-page">
-                <Header />
-                <div className="cart-empty-state">
-                    <div className="empty-icon">
-                        <ShoppingCart className="empty-icon-svg" />
-                    </div>
-                    <h2>העגלה שלך ריקה</h2>
-                    <p>הוסף דילים ואטרקציות כדי להתחיל לתכנן את החופשה שלך</p>
-                    <div className="empty-actions">
-                        <button className="btn btn-primary" onClick={() => navigate('/deals')}>
-                            חפש דילים
-                        </button>
-                        <button className="btn btn-secondary" onClick={() => navigate('/attractions')}>
-                            חפש אטרקציות
-                        </button>
-                    </div>
-                </div>
-                <Footer />
-            </div>
-        );
+    const handlePayment = (e) => {
+        e.preventDefault();
+        // Validation
+        if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.country || !form.payment ||
+            (form.payment === 'credit' && (!form.cardNumber || !form.cardExp || !form.cardCvv)) ||
+            form.passengers.some(p => !p.name)) {
+            setFormError('אנא מלא את כל השדות');
+            return;
+        }
+        setFormError('');
+        // Simulate payment and show confirmation modal
+        setTimeout(() => {
+            // Clear cart after payment
+            const userName = localStorage.getItem('userName');
+            const userKey = userName.replace(/\s/g, '_');
+            setCartItems([]);
+            localStorage.setItem(`cart_${userKey}`, JSON.stringify([]));
+            window.dispatchEvent(new Event('userDataUpdated'));
+        }, 1000);
     }
 
     return (
         <div className="cart-page">
             <Header />
-            
             <section className="cart-hero">
                 <div className="hero-content">
                     <h1 className="hero-title">
@@ -133,6 +138,7 @@ const Cart = () => {
 
             <section className="cart-content">
                 <div className="cart-container">
+                    <>
                     <div className="cart-items">
                         <div className="cart-header">
                             <h2>הפריטים שלי</h2>
@@ -140,7 +146,6 @@ const Cart = () => {
                                 רוקן עגלה
                             </button>
                         </div>
-
                         {cartItems.map((item, index) => (
                             <div key={`${item.id}-${item.type}-${index}`} className="cart-item">
                                 <div className="item-image">
@@ -150,28 +155,23 @@ const Cart = () => {
                                         {item.type === 'attraction' ? 'אטרקציה' : 'דיל'}
                                     </span>
                                 </div>
-
                                 <div className="item-details">
                                     <h3>{getItemDisplayName(item)}</h3>
                                     {getItemDisplayLocation(item) && (
                                         <p className="item-location"><MapPin className="meta-icon" />{getItemDisplayLocation(item)}</p>
                                     )}
-                                    
                                     {item.type === 'attraction' && item.duration && (
                                         <p className="item-duration"><Clock3 className="meta-icon" />משך: {item.duration}</p>
                                     )}
-                                    
                                     {item.type === 'deal' && item.dates && (
                                         <p className="item-dates"><CalendarDays className="meta-icon" />{item.dates}</p>
                                     )}
-                                    
                                     {item.rating && (
                                         <div className="item-rating">
                                             <span><Star className="meta-icon star-icon" />{item.rating}</span>
                                         </div>
                                     )}
                                 </div>
-
                                 <div className="item-actions">
                                     <div className="item-price">
                                         <span className="price-label">מחיר:</span>
@@ -188,40 +188,32 @@ const Cart = () => {
                             </div>
                         ))}
                     </div>
-
                     <div className="cart-summary">
                         <div className="summary-card">
                             <h3>סיכום הזמנה</h3>
-                            
                             <div className="summary-details">
                                 <div className="summary-row">
                                     <span>מספר פריטים:</span>
                                     <span>{cartItems.length}</span>
                                 </div>
-                                
                                 <div className="summary-row">
                                     <span>אטרקציות:</span>
                                     <span>{cartItems.filter(i => i.type === 'attraction').length}</span>
                                 </div>
-                                
                                 <div className="summary-row">
                                     <span>דילים:</span>
                                     <span>{cartItems.filter(i => i.type === 'deal').length}</span>
                                 </div>
-                                
                                 <div className="summary-divider"></div>
-                                
                                 <div className="summary-row total">
                                     <span>סה"כ לתשלום:</span>
                                     <span className="total-price">₪{calculateTotal()}</span>
                                 </div>
                             </div>
-
                             <button className="checkout-btn" onClick={handleCheckout}>
                                 <CreditCard className="btn-icon" />
                                 המשך לתשלום
                             </button>
-
                             <div className="continue-shopping">
                                 <button onClick={() => navigate('/deals')}>
                                     <ArrowRight className="btn-icon" />
@@ -229,7 +221,6 @@ const Cart = () => {
                                 </button>
                             </div>
                         </div>
-
                         <div className="benefits-card">
                             <h4>
                                 <Sparkles className="title-icon" />
@@ -243,9 +234,10 @@ const Cart = () => {
                             </ul>
                         </div>
                     </div>
+                    </>
+                    {/* אין יותר מודאלים של תשלום/אישור כאן */}
                 </div>
             </section>
-
             <Footer />
         </div>
     );

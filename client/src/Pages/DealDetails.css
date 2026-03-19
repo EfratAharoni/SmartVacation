@@ -43,28 +43,19 @@
     padding: 20px;
 }
 
-.btn-back-floating {
-    position: fixed;
-    top: 95px;
-    left: 12px;
-    right: auto;
-    background: rgba(255, 255, 255, 0.95);
-    color: #333;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    z-index: 3;
+.hero-content-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-back-floating:hover {
-    background: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+.destination-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
 }
 
 .destination-title {
@@ -1017,6 +1008,35 @@
     box-shadow: 0 5px 15px var(--details-brand-shadow);
 }
 
+/* כפתור חזרה לדילים - מיקום שמאלי קבוע ועיצוב */
+.btn-back-floating {
+  position: fixed !important;
+  top: 120px !important;
+  left: 40px !important;
+  right: auto !important;
+  margin: 0 !important;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s;
+  z-index: 1002;
+}
+
+@media (max-width: 900px) {
+  .btn-back-floating {
+    top: 16px !important;
+    left: 8px !important;
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .destination-title {
@@ -1076,4 +1096,96 @@
     .deal-modal-details {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
+
+/* מודאל מידע חשוב על היעד */
+.destination-info-modal {
+  max-width: 420px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(30, 144, 255, 0.18), 0 1.5px 8px rgba(0,0,0,0.08);
+  padding: 32px 28px 28px 28px;
+  position: relative;
+  animation: fadeInModal 0.25s cubic-bezier(.4,0,.2,1);
+  direction: rtl;
+}
+
+.destination-info-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.destination-info-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.destination-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.destination-info-item {
+  font-size: 1.08rem;
+  color: #222;
+  background: #f1f8ff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 4px rgba(30,144,255,0.06);
+  transition: background 0.2s;
+}
+
+.destination-info-item:last-child {
+  margin-bottom: 0;
+}
+
+.destination-info-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 4px;
+  transition: transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s;
+  outline: none;
+  box-shadow: none;
+}
+
+.destination-info-btn:active {
+  transform: scale(1.13);
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
+
+.destination-info-btn:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+.destination-info-btn:hover {
+  transform: scale(1.13);
+  box-shadow: none;
+}
+
+.destination-info-btn svg {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: none; }
 }

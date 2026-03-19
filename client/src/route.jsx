@@ -11,6 +11,7 @@ import Contact from "./Pages/Contact";
 import About from "./Pages/About";
 import Cart from "./Pages/Cart";
 import Favorites from "./Pages/Favorites";
+import Checkout from "./Pages/Checkout";
 
 const AppRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/favorites" element={<Favorites />} /> 
+      <Route path="/checkout" element={<Checkout />} />
     </Routes>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Globe, Landmark, Images, Trees, Building2, Gift, Star, MapPin } from "lucide-react";
-import axios from "axios";
 import "./Attractions.css";
 
 const getUserKey = () => {
@@ -11,6 +10,7 @@ const getUserKey = () => {
 
 const Attractions = () => {
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [attractions, setAttractions] = useState([]); // הנתונים מגיעים מכאן
@@ -35,9 +35,13 @@ const Attractions = () => {
     const fetchAttractions = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/attractions");
-        setAttractions(response.data);
-        setFilteredAttractions(response.data);
+        const response = await fetch(`${API_BASE_URL}/attractions`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch attractions");
+        }
+        const data = await response.json();
+        setAttractions(data);
+        setFilteredAttractions(data);
       } catch (error) {
         console.error("שגיאה במשיכת הנתונים מהשרת:", error);
       } finally {
@@ -57,7 +61,7 @@ const Attractions = () => {
       setFavorites(savedFavs);
       setCart(savedCart);
     }
-  }, []);
+  }, [API_BASE_URL]);
 
   // סינון אטרקציות
   useEffect(() => {

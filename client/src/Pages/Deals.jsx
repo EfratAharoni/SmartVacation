@@ -43,6 +43,7 @@ const parseDealStartDate = (dateText) => {
 const Deals = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
     
     // --- הוספת State לניהול הנתונים מה-DB ---
     const [deals, setDeals] = useState([]);
@@ -95,7 +96,7 @@ const Deals = () => {
         const fetchDeals = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('http://localhost:5000/api/deals');
+                const response = await fetch(`${API_BASE_URL}/deals`);
                 if (!response.ok) throw new Error('Failed to fetch deals');
                 const data = await response.json();
                 setDeals(data);
@@ -106,7 +107,7 @@ const Deals = () => {
             }
         };
         fetchDeals();
-    }, []);
+    }, [API_BASE_URL]);
 
     // Sync login state on mount and reload favorites/cart per user
     useEffect(() => {

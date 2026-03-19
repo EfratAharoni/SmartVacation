@@ -3,6 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { CalendarDays, Hotel, PlaneTakeoff, Sparkles, BadgeDollarSign, Star } from 'lucide-react';
 import './DealDetails.css';
 
+import useDestinationInfo from './useDestinationInfo';
+import { Info } from 'lucide-react';
+
 const getUserKey = () => {
     const name = localStorage.getItem('userName');
     return name ? name.replace(/\s/g, '_') : 'guest';
@@ -1455,18 +1458,34 @@ const DealDetails = () => {
         );
     }
 
+
     const mainDeal = destinationDeals[0];
+    // מידע חשוב על היעד
+    const destinationInfo = useDestinationInfo(mainDeal.destination);
+    const [showInfoModal, setShowInfoModal] = useState(false);
 
     return (
         <div className="deal-details-page">
             {/* Hero Section with Destination Background */}
+
             <section className="destination-hero" style={{ backgroundImage: `url(${mainDeal.image})` }}>
                 <div className="hero-overlay"></div>
                 <div className="hero-content-details">
                     <button onClick={() => navigate('/deals')} className="btn-back-floating">
                         ← חזרה לדילים
                     </button>
-                    <h1 className="destination-title">{mainDeal.destination}</h1>
+                    <div className="destination-title-row">
+                        <h1 className="destination-title">{mainDeal.destination}</h1>
+                        {destinationInfo && (
+                            <button
+                                className="destination-info-btn"
+                                title="מידע חשוב על היעד"
+                                onClick={() => setShowInfoModal(true)}
+                            >
+                                <Info size={26} color="#1e90ff" style={{ verticalAlign: 'middle' }} />
+                            </button>
+                        )}
+                    </div>
                     <p className="destination-subtitle">{destinationDeals.length} חבילות נופש זמינות</p>
                     <div className="destination-meta">
                         <span className="meta-item">
@@ -1484,6 +1503,24 @@ const DealDetails = () => {
                     </div>
                 </div>
             </section>
+
+            {/* מודאל מידע חשוב על היעד */}
+            {showInfoModal && destinationInfo && (
+                <div className="deal-modal-overlay" onClick={() => setShowInfoModal(false)}>
+                    <div className="deal-modal-content destination-info-modal" onClick={e => e.stopPropagation()}>
+                        <button className="deal-close-btn" onClick={() => setShowInfoModal(false)}>✕</button>
+                        <div className="destination-info-header">
+                            <Info size={32} color="#1e90ff" style={{ marginLeft: 8 }} />
+                            <h2>🧠 דברים שחשוב לדעת לפני שטסים ל{destinationInfo.destination}</h2>
+                        </div>
+                        <ul className="destination-info-list">
+                            {destinationInfo.info.map((item, idx) => (
+                                <li key={idx} className="destination-info-item">{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
 
             {/* Filters & Controls */}
             <section className="details-filter-section">
