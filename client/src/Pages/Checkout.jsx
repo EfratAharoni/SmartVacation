@@ -1,8 +1,7 @@
 
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Cart.css';
-import React, { useState } from "react";
-// תיקון: ייבוא useState
 
 export default function Checkout() {
   const navigate = useNavigate();
