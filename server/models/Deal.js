@@ -13,7 +13,8 @@ const dealSchema = new mongoose.Schema({
     category: { type: String, required: true },
     hotel: { type: String, required: true },
     included: { type: [String], default: [] },
-    reviewsCount: { type: Number, default: 0 }
+    reviewsCount: { type: Number, default: 0 },
+    isKosherFriendly: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const Deal = mongoose.model("Deal", dealSchema);

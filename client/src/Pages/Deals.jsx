@@ -5,6 +5,7 @@ import { CalendarDays, X } from 'lucide-react';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import './Deals.css';
+import { allDealsData } from '../data/allDealsData';
 
 // Helper: get user-specific localStorage key
 const getUserKey = () => {
@@ -286,7 +287,7 @@ const Deals = () => {
 
             return {
                 destination,
-                packageCount: packages.length,
+                packageCount: allDealsData.filter(d => d.destination === destination).length,
                 minPrice,
                 maxDiscount,
                 avgRating,
@@ -518,9 +519,7 @@ const Deals = () => {
                                 {/* {destCard.hasKosherPackage && (
                                     <span className="kosher-destination-badge">מותאם לשומרי כשרות</span>
                                 )} */}
-                                {destCard.packageCount > 1 && (
-                                    <span className="package-count">{destCard.packageCount} חבילות</span>
-                                )}
+                                <span className="package-count">{destCard.packageCount} חבילות</span>
                             </div>
 
                             <div className="deal-image">
@@ -556,7 +555,7 @@ const Deals = () => {
                                     </div>
                                     <div className="highlight-item">
                                         <span className="icon">📦</span>
-                                        <span>{destCard.packageCount} אופציות זמינות</span>
+                                        <span>{destCard.packageCount} חבילות נופש זמינות</span>
                                     </div>
                                 </div>
 
