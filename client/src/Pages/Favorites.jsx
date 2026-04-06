@@ -205,6 +205,12 @@ const Favorites = () => {
             </button>
           </div>
 
+          {filteredItems.length === 0 && (
+            <div className="filter-empty-state">
+              <p>אין פריטים בקטגוריה זו</p>
+            </div>
+          )}
+
           <div className="favorites-grid">
             {filteredItems.map((item, index) => (
               <div

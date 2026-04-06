@@ -5,6 +5,8 @@ const attractionSchema = new mongoose.Schema({
     location: { type: String, required: true },
     category: { type: String, required: true },
     price: { type: Number, required: true },
+    childPrice: { type: Number },      // אם לא מוגדר, יחושב 60% מהמחיר הבסיסי
+    infantFree: { type: Boolean, default: true },
     duration: { type: String },
     rating: { type: Number, default: 0 },
     image: { type: String },

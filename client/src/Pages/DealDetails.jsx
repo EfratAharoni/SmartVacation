@@ -20,6 +20,15 @@ const DealDetails = () => {
     const [compareMode, setCompareMode] = useState(false);
     const [compareSelection, setCompareSelection] = useState([]);
     const [sortPackagesBy, setSortPackagesBy] = useState('price');
+    const [bookingDeal, setBookingDeal] = useState(null);
+    const [bookingOptions, setBookingOptions] = useState({
+        adults: 2,
+        children: 0,
+        trolley: false,
+        suitcase: false,
+        transfer: false,
+        cancellable: false,
+    });
 
     const [favorites, setFavorites] = useState(() => {
         const name = localStorage.getItem('userName');
@@ -126,26 +135,6 @@ const DealDetails = () => {
         window.dispatchEvent(new Event('userDataUpdated'));
     };
 
-    const addToCart = (deal, e) => {
-        e.stopPropagation();
-        if (!isLoggedIn) {
-            alert('כדי להוסיף לעגלה יש להתחבר תחילה');
-            navigate('/login');
-            return;
-        }
-        const userKey = getUserKey();
-        const existing = cart.find(item => item.id === deal.id && item.type === 'deal');
-        if (existing) {
-            alert(`חבילה זו כבר נמצאת בעגלה שלך!`);
-            return;
-        }
-        const updated = [...cart, { ...deal, type: 'deal', addedAt: new Date().toISOString() }];
-        setCart(updated);
-        localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
-        window.dispatchEvent(new Event('userDataUpdated'));
-        alert(`החבילה נוספה לעגלה! 🛒`);
-    };
-
     const renderStars = (rating) => {
         const stars = [];
         const fullStars = Math.floor(rating);
@@ -162,6 +151,52 @@ const DealDetails = () => {
             stars.push(<span key={`empty-${i}`} className="star empty">★</span>);
         }
         return stars;
+    };
+
+    const openBookingModal = (deal, e) => {
+        e.stopPropagation();
+        if (!isLoggedIn) {
+            alert('כדי להזמין יש להתחבר תחילה');
+            navigate('/login');
+            return;
+        }
+        setBookingOptions({ adults: 2, children: 0, trolley: false, suitcase: false, transfer: false, cancellable: false });
+        setBookingDeal(deal);
+    };
+
+    const calculateTotal = () => {
+        if (!bookingDeal) return 0;
+        const basePrice = bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price;
+        const childPrice = Math.round(basePrice * 0.7);
+        let total = basePrice * bookingOptions.adults;
+        total += childPrice * bookingOptions.children;
+        if (bookingOptions.trolley) total += 102;
+        if (bookingOptions.suitcase) total += 224;
+        if (bookingOptions.transfer) total += 57 * (bookingOptions.adults + bookingOptions.children);
+        return total;
+    };
+
+    const confirmBooking = (e) => {
+        e.stopPropagation();
+        const userKey = getUserKey();
+        const existing = cart.find(item => item.id === bookingDeal.id && item.type === 'deal');
+        if (existing) {
+            alert('חבילה זו כבר נמצאת בעגלה שלך!');
+            return;
+        }
+        const totalPrice = calculateTotal();
+        const updated = [...cart, {
+            ...bookingDeal,
+            type: 'deal',
+            addedAt: new Date().toISOString(),
+            bookingOptions: { ...bookingOptions },
+            totalPrice,
+        }];
+        setCart(updated);
+        localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
+        window.dispatchEvent(new Event('userDataUpdated'));
+        setBookingDeal(null);
+        alert('החבילה נוספה לעגלה! 🛒');
     };
 
     const handleCompareToggle = (dealId) => {
@@ -404,9 +439,9 @@ const DealDetails = () => {
                                     >
                                         פרטים מלאים
                                     </button>
-                                    <button 
+                                    <button
                                         className="btn-book-now"
-                                        onClick={(e) => addToCart(deal, e)}
+                                        onClick={(e) => openBookingModal(deal, e)}
                                     >
                                         הזמן עכשיו
                                     </button>
@@ -476,15 +511,200 @@ const DealDetails = () => {
                                         <p className="discount-line">הנחה: <span className="discount-amount">-{selectedPackage.discount}%</span></p>
                                         <p className="final-price-line">מחיר סופי: <span className="final-price">₪{selectedPackage.price}</span></p>
                                     </div>
-                                    <button 
+                                    <button
                                         className="deal-btn-modal-book"
                                         onClick={(e) => {
-                                            addToCart(selectedPackage, e);
                                             setSelectedPackage(null);
+                                            openBookingModal(selectedPackage, e);
                                         }}
                                     >
                                         הזמן את החבילה הזו
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Booking Options Modal */}
+            {bookingDeal && (
+                <div className="deal-modal-overlay" onClick={() => setBookingDeal(null)}>
+                    <div className="booking-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="deal-close-btn booking-close-btn" onClick={() => setBookingDeal(null)}>✕</button>
+
+                        {/* Header */}
+                        <div className="booking-modal-header">
+                            <div className="booking-header-row">
+                                <div className="booking-destination-info">
+                                    <h2 className="booking-destination">{bookingDeal.destination}</h2>
+                                    <div className="booking-header-chips">
+                                        <span className="booking-header-chip">
+                                            <PlaneTakeoff size={13} /> {bookingDeal.airline}
+                                        </span>
+                                        <span className="booking-header-chip">
+                                            <Hotel size={13} /> {bookingDeal.hotelName || bookingDeal.hotel}
+                                        </span>
+                                        <span className="booking-header-chip">
+                                            <CalendarDays size={13} /> {bookingDeal.dates}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="booking-header-price">
+                                    <span className="booking-header-price-label">החל מ</span>
+                                    <span className="booking-header-price-value">₪{bookingDeal.price}</span>
+                                    <span className="booking-header-price-per">למבוגר</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Body */}
+                        <div className="booking-modal-body">
+
+                            {/* Options Column */}
+                            <div className="booking-options-col">
+
+                                {/* Passengers */}
+                                <div className="booking-section">
+                                    <h3 className="booking-section-title">נוסעים</h3>
+                                    <div className="passenger-row">
+                                        <div className="passenger-info">
+                                            <span className="passenger-label">מבוגרים</span>
+                                            <span className="passenger-desc">גיל 12+</span>
+                                        </div>
+                                        <div className="passenger-counter">
+                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, adults: Math.max(1, p.adults - 1) }))} disabled={bookingOptions.adults <= 1}>−</button>
+                                            <span className="counter-value">{bookingOptions.adults}</span>
+                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, adults: Math.min(9, p.adults + 1) }))} disabled={bookingOptions.adults >= 9}>+</button>
+                                        </div>
+                                    </div>
+                                    <div className="passenger-row">
+                                        <div className="passenger-info">
+                                            <span className="passenger-label">ילדים</span>
+                                            <span className="passenger-desc">גיל 2–11</span>
+                                        </div>
+                                        <div className="passenger-counter">
+                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, children: Math.max(0, p.children - 1) }))} disabled={bookingOptions.children <= 0}>−</button>
+                                            <span className="counter-value">{bookingOptions.children}</span>
+                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, children: Math.min(6, p.children + 1) }))} disabled={bookingOptions.children >= 6}>+</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Luggage */}
+                                <div className="booking-section">
+                                    <h3 className="booking-section-title">כבודה</h3>
+                                    <p className="booking-section-subtitle">גודל ומשקל</p>
+
+                                    <div className="booking-option-row">
+                                        <span className="booking-option-icon">🎒</span>
+                                        <div className="booking-option-info">
+                                            <span className="booking-option-name">טרולי</span>
+                                            <span className="booking-option-price">לכל הנוסעים, הלוך ושוב +₪102</span>
+                                        </div>
+                                        <label className="toggle-switch">
+                                            <input type="checkbox" checked={bookingOptions.trolley} onChange={(e) => setBookingOptions(p => ({ ...p, trolley: e.target.checked }))} />
+                                            <span className="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div className="booking-option-row">
+                                        <span className="booking-option-icon">🧳</span>
+                                        <div className="booking-option-info">
+                                            <span className="booking-option-name">מזוודה</span>
+                                            <span className="booking-option-price">לכל הנוסעים, הלוך ושוב +₪224</span>
+                                        </div>
+                                        <label className="toggle-switch">
+                                            <input type="checkbox" checked={bookingOptions.suitcase} onChange={(e) => setBookingOptions(p => ({ ...p, suitcase: e.target.checked }))} />
+                                            <span className="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {/* Transfer */}
+                                <div className="booking-section">
+                                    <h3 className="booking-section-title">הסעות</h3>
+                                    <div className="booking-option-row">
+                                        <span className="booking-option-icon">🚌</span>
+                                        <div className="booking-option-info">
+                                            <span className="booking-option-name">שירות הסעות</span>
+                                            <span className="booking-option-price">החל מ-₪57 לאדם</span>
+                                        </div>
+                                        <label className="toggle-switch">
+                                            <input type="checkbox" checked={bookingOptions.transfer} onChange={(e) => setBookingOptions(p => ({ ...p, transfer: e.target.checked }))} />
+                                            <span className="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {/* Cancellation Policy */}
+                                <div className="booking-section">
+                                    <h3 className="booking-section-title">תנאי החבילה</h3>
+                                    <label className="cancellation-option-row">
+                                        <input type="radio" name="cancellation" checked={!bookingOptions.cancellable} onChange={() => setBookingOptions(p => ({ ...p, cancellable: false }))} />
+                                        <div className="cancellation-option-info">
+                                            <span className="cancellation-option-name">ללא אפשרות ביטול</span>
+                                            <span className="cancellation-option-price">₪{bookingDeal.price} למבוגר</span>
+                                        </div>
+                                    </label>
+                                    <label className="cancellation-option-row">
+                                        <input type="radio" name="cancellation" checked={bookingOptions.cancellable} onChange={() => setBookingOptions(p => ({ ...p, cancellable: true }))} />
+                                        <div className="cancellation-option-info">
+                                            <span className="cancellation-option-name">ביטול חינם עד 30 יום לפני הנסיעה</span>
+                                            <span className="cancellation-option-price cancellation-free">₪{bookingDeal.price + 55} למבוגר</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            {/* Price Summary Column */}
+                            <div className="booking-summary-col">
+                                <div className="price-summary-card">
+                                    <h3 className="price-summary-title">סיכום מחיר</h3>
+
+                                    <div className="price-summary-rows">
+                                        <div className="price-summary-row">
+                                            <span>{bookingOptions.adults} מבוגרים × ₪{bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price}</span>
+                                            <span>₪{(bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price) * bookingOptions.adults}</span>
+                                        </div>
+                                        {bookingOptions.children > 0 && (
+                                            <div className="price-summary-row">
+                                                <span>{bookingOptions.children} ילדים × ₪{Math.round((bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price) * 0.7)}</span>
+                                                <span>₪{Math.round((bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price) * 0.7 * bookingOptions.children)}</span>
+                                            </div>
+                                        )}
+                                        {bookingOptions.trolley && (
+                                            <div className="price-summary-row">
+                                                <span>טרולי (הלוך ושוב)</span>
+                                                <span>₪102</span>
+                                            </div>
+                                        )}
+                                        {bookingOptions.suitcase && (
+                                            <div className="price-summary-row">
+                                                <span>מזוודה (הלוך ושוב)</span>
+                                                <span>₪224</span>
+                                            </div>
+                                        )}
+                                        {bookingOptions.transfer && (
+                                            <div className="price-summary-row">
+                                                <span>הסעות × {bookingOptions.adults + bookingOptions.children} נוסעים</span>
+                                                <span>₪{57 * (bookingOptions.adults + bookingOptions.children)}</span>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="price-summary-divider"></div>
+
+                                    <div className="price-summary-total">
+                                        <span>סה״כ לתשלום</span>
+                                        <span className="price-summary-total-amount">₪{calculateTotal()}</span>
+                                    </div>
+
+                                    <button className="btn-confirm-booking" onClick={confirmBooking}>
+                                        הוסף לסל
+                                    </button>
+
+                                    <p className="booking-note">לאחר ההוספה תוכלו לעיין ולערוך בעמוד הסל</p>
                                 </div>
                             </div>
                         </div>
@@ -543,11 +763,11 @@ const DealDetails = () => {
                                             </div>
                                         </div>
                                         
-                                        <button 
+                                        <button
                                             className="btn-select-package"
                                             onClick={(e) => {
-                                                addToCart(deal, e);
                                                 setSelectedPackage(null);
+                                                openBookingModal(deal, e);
                                             }}
                                         >
                                             בחר חבילה זו

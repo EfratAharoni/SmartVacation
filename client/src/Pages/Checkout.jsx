@@ -77,6 +77,7 @@ export default function Checkout() {
     <div className="checkout-page">
       <Header />
       <div className="checkout-fullpage-bg">
+        <div className="checkout-content-wrapper">
         <div className="checkout-top-steps">
           <div className={`checkout-step ${step === 1 ? "active" : step > 1 ? "done" : ""}`}><span>1</span> פרטי המזמין/ה</div>
           <div className={`checkout-step ${step === 2 ? "active" : step > 2 ? "done" : ""}`}><span>2</span> פרטי התשלום</div>
@@ -302,6 +303,7 @@ export default function Checkout() {
               {formError && <div className="form-error">{formError}</div>}
             </form>
           </section>
+        </div>
         </div>
       </div>
       <Footer />

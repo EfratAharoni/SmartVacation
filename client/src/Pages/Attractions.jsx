@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { Globe, Landmark, Images, Trees, Building2, Gift, Star, MapPin } from "lucide-react";
 import "./Attractions.css";
@@ -16,6 +17,8 @@ const Attractions = () => {
   const [attractions, setAttractions] = useState([]); // הנתונים מגיעים מכאן
   const [filteredAttractions, setFilteredAttractions] = useState([]);
   const [selectedAttraction, setSelectedAttraction] = useState(null);
+  const [bookingAttraction, setBookingAttraction] = useState(null);
+  const [bookingQty, setBookingQty] = useState({ adults: 1, children: 0, infants: 0 });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [cart, setCart] = useState([]);
@@ -107,30 +110,55 @@ const Attractions = () => {
     window.dispatchEvent(new Event("userDataUpdated"));
   };
 
-  // פונקציית עגלה - משתמשת ב _id
-  const addToCart = (attraction) => {
+  const getChildPrice = (attraction) =>
+    attraction.childPrice != null
+      ? attraction.childPrice
+      : Math.round(attraction.price * 0.6);
+
+  const calcAttractionTotal = (attraction, qty) => {
+    if (attraction.price === 0) return 0;
+    const adultTotal = attraction.price * qty.adults;
+    const childTotal = getChildPrice(attraction) * qty.children;
+    return adultTotal + childTotal; // תינוקות תמיד חינם
+  };
+
+  const openAttractionBooking = (attraction, e) => {
+    e?.stopPropagation();
     if (!isLoggedIn) {
-      alert("כדי להוסיף לעגלה יש להתחבר תחילה");
+      alert("כדי להזמין יש להתחבר תחילה");
       navigate("/login");
       return;
     }
+    setBookingQty({ adults: 1, children: 0, infants: 0 });
+    setBookingAttraction(attraction);
+    setSelectedAttraction(null);
+  };
+
+  const confirmAttractionBooking = () => {
     const userKey = getUserKey();
     const alreadyIn = cart.some(
-      (item) => item._id === attraction._id && item.type === "attraction"
+      (item) => item._id === bookingAttraction._id && item.type === "attraction"
     );
     if (alreadyIn) {
-      alert(`${attraction.name} כבר נמצא בעגלה שלך!`);
+      alert(`${bookingAttraction.name} כבר נמצא בעגלה שלך!`);
       return;
     }
+    const totalPrice = calcAttractionTotal(bookingAttraction, bookingQty);
     const updated = [
       ...cart,
-      { ...attraction, type: "attraction", addedAt: new Date().toISOString() },
+      {
+        ...bookingAttraction,
+        type: "attraction",
+        addedAt: new Date().toISOString(),
+        bookingQty: { ...bookingQty },
+        totalPrice,
+      },
     ];
     setCart(updated);
     localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
     window.dispatchEvent(new Event("userDataUpdated"));
-    alert(`${attraction.name} נוסף לעגלה! 🛒`);
-    setSelectedAttraction(null);
+    setBookingAttraction(null);
+    alert(`${bookingAttraction.name} נוסף לעגלה! 🛒`);
   };
 
   const openAttractionModal = (attraction) => setSelectedAttraction(attraction);
@@ -259,10 +287,7 @@ const Attractions = () => {
                   </div>
                   <button
                     className="book-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addToCart(attraction);
-                    }}
+                    onClick={(e) => openAttractionBooking(attraction, e)}
                   >
                     הזמן עכשיו
                   </button>
@@ -273,9 +298,127 @@ const Attractions = () => {
         </div>
       </section>
 
+      {/* Attraction Booking Modal */}
+      {bookingAttraction && createPortal(
+        <div className="attr-booking-overlay" onClick={() => setBookingAttraction(null)}>
+          <div className="attr-booking-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="attr-close-btn" onClick={() => setBookingAttraction(null)}>✕</button>
+
+            {/* Header */}
+            <div className="attr-modal-header">
+              <div className="attr-header-row">
+                <div className="attr-destination-info">
+                  <h2 className="attr-destination">{bookingAttraction.name}</h2>
+                  <div className="attr-header-chips">
+                    <span className="attr-header-chip">📍 {bookingAttraction.location}</span>
+                    <span className="attr-header-chip">⭐ {bookingAttraction.rating}</span>
+                    <span className="attr-header-chip">⏱ {bookingAttraction.duration}</span>
+                  </div>
+                </div>
+                <div className="attr-header-price">
+                  <span className="attr-header-price-label">מחיר</span>
+                  <span className="attr-header-price-value">
+                    {bookingAttraction.price === 0 ? "חינם" : `₪${bookingAttraction.price}`}
+                  </span>
+                  <span className="attr-header-price-per">למבוגר</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Body */}
+            <div className="attr-modal-body">
+
+              {/* Options Column */}
+              <div className="attr-options-col">
+                <div className="attr-section">
+                  <h3 className="attr-section-title">מבקרים</h3>
+
+                  <div className="attr-passenger-row">
+                    <div className="attr-passenger-info">
+                      <span className="attr-passenger-label">מבוגרים</span>
+                      <span className="attr-passenger-desc">גיל 13+ | {bookingAttraction.price === 0 ? "חינם" : `₪${bookingAttraction.price} לאדם`}</span>
+                    </div>
+                    <div className="attr-passenger-counter">
+                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, adults: Math.max(1, q.adults - 1) }))} disabled={bookingQty.adults <= 1}>−</button>
+                      <span className="attr-counter-val">{bookingQty.adults}</span>
+                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, adults: Math.min(20, q.adults + 1) }))}>+</button>
+                    </div>
+                  </div>
+
+                  {bookingAttraction.price > 0 && (
+                    <div className="attr-passenger-row">
+                      <div className="attr-passenger-info">
+                        <span className="attr-passenger-label">ילדים</span>
+                        <span className="attr-passenger-desc">גיל 3–12 | ₪{getChildPrice(bookingAttraction)} לילד</span>
+                      </div>
+                      <div className="attr-passenger-counter">
+                        <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, children: Math.max(0, q.children - 1) }))} disabled={bookingQty.children <= 0}>−</button>
+                        <span className="attr-counter-val">{bookingQty.children}</span>
+                        <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, children: Math.min(20, q.children + 1) }))}>+</button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="attr-passenger-row">
+                    <div className="attr-passenger-info">
+                      <span className="attr-passenger-label">תינוקות</span>
+                      <span className="attr-passenger-desc">גיל 0–2 | חינם</span>
+                    </div>
+                    <div className="attr-passenger-counter">
+                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, infants: Math.max(0, q.infants - 1) }))} disabled={bookingQty.infants <= 0}>−</button>
+                      <span className="attr-counter-val">{bookingQty.infants}</span>
+                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, infants: Math.min(10, q.infants + 1) }))}>+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Price Summary Column */}
+              <div className="attr-summary-col">
+                <div className="attr-price-card">
+                  <h3 className="attr-price-title">סיכום מחיר</h3>
+                  <div className="attr-price-rows">
+                    <div className="attr-price-row">
+                      <span>{bookingQty.adults} מבוגרים × ₪{bookingAttraction.price}</span>
+                      <span>₪{bookingAttraction.price * bookingQty.adults}</span>
+                    </div>
+                    {bookingQty.children > 0 && (
+                      <div className="attr-price-row">
+                        <span>{bookingQty.children} ילדים × ₪{getChildPrice(bookingAttraction)}</span>
+                        <span>₪{getChildPrice(bookingAttraction) * bookingQty.children}</span>
+                      </div>
+                    )}
+                    {bookingQty.infants > 0 && (
+                      <div className="attr-price-row">
+                        <span>{bookingQty.infants} תינוקות</span>
+                        <span className="attr-free">חינם</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="attr-price-divider"></div>
+                  <div className="attr-price-total">
+                    <span>סה״כ לתשלום</span>
+                    <span className="attr-price-total-amount">
+                      {calcAttractionTotal(bookingAttraction, bookingQty) === 0
+                        ? "חינם"
+                        : `₪${calcAttractionTotal(bookingAttraction, bookingQty)}`}
+                    </span>
+                  </div>
+                  <button className="attr-confirm-btn" onClick={confirmAttractionBooking}>
+                    הוסף לסל
+                  </button>
+                  <p className="attr-price-note">לאחר ההוספה תוכלו לעיין ולערוך בעמוד הסל</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
       {/* Modal - השלמתי את החלק החסר */}
-      {selectedAttraction && (
-        <div className="modal-overlay" onClick={closeAttractionModal}>
+      {selectedAttraction && createPortal(
+        <div className="attr-booking-overlay" onClick={closeAttractionModal}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
@@ -315,22 +458,20 @@ const Attractions = () => {
                 <div className="modal-price">
                   <span className="price-label">מחיר: </span>
                   <span className="price-value">
-                    {selectedAttraction.price === 0 ? "חינם" : `₪${selectedAttraction.price}`}
+                    {selectedAttraction.price === 0 ? "חינם" : `₪${selectedAttraction.price} למבוגר`}
                   </span>
                 </div>
                 <button
-                    className="book-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addToCart(selectedAttraction);
-                    }}
-                  >
-                    הזמן עכשיו
-                  </button>
+                  className="book-btn"
+                  onClick={(e) => openAttractionBooking(selectedAttraction, e)}
+                >
+                  הזמן עכשיו
+                </button>
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
