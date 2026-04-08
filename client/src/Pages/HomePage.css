@@ -392,8 +392,7 @@
 
 .destinations-grid {
     display: grid;
-    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
-    grid-template-columns: repeat(4, minmax(300px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 2.5rem;
 }
 .destination-card {
@@ -530,15 +529,21 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+    .destinations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 1024px) {
     .nav-center {
         gap: 2rem;
     }
-    
+
     .nav-links {
         gap: 1.5rem;
     }
-    
+
     .nav-links a {
         font-size: 0.9rem;
     }
@@ -587,6 +592,7 @@
     .hero {
         padding: 5rem 5% 4rem;
         min-height: 400px;
+        background-attachment: scroll; /* Fix iOS Safari parallax bug */
     }
 
     .hero h1 {
@@ -634,6 +640,20 @@
 
     .destinations-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
     }
 }
 

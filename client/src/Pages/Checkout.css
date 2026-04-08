@@ -845,11 +845,11 @@
 
 @media (max-width: 640px) {
   .checkout-fullpage-bg {
-    padding: 80px 0.75rem 2rem;
+    padding: 80px 0.5rem 2rem;
   }
 
-  .checkout-form-col {
-    padding: 1.3rem 1.1rem;
+  .checkout-form-panel {
+    padding: 1.2rem 1rem;
   }
 
   .checkout-top-steps {
@@ -867,13 +867,16 @@
 
 
   .step-actions.two-buttons {
-    flex-direction: column-reverse;
+    grid-template-columns: 1fr;
+  }
+
+  .step-actions.two-buttons .pay-btn {
+    order: -1;
   }
 
   .step-actions.two-buttons .pay-btn,
   .step-actions.two-buttons .secondary-step-btn {
     width: 100%;
-    flex: unset;
     height: 50px;
   }
 

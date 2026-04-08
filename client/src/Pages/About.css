@@ -348,6 +348,14 @@ body {
         max-width: 100%;
         aspect-ratio: 16 / 10;
     }
+
+    .pro-slider {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pro-slider-wrapper {
+        padding: 0 50px;
+    }
 }
 
 @media (max-width: 768px) {
