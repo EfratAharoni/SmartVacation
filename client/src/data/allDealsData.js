@@ -1013,7 +1013,7 @@ export const allDealsData = [
     },
     {
         id: 45,
-        destination: 'פורטוגל - ליסבון',
+        destination: 'פורטוגל, ליסבון',
         image: '/images/lisbon.jpg',
         price: 2199,
         originalPrice: 3199,
