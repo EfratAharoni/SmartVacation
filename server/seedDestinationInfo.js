@@ -14,7 +14,7 @@ const seedDestinationInfo = async () => {
     await connectDB();
 
     const data = JSON.parse(
-        readFileSync(path.join(__dirname, "../client/src/Pages/DestinationInfo.json"), "utf-8")
+        readFileSync(path.join(__dirname, "data/DestinationInfo.json"), "utf-8")
     );
 
     await DestinationInfo.deleteMany({});

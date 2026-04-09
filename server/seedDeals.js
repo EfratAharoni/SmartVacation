@@ -14,11 +14,11 @@ const seedDeals = async () => {
     await connectDB();
 
     const dealsData = JSON.parse(
-        readFileSync(path.join(__dirname, "deals.json"), "utf-8")
+        readFileSync(path.join(__dirname, "data/deals.json"), "utf-8")
     );
 
     // Remove the numeric "id" field before inserting (MongoDB uses _id)
-    const dealsToInsert = dealsData.map(({ id, ...rest }) => rest);
+    const dealsToInsert = dealsData.map(({ ...rest }) => rest);
 
     // Delete existing deals and re-seed fresh
     await Deal.deleteMany({});
