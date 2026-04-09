@@ -105,6 +105,11 @@
     box-shadow: 0 0 0 4px rgba(39,180,211,0.15);
 }
 
+.search-box.has-value .search-icon {
+    opacity: 0;
+    visibility: hidden;
+}
+
 .category-filters {
     display: flex;
     gap: 1rem;

@@ -203,7 +203,7 @@ const Attractions = () => {
       {/* Search & Filter */}
       <section className="filter-section">
         <div className="filter-container">
-          <div className="search-box">
+          <div className={`search-box ${searchTerm ? 'has-value' : ''}`}>
             <span className="search-icon">🔍</span>
             <input
               type="text"

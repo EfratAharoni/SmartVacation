@@ -10,6 +10,8 @@ const getUserKey = () => {
     return name ? name.replace(/\s/g, '_') : 'guest';
 };
 
+const getDealId = (deal) => deal?._id || deal?.id;
+
 const DealDetails = () => {
     const { destination } = useParams();
     const navigate = useNavigate();
@@ -339,14 +341,16 @@ const DealDetails = () => {
             {/* Packages Grid */}
             <section className="packages-section">
                 <div className="packages-grid">
-                    {sortedPackages.map((deal) => (
-                        <div key={deal.id} className={`package-card ${compareSelection.includes(deal.id) ? 'selected-for-compare' : ''}`}>
+                    {sortedPackages.map((deal) => {
+                        const dealId = getDealId(deal);
+                        return (
+                        <div key={dealId} className={`package-card ${compareSelection.includes(dealId) ? 'selected-for-compare' : ''}`}>
                             {compareMode && (
                                 <div className="compare-checkbox">
                                     <input
                                         type="checkbox"
-                                        checked={compareSelection.includes(deal.id)}
-                                        onChange={() => handleCompareToggle(deal.id)}
+                                        checked={compareSelection.includes(dealId)}
+                                        onChange={() => handleCompareToggle(dealId)}
                                     />
                                 </div>
                             )}
@@ -358,8 +362,8 @@ const DealDetails = () => {
                             </div>
 
                             <button
-                                className={`favorite-heart ${favorites.some(fav => fav.id === deal.id) ? 'active' : ''}`}
-                                onClick={(e) => { e.stopPropagation(); toggleFavorite(deal.id); }}
+                                className={`favorite-heart ${favorites.some(fav => fav._id === dealId || fav.id === dealId) ? 'active' : ''}`}
+                                onClick={(e) => { e.stopPropagation(); toggleFavorite(dealId); }}
                             >
                                 <svg viewBox="0 0 24 24" className="heart-icon">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -443,7 +447,8 @@ const DealDetails = () => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    );
+                    })}
                 </div>
             </section>
 
@@ -716,11 +721,11 @@ const DealDetails = () => {
                         
                         <div className="comparison-grid">
                             {compareSelection.map(dealId => {
-                                const deal = destinationDeals.find(d => d.id === dealId);
+                                const deal = destinationDeals.find(d => getDealId(d) === dealId);
                                 if (!deal) return null;
                                 
                                 return (
-                                    <div key={deal.id} className="comparison-column">
+                                    <div key={getDealId(deal)} className="comparison-column">
                                         <div className="comparison-header">
                                             <h3>{deal.dates}</h3>
                                             <span className="comparison-price">₪{deal.price}</span>
