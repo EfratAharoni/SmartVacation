@@ -5,6 +5,7 @@ import { CalendarDays, X, Search } from 'lucide-react';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import './Deals.css';
+import { VIBE_DESTINATIONS, VIBE_LABELS } from './fuzzySearch';
 
 // Helper: get user-specific localStorage key
 const getUserKey = () => {
@@ -63,6 +64,7 @@ const Deals = () => {
     const [filteredDestinations, setFilteredDestinations] = useState([]);
     const [sortBy, setSortBy] = useState('price-low');
     const [isKosherOnly, setIsKosherOnly] = useState(false);
+    const [vibeFilter, setVibeFilter] = useState(null); // 'beach' | 'adventure' | 'cheap' | 'romantic' | 'city'
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const datePickerRef = useRef(null);
 
@@ -118,12 +120,13 @@ const Deals = () => {
 
     useEffect(() => {
         filterDeals();
-    }, [destinationKeyword, priceRange, sortBy, dateRangeSelection, isDateRangeActive, deals, isKosherOnly]);
+    }, [destinationKeyword, priceRange, sortBy, dateRangeSelection, isDateRangeActive, deals, isKosherOnly, vibeFilter]);
 
     useEffect(() => {
         const destinationFromQuery = (searchParams.get('destination') || '').trim();
         const startDateQuery = searchParams.get('startDate');
         const endDateQuery = searchParams.get('endDate');
+        const kosherQuery = searchParams.get('kosher');
 
         if (destinationFromQuery) {
             setDestinationKeyword(destinationFromQuery);
@@ -143,6 +146,16 @@ const Deals = () => {
                 ]);
                 setIsDateRangeActive(true);
             }
+        }
+
+        if (kosherQuery === 'true') {
+            setIsKosherOnly(true);
+        }
+
+        const vibeQuery = searchParams.get('vibe');
+        if (vibeQuery) {
+            setVibeFilter(vibeQuery);
+            if (vibeQuery === 'cheap') setSortBy('price-low');
         }
     }, [searchParams]);
 
@@ -246,6 +259,17 @@ const Deals = () => {
 
         if (isKosherOnly) {
             filtered = filtered.filter(deal => Boolean(deal.isKosherFriendly));
+        }
+
+        if (vibeFilter && VIBE_DESTINATIONS[vibeFilter]) {
+            const vibeKeywords = VIBE_DESTINATIONS[vibeFilter];
+            filtered = filtered.filter(deal =>
+                vibeKeywords.some(kw => deal.destination.includes(kw))
+            );
+        }
+
+        if (vibeFilter === 'cheap') {
+            filtered = filtered.filter(deal => deal.price <= 2799);
         }
 
         if (isDateRangeActive) {
@@ -494,6 +518,19 @@ const Deals = () => {
                                 <option value="discount">הנחה</option>
                             </select>
                         </div>
+
+                        {vibeFilter && (
+                            <div className="filter-group">
+                                <label>סוכן AI</label>
+                                <button
+                                    type="button"
+                                    className="kosher-toggle active"
+                                    onClick={() => setVibeFilter(null)}
+                                >
+                                    {VIBE_LABELS[vibeFilter]} ✕
+                                </button>
+                            </div>
+                        )}
 
                         <div className="filter-group kosher-filter-group">
                             <label>כשרות</label>

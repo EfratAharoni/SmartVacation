@@ -1,13 +1,14 @@
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../Header&Footer/Header";
 import Footer from "../Header&Footer/Footer";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
-import { BedDouble, CalendarDays, Search, X } from "lucide-react";
+import { BedDouble, CalendarDays, Search, Sparkles, X } from "lucide-react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { fuzzySearchDestinations, parseHebrewVacationQuery, VIBE_LABELS } from "./fuzzySearch";
 
 const HomePage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,66 +23,46 @@ const HomePage = () => {
     },
   ]);
   const [isDateActive, setIsDateActive] = useState(false);
+
+  // AI search state
+  const [aiMode, setAiMode] = useState(false);
+  const [aiQuery, setAiQuery] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState(null);
+  const [aiError, setAiError] = useState(null);
+  const [filledByAi, setFilledByAi] = useState(false);
+
   const destinationRef = useRef(null);
   const datePickerRef = useRef(null);
+  const aiInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const availableDestinations = useMemo(
-    () => [
-      "פריז, צרפת",
-      "רומא, איטליה",
-      "ברצלונה, ספרד",
-      "אמסטרדם, הולנד",
-      "לונדון, אנגליה",
-      "דובאי, איחוד האמירויות",
-      "באלי, אינדונזיה",
-      "טוקיו, יפן",
-      "ניו יורק, ארה\"ב",
-      "מיאמי, ארה\"ב",
-      "קנקון, מקסיקו",
-      "סנטוריני, יוון",
-      "פראג, צ'כיה",
-      "בנגקוק, תאילנד",
-      "מלדיביים",
-      "איסטנבול, טורקיה",
-      "ברלין, גרמניה",
-      "ליסבון, פורטוגל",
-    ],
-    []
-  );
-
-  const destinationSuggestions = useMemo(() => {
-    const query = destinationQuery.trim();
-    if (!query) return availableDestinations.slice(0, 8);
-    return availableDestinations
-      .filter((item) => item.toLowerCase().includes(query.toLowerCase()))
-      .slice(0, 8);
-  }, [availableDestinations, destinationQuery]);
+  // Focus AI input when entering AI mode
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+    if (aiMode) {
+      setTimeout(() => aiInputRef.current?.focus(), 50);
+    }
+  }, [aiMode]);
 
+  /* ── Destination suggestions via fuzzy search ── */
+  const destinationSuggestions = fuzzySearchDestinations(destinationQuery, 8);
+
+  /* ── Scroll + card animation ── */
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
 
-    // Animation on scroll observer
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -100px 0px",
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = "1";
-          entry.target.style.transform = "translateY(0)";
-        }
-      });
-    }, observerOptions);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
+    );
 
     document
       .querySelectorAll(".feature-card, .destination-card")
@@ -98,26 +79,84 @@ const HomePage = () => {
     };
   }, []);
 
+  /* ── Outside click ── */
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        destinationRef.current &&
+        !destinationRef.current.contains(event.target)
+      ) {
+        setIsDestinationsOpen(false);
+      }
+      if (
+        datePickerRef.current &&
+        !datePickerRef.current.contains(event.target)
+      ) {
+        setIsDatePickerOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  /* ── Smart search: parse free Hebrew text locally (no API) ── */
+  const handleAiSearch = () => {
+    if (!aiQuery.trim()) return;
+    setAiLoading(true);
+    setAiError(null);
+    setAiResult(null);
+    setFilledByAi(false);
+
+    setTimeout(() => {
+      try {
+        const data = parseHebrewVacationQuery(aiQuery);
+        const hasResult = data.destination || data.startDate || data.budget || data.guests || data.isKosher || data.vibe;
+
+        if (!hasResult) {
+          setAiError("לא הצלחתי לזהות פרטים — נסי לכלול יעד, חודש, תקציב או נוסעים.");
+          setAiLoading(false);
+          return;
+        }
+
+        setAiResult(data);
+        if (data.destination) setDestinationQuery(data.destination);
+        if (data.startDate && data.endDate) {
+          setDateRange([{ startDate: new Date(data.startDate), endDate: new Date(data.endDate), key: "selection" }]);
+          setIsDateActive(true);
+        }
+
+        // Return to regular mode so the user sees the filled bar
+        setAiMode(false);
+        setFilledByAi(true);
+        setTimeout(() => setFilledByAi(false), 3000);
+      } catch {
+        setAiError("אירעה שגיאה בפענוח, נסי שוב.");
+      } finally {
+        setAiLoading(false);
+      }
+    }, 480);
+  };
+
+  const exitAiMode = () => {
+    setAiMode(false);
+    setAiQuery("");
+    setAiError(null);
+  };
+
+  /* ── Navigate to Deals ── */
   const startPlanning = () => {
     const params = new URLSearchParams();
-    if (destinationQuery.trim()) {
-      params.set("destination", destinationQuery.trim());
-    }
+    if (destinationQuery.trim()) params.set("destination", destinationQuery.trim());
     if (isDateActive) {
-      const start = dateRange[0].startDate.toISOString().slice(0, 10);
-      const end = dateRange[0].endDate.toISOString().slice(0, 10);
-      params.set("startDate", start);
-      params.set("endDate", end);
+      params.set("startDate", dateRange[0].startDate.toISOString().slice(0, 10));
+      params.set("endDate", dateRange[0].endDate.toISOString().slice(0, 10));
     }
-
-    const query = params.toString();
-    navigate(query ? `/deals?${query}` : "/deals");
+    if (aiResult?.isKosher) params.set("kosher", "true");
+    if (aiResult?.vibe && aiResult.vibe !== "kosher") params.set("vibe", aiResult.vibe);
+    navigate(params.toString() ? `/deals?${params}` : "/deals");
   };
 
-  const explorePlaces = () => {
-    document.querySelector("#packages").scrollIntoView({ behavior: "smooth" });
-  };
-
+  /* ── Helpers ── */
   const formatDateLabel = (date) =>
     new Intl.DateTimeFormat("he-IL", {
       day: "2-digit",
@@ -126,29 +165,28 @@ const HomePage = () => {
     }).format(date);
 
   const dateLabel = isDateActive
-    ? `${formatDateLabel(dateRange[0].startDate)} - ${formatDateLabel(
-        dateRange[0].endDate
-      )}`
+    ? `${formatDateLabel(dateRange[0].startDate)} - ${formatDateLabel(dateRange[0].endDate)}`
     : "תאריך צ'ק-אין - תאריך צ'ק-אאוט";
 
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (destinationRef.current && !destinationRef.current.contains(event.target)) {
-        setIsDestinationsOpen(false);
-      }
-
-      if (datePickerRef.current && !datePickerRef.current.contains(event.target)) {
-        setIsDatePickerOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, []);
+  /* ── Summary badge text ── */
+  const buildAiSummary = (r) => {
+    const parts = [];
+    if (r.destination) parts.push(r.destination);
+    if (r.startDate && r.endDate) {
+      const fmt = (d) =>
+        new Intl.DateTimeFormat("he-IL", { day: "2-digit", month: "2-digit" }).format(
+          new Date(d)
+        );
+      parts.push(`${fmt(r.startDate)} – ${fmt(r.endDate)}`);
+    }
+    if (r.guests) parts.push(`${r.guests} נוסעים`);
+    if (r.budget) parts.push(`עד ₪${r.budget.toLocaleString()}`);
+    if (r.vibe && VIBE_LABELS[r.vibe]) parts.push(VIBE_LABELS[r.vibe]);
+    return parts.join(" · ");
+  };
 
   return (
     <div className="home-page">
-
       {/* Hero Section */}
       <section className="hero" id="home">
         <h1 className="floating">החופשה המושלמת שלך מתחילה כאן</h1>
@@ -159,112 +197,164 @@ const HomePage = () => {
           <span className="hero-icon"> ✦ </span>
           <span>היעדים הכי מדהימים בעולם</span>
         </div>
-        <div className="hero-search-bar" role="search" aria-label="חיפוש חופשה">
-          <div className="search-cell destination-cell" ref={destinationRef}>
-            <BedDouble size={18} className="search-cell-icon" />
-            <input
-              type="text"
-              className="search-input"
-              placeholder="לאן נוסעים?"
-              value={destinationQuery}
-              onChange={(e) => {
-                setDestinationQuery(e.target.value);
-                setIsDestinationsOpen(true);
-              }}
-              onFocus={() => setIsDestinationsOpen(true)}
-            />
 
-            {isDestinationsOpen && (
-              <div className="search-popover">
-                {destinationSuggestions.length > 0 ? (
-                  destinationSuggestions.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      className="search-suggestion-item"
-                      onClick={() => {
-                        setDestinationQuery(item);
-                        setIsDestinationsOpen(false);
-                      }}
-                    >
-                      {item}
-                    </button>
-                  ))
-                ) : (
-                  <div className="search-suggestion-empty">לא נמצאו יעדים</div>
+        {/* ── Unified search bar (regular ↔ AI mode) ── */}
+        <div
+          className={`hero-search-bar${filledByAi ? " search-bar--ai-filled" : ""}${aiMode ? " hero-search-bar--ai-mode" : ""}`}
+          role="search"
+          aria-label="חיפוש חופשה"
+        >
+          {aiMode ? (
+            /* ── AI mode content ── */
+            <>
+              <button
+                type="button"
+                className="ai-back-btn"
+                onClick={exitAiMode}
+                aria-label="חזרה לחיפוש רגיל"
+              >
+                <X size={14} />
+                <span>חזרה</span>
+              </button>
+
+              <Sparkles size={18} className="ai-mode-sparkle" />
+
+              <input
+                ref={aiInputRef}
+                type="text"
+                className="ai-mode-input"
+                placeholder='תאר לי את החופשה שלך: "זוג, יוון, אוגוסט, ₪5,000"'
+                value={aiQuery}
+                onChange={(e) => { setAiQuery(e.target.value); setAiError(null); }}
+                onKeyDown={(e) => e.key === "Enter" && handleAiSearch()}
+                disabled={aiLoading}
+              />
+
+              <button
+                type="button"
+                className="ai-mode-submit"
+                onClick={handleAiSearch}
+                disabled={aiLoading || !aiQuery.trim()}
+              >
+                {aiLoading
+                  ? <span className="ai-spinner" aria-hidden="true" />
+                  : "נתח"}
+              </button>
+            </>
+          ) : (
+            /* ── Regular mode content ── */
+            <>
+              <div className="search-cell destination-cell" ref={destinationRef}>
+                <BedDouble size={18} className="search-cell-icon" />
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="לאן נוסעים?"
+                  value={destinationQuery}
+                  onChange={(e) => { setDestinationQuery(e.target.value); setIsDestinationsOpen(true); }}
+                  onFocus={() => setIsDestinationsOpen(true)}
+                />
+                {isDestinationsOpen && (
+                  <div className="search-popover">
+                    {destinationSuggestions.length > 0 ? (
+                      destinationSuggestions.map((item) => (
+                        <button key={item} type="button" className="search-suggestion-item"
+                          onClick={() => { setDestinationQuery(item); setIsDestinationsOpen(false); }}>
+                          {item}
+                        </button>
+                      ))
+                    ) : (
+                      <div className="search-suggestion-empty">לא נמצאו יעדים</div>
+                    )}
+                  </div>
                 )}
               </div>
-            )}
-          </div>
 
-          <div className="search-cell date-cell" ref={datePickerRef}>
-            <CalendarDays size={18} className="search-cell-icon" />
+              <div className="search-cell date-cell" ref={datePickerRef}>
+                <CalendarDays size={18} className="search-cell-icon" />
+                <button type="button" className="date-trigger-btn"
+                  onClick={() => setIsDatePickerOpen((prev) => !prev)}>
+                  {dateLabel}
+                </button>
+                {isDatePickerOpen && (
+                  <div className="search-popover date-popover">
+                    <div className="search-popover-header">
+                      <span>בחר תאריכים</span>
+                      <button type="button" className="popover-close"
+                        onClick={() => setIsDatePickerOpen(false)} aria-label="סגירה">
+                        <X size={16} />
+                      </button>
+                    </div>
+                    <DateRange
+                      ranges={dateRange}
+                      onChange={(ranges) => { setDateRange([ranges.selection]); setIsDateActive(true); }}
+                      minDate={new Date(2026, 0, 1)}
+                      maxDate={new Date(2032, 11, 31)}
+                      months={1}
+                      direction="horizontal"
+                      showDateDisplay={false}
+                      editableDateInputs={false}
+                      moveRangeOnFirstSelection={false}
+                      rangeColors={["#667eea"]}
+                    />
+                    <div className="date-popover-actions">
+                      <button type="button" className="popover-action-btn ghost"
+                        onClick={() => { setIsDateActive(false); setIsDatePickerOpen(false); }}>
+                        נקה
+                      </button>
+                      <button type="button" className="popover-action-btn"
+                        onClick={() => setIsDatePickerOpen(false)}>
+                        אישור
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button type="button" className="search-submit-btn" onClick={startPlanning}>
+                <Search size={18} />
+                חיפוש
+              </button>
+
+              {/* AI toggle button — lives inside the pill */}
+              <button
+                type="button"
+                className="ai-pill-btn"
+                onClick={() => { setAiMode(true); setAiError(null); }}
+                title="חיפוש חכם בשפה חופשית"
+              >
+                <Sparkles size={15} />
+                <span>סוכן AI</span>
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* ── Error shown below bar when in AI mode ── */}
+        {aiMode && aiError && (
+          <p className="ai-inline-error" role="alert">{aiError}</p>
+        )}
+
+        {/* ── Result badge after AI fills the bar ── */}
+        {aiResult && !aiMode && (
+          <div className="ai-result-badge" role="status">
+            <Sparkles size={14} className="ai-badge-icon" />
+            <span>{buildAiSummary(aiResult)}</span>
             <button
               type="button"
-              className="date-trigger-btn"
-              onClick={() => setIsDatePickerOpen((prev) => !prev)}
+              className="ai-badge-clear"
+              onClick={() => {
+                setAiResult(null);
+                setAiQuery("");
+                setDestinationQuery("");
+                setIsDateActive(false);
+              }}
+              aria-label="נקה תוצאת AI"
             >
-              {dateLabel}
+              <X size={12} />
             </button>
-
-            {isDatePickerOpen && (
-              <div className="search-popover date-popover">
-                <div className="search-popover-header">
-                  <span>בחר תאריכים</span>
-                  <button
-                    type="button"
-                    className="popover-close"
-                    onClick={() => setIsDatePickerOpen(false)}
-                    aria-label="סגירה"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-
-                <DateRange
-                  ranges={dateRange}
-                  onChange={(ranges) => {
-                    setDateRange([ranges.selection]);
-                    setIsDateActive(true);
-                  }}
-                  minDate={new Date(2026, 0, 1)}
-                  maxDate={new Date(2032, 11, 31)}
-                  months={1}
-                  direction="horizontal"
-                  showDateDisplay={false}
-                  editableDateInputs={false}
-                  moveRangeOnFirstSelection={false}
-                  rangeColors={["#667eea"]}
-                />
-
-                <div className="date-popover-actions">
-                  <button
-                    type="button"
-                    className="popover-action-btn ghost"
-                    onClick={() => {
-                      setIsDateActive(false);
-                      setIsDatePickerOpen(false);
-                    }}
-                  >
-                    נקה
-                  </button>
-                  <button
-                    type="button"
-                    className="popover-action-btn"
-                    onClick={() => setIsDatePickerOpen(false)}
-                  >
-                    אישור
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
-
-          <button type="button" className="search-submit-btn" onClick={startPlanning}>
-            <Search size={18} />
-            חיפוש
-          </button>
-        </div>
+        )}
       </section>
 
       {/* Destinations Preview */}
@@ -313,7 +403,7 @@ const HomePage = () => {
 
           <div className="destination-card">
             <div className="destination-image">
-              <img src="/images/new-york.jpg" />
+              <img src="/images/new-york.jpg" alt="ניו יורק, ארה&quot;ב" />
             </div>
             <div className="destination-info">
               <h3>ניו יורק, ארה"ב</h3>
@@ -351,16 +441,10 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        {/* <div className="more-destinations-container">
-          <a href="#" className="discover-more-link">
-          <span className="arrow-icon">←</span>
-            גלה עוד יעדים לחופשה
-          </a>
-        </div> */}
       </section>
-      {/* Features Section */}
+
+      {/* Split Section */}
       <section className="split-section">
-        {/* חצי כהה - אודות */}
         <div className="side about-side">
           <div className="side-content">
             <h2 className="title-light">הסיפור שלנו</h2>
@@ -377,7 +461,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* חצי בהיר - צור קשר */}
         <div className="side contact-side">
           <div className="side-content">
             <h2 className="title-dark">דברו איתנו</h2>
@@ -392,12 +475,10 @@ const HomePage = () => {
                 <FaWhatsapp />
                 <span>WhatsApp</span>
               </a>
-
               <a href="#" target="_blank" rel="noopener noreferrer">
                 <FaInstagram />
                 <span>Instagram</span>
               </a>
-
               <a href="#" target="_blank" rel="noopener noreferrer">
                 <FaFacebook />
                 <span>Facebook</span>
@@ -406,7 +487,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };
