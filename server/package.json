@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon main.js",
+    "start": "node main.js",
+    "dev": "nodemon main.js",
     "seed": "node seedAttractions.js && node seedDeals.js && node seedDestinationInfo.js",
     "seed:attractions": "node seedAttractions.js",
     "seed:deals": "node seedDeals.js",

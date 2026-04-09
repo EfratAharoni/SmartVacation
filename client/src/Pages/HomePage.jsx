@@ -361,85 +361,31 @@ const HomePage = () => {
       <section className="destinations" id="packages">
         <h2 className="section-title">היעדים הפופולריים שלנו</h2>
         <div className="destinations-grid">
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/paris.jpg" alt="פריז, צרפת" />
+          {[
+            { img: "/images/paris.jpg",     alt: "פריז, צרפת",        title: "פריז, צרפת",        desc: "עיר האורות - רומנטיקה, תרבות ואמנות",                        keyword: "פריז" },
+            { img: "/images/rome.jpg",      alt: "רומא, איטליה",      title: "רומא, איטליה",      desc: "ההיסטוריה העתיקה פוגשת את המודרניות",                        keyword: "רומא" },
+            { img: "/images/tokyo.jpg",     alt: "טוקיו, יפן",        title: "טוקיו, יפן",        desc: "מזרח פוגש מערב בעיר המרתקת",                                 keyword: "טוקיו" },
+            { img: "/images/bali.jpg",      alt: "באלי, אינדונזיה",   title: "באלי, אינדונזיה",   desc: "גן עדן טרופי עם חופים מדהימים",                              keyword: "באלי" },
+            { img: "/images/new-york.jpg",  alt: 'ניו יורק, ארה"ב',  title: 'ניו יורק, ארה"ב',  desc: 'התפוח הגדול - גורדי שחקים, שופינג ואנרגיה ללא הפסקה',       keyword: "ניו יורק" },
+            { img: "/images/london.jpg",    alt: "לונדון, אנגליה",    title: "לונדון, אנגליה",    desc: "שילוב מלכותי של מסורת, אופנה ותרבות תוססת",                  keyword: "לונדון" },
+            { img: "/images/amsterdam.jpg", alt: "אמסטרדם, הולנד",   title: "אמסטרדם, הולנד",   desc: "תעלות ציוריות, רכיבה על אופניים ואווירה חופשית",             keyword: "אמסטרדם" },
+            { img: "/images/barcelona.jpg", alt: "ברצלונה, ספרד",    title: "ברצלונה, ספרד",    desc: "אדריכלות מופלאה, חופים זהובים וחיי לילה סוערים",             keyword: "ברצלונה" },
+          ].map(({ img, alt, title, desc, keyword }) => (
+            <div
+              key={keyword}
+              className="destination-card"
+              onClick={() => navigate(`/deals?destination=${encodeURIComponent(keyword)}`)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="destination-image">
+                <img src={img} alt={alt} />
+              </div>
+              <div className="destination-info">
+                <h3>{title}</h3>
+                <p>{desc}</p>
+              </div>
             </div>
-            <div className="destination-info">
-              <h3>פריז, צרפת</h3>
-              <p>עיר האורות - רומנטיקה, תרבות ואמנות</p>
-            </div>
-          </div>
-
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/rome.jpg" alt="רומא, איטליה" />
-            </div>
-            <div className="destination-info">
-              <h3>רומא, איטליה</h3>
-              <p>ההיסטוריה העתיקה פוגשת את המודרניות</p>
-            </div>
-          </div>
-
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/tokyo.jpg" alt="טוקיו, יפן" />
-            </div>
-            <div className="destination-info">
-              <h3>טוקיו, יפן</h3>
-              <p>מזרח פוגש מערב בעיר המרתקת</p>
-            </div>
-          </div>
-
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/bali.jpg" alt="באלי, אינדונזיה" />
-            </div>
-            <div className="destination-info">
-              <h3>באלי, אינדונזיה</h3>
-              <p>גן עדן טרופי עם חופים מדהימים</p>
-            </div>
-          </div>
-
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/new-york.jpg" alt="ניו יורק, ארה&quot;ב" />
-            </div>
-            <div className="destination-info">
-              <h3>ניו יורק, ארה"ב</h3>
-              <p>התפוח הגדול - גורדי שחקים, שופינג ואנרגיה ללא הפסקה</p>
-            </div>
-          </div>
-
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/london.jpg" alt="לונדון, אנגליה" />
-            </div>
-            <div className="destination-info">
-              <h3>לונדון, אנגליה</h3>
-              <p>שילוב מלכותי של מסורת, אופנה ותרבות תוססת</p>
-            </div>
-          </div>
-
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/amsterdam.jpg" alt="אמסטרדם, הולנד" />
-            </div>
-            <div className="destination-info">
-              <h3>אמסטרדם, הולנד</h3>
-              <p>תעלות ציוריות, רכיבה על אופניים ואווירה חופשית</p>
-            </div>
-          </div>
-
-          <div className="destination-card">
-            <div className="destination-image">
-              <img src="/images/barcelona.jpg" alt="ברצלונה, ספרד" />
-            </div>
-            <div className="destination-info">
-              <h3>ברצלונה, ספרד</h3>
-              <p>אדריכלות מופלאה, חופים זהובים וחיי לילה סוערים</p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
