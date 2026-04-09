@@ -5,8 +5,6 @@ import './DealDetails.css';
 
 import useDestinationInfo from './useDestinationInfo';
 import { Info } from 'lucide-react';
-import { allDealsData } from '../data/allDealsData';
-
 const getUserKey = () => {
     const name = localStorage.getItem('userName');
     return name ? name.replace(/\s/g, '_') : 'guest';
@@ -15,7 +13,10 @@ const getUserKey = () => {
 const DealDetails = () => {
     const { destination } = useParams();
     const navigate = useNavigate();
+    const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [allDeals, setAllDeals] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedPackage, setSelectedPackage] = useState(null);
     const [compareMode, setCompareMode] = useState(false);
     const [compareSelection, setCompareSelection] = useState([]);
@@ -38,6 +39,9 @@ const DealDetails = () => {
         return saved ? JSON.parse(saved) : [];
     });
 
+    const destinationInfo = useDestinationInfo(decodeURIComponent(destination));
+    const [showInfoModal, setShowInfoModal] = useState(false);
+
     const [cart, setCart] = useState(() => {
         const name = localStorage.getItem('userName');
         if (!name) return [];
@@ -46,48 +50,37 @@ const DealDetails = () => {
         return saved ? JSON.parse(saved) : [];
     });
 
-    const allDeals = allDealsData;
-
-    const destinationAttractionsMap = {
-        'פריז, צרפת': ['מגדל אייפל', 'לובר', 'שאנז אליזה'],
-        'רומא, איטליה': ['קולוסיאום', 'ותיקן', 'פונטנה די טרווי'],
-        'ברצלונה, ספרד': ['סגרדה פמיליה', 'פארק גואל', 'לה רמבלה'],
-        'אמסטרדם, הולנד': ['בית אנה פרנק', 'מוזיאון ואן גוך', 'שייט בתעלות'],
-        'לונדון, אנגליה': ['ביג בן', 'ארמון בקינגהאם', 'לונדון איי'],
-        'דובאי, איחוד האמירויות': ['בורג׳ חליפה', 'דובאי מול', 'ספארי במדבר'],
-        'באלי, אינדונזיה': ['אובוד', 'מקדש טנה לוט', 'חוף קוטה'],
-        'טוקיו, יפן': ['שיבויה', 'מקדש סנסו-ג׳י', 'טוקיו טאוור'],
-        'ניו יורק, ארה"ב': ['טיימס סקוור', 'סנטרל פארק', 'פסל החירות'],
-        'מיאמי, ארה"ב': ['סאות׳ ביץ׳', 'ליטל הוואנה', 'וינווד וולס'],
-        'קנקון, מקסיקו': ['צ׳יצ׳ן איצה', 'איסלה מוחרס', 'טולום'],
-        'סנטוריני, יוון': ['אויה', 'פירה', 'חופי סנטוריני'],
-        'פראג, צ\'כיה': ['גשר קארל', 'טירת פראג', 'העיר העתיקה'],
-        'בנגקוק, תאילנד': ['הארמון המלכותי', 'ואט פו', 'שווקים צפים'],
-        'מלדיביים': ['שנירקול', 'שייט שקיעה', 'ספא על המים'],
-        'פורטוגל - ליסבון': ['מגדל בלם', 'אלפמה', 'חשמלית 28'],
-        'איסטנבול, טורקיה': ['איה סופיה', 'המסגד הכחול', 'הבזאר הגדול'],
-        'ברלין, גרמניה': ['שער ברנדנבורג', 'חומת ברלין', 'אי המוזיאונים']
-    };
+    useEffect(() => {
+        const fetchDeals = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch(`${API_BASE_URL}/deals`);
+                if (!response.ok) throw new Error('Failed to fetch deals');
+                const data = await response.json();
+                setAllDeals(data);
+            } catch (error) {
+                console.error('Error fetching deals:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchDeals();
+    }, [API_BASE_URL]);
 
     const allDealsWithAttractions = allDeals.map((deal) => {
         const existingAttractions = Array.isArray(deal.attractions)
             ? deal.attractions.filter(Boolean)
             : [];
-
-        const fallbackAttractions = destinationAttractionsMap[deal.destination] || ['מרכז העיר', 'סיור מודרך'];
-        const mergedAttractions = [...new Set([...existingAttractions, ...fallbackAttractions])];
-        const safeAttractions = mergedAttractions.slice(0, 3);
-
         return {
             ...deal,
-            attractions: safeAttractions.length >= 2
-                ? safeAttractions
-                : [...safeAttractions, 'אטרקציה מומלצת נוספת'].slice(0, 2)
+            attractions: existingAttractions.length >= 2
+                ? existingAttractions
+                : [...existingAttractions, 'אטרקציה מומלצת נוספת'].slice(0, 2)
         };
     });
 
     // Filter deals for current destination
-    const destinationDeals = allDealsWithAttractions.filter(deal => 
+    const destinationDeals = allDealsWithAttractions.filter(deal =>
         deal.destination === decodeURIComponent(destination)
     );
 
@@ -121,12 +114,12 @@ const DealDetails = () => {
             return;
         }
         const userKey = getUserKey();
-        const deal = allDealsWithAttractions.find(d => d.id === dealId);
+        const deal = allDealsWithAttractions.find(d => d._id === dealId || d.id === dealId);
         if (!deal) return;
-        
+
         let updated;
-        if (favorites.some(fav => fav.id === dealId)) {
-            updated = favorites.filter(fav => fav.id !== dealId);
+        if (favorites.some(fav => fav._id === dealId || fav.id === dealId)) {
+            updated = favorites.filter(fav => fav._id !== dealId && fav.id !== dealId);
         } else {
             updated = [...favorites, { ...deal, type: 'deal' }];
         }
@@ -179,7 +172,8 @@ const DealDetails = () => {
     const confirmBooking = (e) => {
         e.stopPropagation();
         const userKey = getUserKey();
-        const existing = cart.find(item => item.id === bookingDeal.id && item.type === 'deal');
+        const dealId = bookingDeal._id || bookingDeal.id;
+        const existing = cart.find(item => (item._id === dealId || item.id === dealId) && item.type === 'deal');
         if (existing) {
             alert('חבילה זו כבר נמצאת בעגלה שלך!');
             return;
@@ -209,6 +203,10 @@ const DealDetails = () => {
         }
     };
 
+    if (isLoading) {
+        return <div className="deal-details-page" style={{ textAlign: 'center', padding: '80px' }}>טוען חבילות...</div>;
+    }
+
     if (destinationDeals.length === 0) {
         return (
             <div className="deal-details-page">
@@ -224,9 +222,6 @@ const DealDetails = () => {
 
 
     const mainDeal = destinationDeals[0];
-    // מידע חשוב על היעד
-    const destinationInfo = useDestinationInfo(mainDeal.destination);
-    const [showInfoModal, setShowInfoModal] = useState(false);
 
     return (
         <div className="deal-details-page">

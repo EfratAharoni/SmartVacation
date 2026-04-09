@@ -12,9 +12,26 @@ const dealSchema = new mongoose.Schema({
     flightTime: { type: String },
     category: { type: String, required: true },
     hotel: { type: String, required: true },
+    hotelName: { type: String },
     included: { type: [String], default: [] },
     reviewsCount: { type: Number, default: 0 },
-    isKosherFriendly: { type: Boolean, default: false }
+    flightDetails: {
+        departure: { type: String },
+        arrival: { type: String },
+        class: { type: String }
+    },
+    attractions: { type: [String], default: [] },
+    isKosherFriendly: { type: Boolean, default: false },
+    currency: { type: String },
+    visaInfo: { type: String },
+    weather: { type: String },
+    electricityInfo: { type: String },
+    travelTips: { type: [String], default: [] },
+    emergencyContacts: {
+        police: { type: String },
+        ambulance: { type: String },
+        israeliEmbassy: { type: String }
+    }
 }, { timestamps: true });
 
 const Deal = mongoose.model("Deal", dealSchema);

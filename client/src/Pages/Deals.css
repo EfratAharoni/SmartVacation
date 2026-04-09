@@ -238,6 +238,81 @@ nav {
     box-shadow: 0 0 0 4px rgba(39, 180, 211, 0.18);
 }
 
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    right: 1rem;
+    color: #9ca3af;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.9rem 2.4rem 0.9rem 2.4rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    text-align: right;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #1f8ec1;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(39, 180, 211, 0.18);
+}
+
+.search-clear {
+    position: absolute;
+    left: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.search-clear:hover {
+    color: #e63946;
+}
+
+.kosher-toggle {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    color: #374151;
+}
+
+.kosher-toggle:hover {
+    border-color: #1f8ec1;
+    background: white;
+}
+
+.kosher-toggle.active {
+    background: #e8f5e9;
+    border-color: #2e7d32;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
 .date-filter {
     position: relative;
 }

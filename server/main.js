@@ -7,6 +7,7 @@ import connectDB from "./DB/db.js";
 import * as userController from "./controllers/User.js";
 import * as attractionController from "./controllers/Attraction.js";
 import * as dealController from "./controllers/Deal.js";
+import * as destinationInfoController from "./controllers/DestinationInfo.js";
 import authenticateToken from "./middleware/auth.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,6 +40,13 @@ app.post("/api/attractions/add", attractionController.createAttraction);
 app.post("/api/attractions/addMany", attractionController.addManyAttractions);
 app.delete("/api/attractions/:id", attractionController.removeAttraction);
 app.put("/api/attractions/:id", attractionController.updateAttraction);
+
+// Destination Info Routes
+app.get("/api/destination-info", destinationInfoController.getDestinationInfos);
+app.post("/api/destination-info/add", destinationInfoController.createDestinationInfo);
+app.post("/api/destination-info/addMany", destinationInfoController.addManyDestinationInfos);
+app.put("/api/destination-info/:id", destinationInfoController.updateDestinationInfo);
+app.delete("/api/destination-info/:id", destinationInfoController.removeDestinationInfo);
 
 // Deals Routes
 app.get("/api/deals", dealController.getDeals);

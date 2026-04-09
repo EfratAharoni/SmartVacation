@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const useDestinationInfo = (destination) => {
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
-    fetch('/src/Pages/DestinationInfo.json')
-      .then((res) => res.json())
-      .then((data) => {
-        // Try to match by destination or by country
-        const found = data.find(
-          (item) =>
-            destination.includes(item.destination) ||
-            destination.includes(item.country) ||
-            item.destination.includes(destination)
-        );
-        setInfo(found);
-      });
+    if (!destination) return;
+
+    // חילוץ שם העיר בלבד (לפני הפסיק)
+    const cityName = destination.split(",")[0].trim();
+
+    fetch(`/api/destination-info?destination=${encodeURIComponent(cityName)}`)
+      .then((res) => {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then((data) => setInfo(data))
+      .catch(() => setInfo(null));
   }, [destination]);
 
   return info;

@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DateRange } from 'react-date-range';
-import { CalendarDays, X } from 'lucide-react';
+import { CalendarDays, X, Search } from 'lucide-react';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import './Deals.css';
-import { allDealsData } from '../data/allDealsData';
 
 // Helper: get user-specific localStorage key
 const getUserKey = () => {
@@ -50,7 +49,6 @@ const Deals = () => {
     const [deals, setDeals] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [selectedDestination, setSelectedDestination] = useState('all');
     const [destinationKeyword, setDestinationKeyword] = useState('');
     const [priceRange, setPriceRange] = useState([0, 10000]);
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
@@ -64,6 +62,7 @@ const Deals = () => {
     ]);
     const [filteredDestinations, setFilteredDestinations] = useState([]);
     const [sortBy, setSortBy] = useState('price-low');
+    const [isKosherOnly, setIsKosherOnly] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const datePickerRef = useRef(null);
 
@@ -85,12 +84,6 @@ const Deals = () => {
 
     const isKosherDeal = (deal) => Boolean(deal?.isKosherFriendly);
 
-    const destinations = [
-        { id: 'all', name: 'כל היעדים' },
-        { id: 'europe', name: 'אירופה' },
-        { id: 'asia', name: 'אסיה' },
-        { id: 'america', name: 'אמריקה' }
-    ];
 
     // --- משיכת הדילים מהשרת (MongoDB) ---
     useEffect(() => {
@@ -125,7 +118,7 @@ const Deals = () => {
 
     useEffect(() => {
         filterDeals();
-    }, [selectedDestination, destinationKeyword, priceRange, sortBy, dateRangeSelection, isDateRangeActive, deals]);
+    }, [destinationKeyword, priceRange, sortBy, dateRangeSelection, isDateRangeActive, deals, isKosherOnly]);
 
     useEffect(() => {
         const destinationFromQuery = (searchParams.get('destination') || '').trim();
@@ -241,10 +234,6 @@ const Deals = () => {
         // First filter deals by basic criteria
         let filtered = [...deals];
 
-        if (selectedDestination !== 'all') {
-            filtered = filtered.filter(deal => deal.category === selectedDestination);
-        }
-
         if (destinationKeyword.trim()) {
             filtered = filtered.filter((deal) =>
                 deal.destination.toLowerCase().includes(destinationKeyword.toLowerCase())
@@ -254,6 +243,10 @@ const Deals = () => {
         filtered = filtered.filter(deal =>
             deal.price >= priceRange[0] && deal.price <= priceRange[1]
         );
+
+        if (isKosherOnly) {
+            filtered = filtered.filter(deal => Boolean(deal.isKosherFriendly));
+        }
 
         if (isDateRangeActive) {
             const startDate = new Date(dateRangeSelection[0].startDate);
@@ -287,7 +280,7 @@ const Deals = () => {
 
             return {
                 destination,
-                packageCount: allDealsData.filter(d => d.destination === destination).length,
+                packageCount: packages.length,
                 minPrice,
                 maxDiscount,
                 avgRating,
@@ -382,16 +375,27 @@ const Deals = () => {
                 <div className="filter-container">
                     <div className="filter-row">
                         <div className="filter-group">
-                            <label>יעד</label>
-                            <select
-                                value={selectedDestination}
-                                onChange={(e) => setSelectedDestination(e.target.value)}
-                                className="filter-select"
-                            >
-                                {destinations.map(dest => (
-                                    <option key={dest.id} value={dest.id}>{dest.name}</option>
-                                ))}
-                            </select>
+                            <label>חיפוש יעד</label>
+                            <div className="search-input-wrapper">
+                                <Search size={16} className="search-icon" />
+                                <input
+                                    type="text"
+                                    value={destinationKeyword}
+                                    onChange={(e) => setDestinationKeyword(e.target.value)}
+                                    placeholder="חפש יעד..."
+                                    className="search-input"
+                                />
+                                {destinationKeyword && (
+                                    <button
+                                        type="button"
+                                        className="search-clear"
+                                        onClick={() => setDestinationKeyword('')}
+                                        aria-label="נקה חיפוש"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                )}
+                            </div>
                         </div>
 
                         <div className="filter-group date-filter" ref={datePickerRef}>
@@ -489,6 +493,17 @@ const Deals = () => {
                                 <option value="rating">דירוג</option>
                                 <option value="discount">הנחה</option>
                             </select>
+                        </div>
+
+                        <div className="filter-group kosher-filter-group">
+                            <label>כשרות</label>
+                            <button
+                                type="button"
+                                className={`kosher-toggle ${isKosherOnly ? 'active' : ''}`}
+                                onClick={() => setIsKosherOnly(prev => !prev)}
+                            >
+                                {isKosherOnly ? 'כשר בלבד' : 'כל החבילות'}
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -207,7 +207,7 @@ const Attractions = () => {
             <span className="search-icon">🔍</span>
             <input
               type="text"
-              placeholder="חפש אטרקציה או יעד..."
+              placeholder="     חפש אטרקציה או יעד..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
