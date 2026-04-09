@@ -75,6 +75,11 @@ const Header = () => {
     navigate('/favorites');
   };
 
+  const handleProfileClick = () => {
+    navigate('/profile');
+    closeMobileMenu();
+  };
+
   return (
     <header className={`header ${isScrolled ? "scrolled" : ""}`}>
       <nav>
@@ -124,6 +129,14 @@ const Header = () => {
                 </div>
 
                 <div className="header-icons">
+                  {/* Profile Button */}
+                  <button className="icon-btn profile-btn" onClick={handleProfileClick} title="הפרופיל שלי">
+                    <svg viewBox="0 0 24 24" className="profile-icon-svg" aria-hidden="true">
+                      <path d="M20 21a8 8 0 00-16 0" />
+                      <circle cx="12" cy="8" r="4" />
+                    </svg>
+                  </button>
+
                   {/* Favorites Button */}
                   <button className="icon-btn favorites-btn" onClick={handleFavoritesClick} title="המועדפים שלי">
                     <svg viewBox="0 0 24 24" className="heart-icon-header" aria-hidden="true">

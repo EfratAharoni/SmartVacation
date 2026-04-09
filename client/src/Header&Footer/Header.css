@@ -231,6 +231,22 @@ nav {
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
 }
 
+/* Profile Icon */
+.profile-icon-svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: #144ea5;
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: transform 0.3s ease, stroke 0.3s ease;
+}
+
+.profile-btn:hover .profile-icon-svg {
+    transform: scale(1.1);
+    stroke: #27b4d3;
+}
+
 /* Heart Icon (Favorites) */
 .heart-icon-header {
     width: 22px;

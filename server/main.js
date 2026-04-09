@@ -8,6 +8,7 @@ import * as userController from "./controllers/User.js";
 import * as attractionController from "./controllers/Attraction.js";
 import * as dealController from "./controllers/Deal.js";
 import * as destinationInfoController from "./controllers/DestinationInfo.js";
+import * as orderController from "./controllers/Order.js";
 import authenticateToken from "./middleware/auth.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -55,6 +56,10 @@ app.post("/api/deals/add", dealController.createDeal);
 app.post("/api/deals/addMany", dealController.addManyDeals);
 app.put("/api/deals/:id", dealController.updateDeal);
 app.delete("/api/deals/:id", dealController.removeDeal);
+
+// Order Routes
+app.post("/api/orders", authenticateToken, orderController.createOrder);
+app.get("/api/orders/my", authenticateToken, orderController.getUserOrders);
 
 const startServer = async () => {
   try {

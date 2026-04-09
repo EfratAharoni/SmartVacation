@@ -71,6 +71,51 @@ export default function Checkout() {
   );
   const orderId = useMemo(() => `SV-${Date.now().toString().slice(-6)}`, []);
 
+  const saveOrderToBackend = async (paymentMethod) => {
+    const token = localStorage.getItem("authToken");
+    if (!token) return;
+
+    const items = cartItems.map((item) => ({
+      type: item.type,
+      itemId: item.id || item._id,
+      name: item.name || item.destination || item.title,
+      image: item.image,
+      price: item.price,
+      totalPrice: item.totalPrice || item.price,
+      dates: item.dates,
+      destination: item.destination,
+      location: item.location,
+      bookingOptions: item.bookingOptions,
+      bookingQty: item.bookingQty,
+    }));
+
+    try {
+      await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          orderId,
+          items,
+          customerInfo: {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            phone: form.phone,
+            country: form.country,
+          },
+          passengers: form.passengers,
+          paymentMethod,
+          totalAmount: totalPrice,
+        }),
+      });
+    } catch {
+      // Order saved locally even if backend fails
+    }
+  };
+
   const handleFormChange = (e, idx, field) => {
     const { name, value, type, checked } = e.target;
     if (idx !== undefined) {
@@ -337,7 +382,7 @@ export default function Checkout() {
                   {formError && <div className="form-error">{formError}</div>}
                   <div className="step-actions two-buttons">
                     <button type="button" className="secondary-step-btn" onClick={() => setStep(1)}>חזרה</button>
-                    <button type="button" className="pay-btn" onClick={() => { if (!validatePaymentStep()) return; setStep(3); }}>
+                    <button type="button" className="pay-btn" onClick={async () => { if (!validatePaymentStep()) return; await saveOrderToBackend(form.payment); const userName = localStorage.getItem("userName"); if (userName) { const userKey = userName.replace(/\s/g, "_"); localStorage.setItem(`cart_${userKey}`, "[]"); window.dispatchEvent(new Event("userDataUpdated")); } setStep(3); }}>
                       <LockKeyhole className="pay-btn-icon" />סיום הזמנה
                     </button>
                   </div>
