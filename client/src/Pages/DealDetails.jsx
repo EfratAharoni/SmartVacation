@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { CalendarDays, Hotel, PlaneTakeoff, Sparkles, BadgeDollarSign, Star } from 'lucide-react';
 import './DealDetails.css';
 
@@ -15,6 +15,7 @@ const getDealId = (deal) => deal?._id || deal?.id;
 const DealDetails = () => {
     const { destination } = useParams();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [allDeals, setAllDeals] = useState([]);
@@ -32,6 +33,13 @@ const DealDetails = () => {
         transfer: false,
         cancellable: false,
     });
+    const [selectedDates, setSelectedDates] = useState({});
+
+    const getSelectedDate = (deal) => {
+        const id = getDealId(deal);
+        if (selectedDates[id]) return selectedDates[id];
+        return Array.isArray(deal.dates) ? deal.dates[0] : deal.dates;
+    };
 
     const [favorites, setFavorites] = useState(() => {
         const name = localStorage.getItem('userName');
@@ -86,13 +94,39 @@ const DealDetails = () => {
         deal.destination === decodeURIComponent(destination)
     );
 
+    // Apply filters from query params (passed from Deals page)
+    const kosherFilter = searchParams.get('kosher') === 'true';
+    const startDateParam = searchParams.get('startDate');
+    const endDateParam = searchParams.get('endDate');
+
+    const filteredDestinationDeals = destinationDeals.filter(deal => {
+        if (kosherFilter && !deal.isKosherFriendly) return false;
+        if (startDateParam && endDateParam) {
+            const startDate = new Date(startDateParam);
+            startDate.setHours(0, 0, 0, 0);
+            const endDate = new Date(endDateParam);
+            endDate.setHours(23, 59, 59, 999);
+            const dates = Array.isArray(deal.dates) ? deal.dates : [deal.dates];
+            const hasMatchingDate = dates.some(dateText => {
+                if (!dateText) return false;
+                const match = dateText.match(/(\d{1,2})\s*-\s*\d{1,2}\s+([^\s]+)\s+(\d{4})/);
+                if (!match) return false;
+                const hebrewMonths = { ינואר:0,פברואר:1,מרץ:2,אפריל:3,מאי:4,יוני:5,יולי:6,אוגוסט:7,ספטמבר:8,אוקטובר:9,נובמבר:10,דצמבר:11 };
+                const dealDate = new Date(Number(match[3]), hebrewMonths[match[2]], Number(match[1]));
+                return dealDate >= startDate && dealDate <= endDate;
+            });
+            if (!hasMatchingDate) return false;
+        }
+        return true;
+    });
+
     // Sort packages
-    const sortedPackages = [...destinationDeals].sort((a, b) => {
+    const sortedPackages = [...filteredDestinationDeals].sort((a, b) => {
         switch (sortPackagesBy) {
             case 'price': return a.price - b.price;
             case 'rating': return b.rating - a.rating;
             case 'discount': return b.discount - a.discount;
-            case 'date': return new Date(a.dates) - new Date(b.dates);
+            case 'date': return new Date(Array.isArray(a.dates) ? a.dates[0] : a.dates) - new Date(Array.isArray(b.dates) ? b.dates[0] : b.dates);
             default: return 0;
         }
     });
@@ -183,6 +217,7 @@ const DealDetails = () => {
         const totalPrice = calculateTotal();
         const updated = [...cart, {
             ...bookingDeal,
+            dates: getSelectedDate(bookingDeal),
             type: 'deal',
             addedAt: new Date().toISOString(),
             bookingOptions: { ...bookingOptions },
@@ -375,7 +410,23 @@ const DealDetails = () => {
                                     <span className="calendar-icon" aria-hidden="true">
                                         <CalendarDays size={20} />
                                     </span>
-                                    <span className="dates-text">{deal.dates}</span>
+                                    {Array.isArray(deal.dates) && deal.dates.length > 1 ? (
+                                        <select
+                                            className="dates-select"
+                                            value={getSelectedDate(deal)}
+                                            onChange={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedDates(prev => ({ ...prev, [getDealId(deal)]: e.target.value }));
+                                            }}
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            {deal.dates.map((d) => (
+                                                <option key={d} value={d}>{d}</option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        <span className="dates-text">{getSelectedDate(deal)}</span>
+                                    )}
                                 </div>
                                 <div className="package-rating">
                                     <div className="stars">{renderStars(deal.rating)}</div>
@@ -461,7 +512,7 @@ const DealDetails = () => {
                             <img src={selectedPackage.image} alt={selectedPackage.destination} className="deal-modal-hero-image" />
                             <div className="deal-modal-header deal-modal-header-overlay">
                                 <h2>{selectedPackage.destination}</h2>
-                                <p className="deal-modal-dates">{selectedPackage.dates}</p>
+                                <p className="deal-modal-dates">{getSelectedDate(selectedPackage)}</p>
                             </div>
                         </div>
                         <div className="deal-modal-body">
@@ -546,7 +597,7 @@ const DealDetails = () => {
                                             <Hotel size={13} /> {bookingDeal.hotelName || bookingDeal.hotel}
                                         </span>
                                         <span className="booking-header-chip">
-                                            <CalendarDays size={13} /> {bookingDeal.dates}
+                                            <CalendarDays size={13} /> {getSelectedDate(bookingDeal)}
                                         </span>
                                     </div>
                                 </div>

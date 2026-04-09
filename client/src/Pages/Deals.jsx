@@ -29,8 +29,9 @@ const HEBREW_MONTH_MAP = {
 };
 
 const parseDealStartDate = (dateText) => {
-    if (!dateText) return null;
-    const match = dateText.match(/(\d{1,2})\s*-\s*\d{1,2}\s+([^\s]+)\s+(\d{4})/);
+    const text = Array.isArray(dateText) ? dateText[0] : dateText;
+    if (!text) return null;
+    const match = text.match(/(\d{1,2})\s*-\s*\d{1,2}\s+([^\s]+)\s+(\d{4})/);
     if (!match) return null;
 
     const day = Number(match[1]);
@@ -368,6 +369,17 @@ const Deals = () => {
         </svg>
     );
 
+    const buildDestinationUrl = (destination) => {
+        const params = new URLSearchParams();
+        if (isKosherOnly) params.set('kosher', 'true');
+        if (isDateRangeActive) {
+            params.set('startDate', dateRangeSelection[0].startDate.toISOString());
+            params.set('endDate', dateRangeSelection[0].endDate.toISOString());
+        }
+        const query = params.toString();
+        return `/deals/${encodeURIComponent(destination)}${query ? `?${query}` : ''}`;
+    };
+
     const formatDateLabel = (date) =>
         new Intl.DateTimeFormat('he-IL', {
             day: '2-digit',
@@ -563,7 +575,7 @@ const Deals = () => {
                         <div
                             key={destCard.destination}
                             className="deal-card destination-card"
-                            onClick={() => navigate(`/deals/${encodeURIComponent(destCard.destination)}`)}
+                            onClick={() => navigate(buildDestinationUrl(destCard.destination))}
                             style={{ cursor: 'pointer' }}
                         >
                             <div className="deal-badge">
@@ -621,7 +633,7 @@ const Deals = () => {
                                         className="view-packages-btn"
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            navigate(`/deals/${encodeURIComponent(destCard.destination)}`);
+                                            navigate(buildDestinationUrl(destCard.destination));
                                         }}
                                     >
                                         צפה בחבילות
