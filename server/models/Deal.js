@@ -6,7 +6,7 @@ const dealSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     originalPrice: { type: Number, required: true },
     discount: { type: Number, default: 0 },
-    dates: { type: String, required: true },
+    dates: { type: [String], required: true },
     rating: { type: Number, min: 1, max: 5 },
     airline: { type: String, required: true },
     flightTime: { type: String },

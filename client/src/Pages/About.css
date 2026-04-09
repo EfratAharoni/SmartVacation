@@ -296,7 +296,7 @@
     width: 540px;
     height: 540px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(232, 226, 226, 0.08);
     left: -180px;
     top: -220px;
     pointer-events: none;
@@ -465,3 +465,9 @@ body {
         animation: none;
     }
 }
+
+.stats-section,
+.stats-section * {
+    color: white !important;
+}
+
