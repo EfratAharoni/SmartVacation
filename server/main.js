@@ -23,8 +23,19 @@ const app = express();
 
 const port = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  "https://smartvacation.onrender.com",
+  "http://localhost:5173"
+];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "*",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
