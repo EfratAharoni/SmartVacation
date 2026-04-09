@@ -325,9 +325,13 @@
 }
 
 .stat-number {
-    font-size: clamp(1.65rem, 3.8vw, 2.5rem);
-    font-weight: 700;
+    font-size: 1.9rem;
+    font-weight: 800;
     margin-bottom: 0.35rem;
+    background: linear-gradient(135deg, #83e9ff 0%, #8cbaff 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
 }
 
 .stat-label {
@@ -467,7 +471,9 @@ body {
 }
 
 .stats-section,
-.stats-section * {
+.stats-section *:not(.stat-number) {
     color: white !important;
 }
+
+
 
