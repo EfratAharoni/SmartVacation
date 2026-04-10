@@ -13,11 +13,7 @@ import authenticateToken from "./middleware/auth.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Load .env only in development
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: path.join(__dirname, ".env") });
-}
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 
@@ -78,6 +74,8 @@ app.delete("/api/deals/:id", dealController.removeDeal);
 // Order Routes
 app.post("/api/orders", authenticateToken, orderController.createOrder);
 app.get("/api/orders/my", authenticateToken, orderController.getUserOrders);
+
+app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 const startServer = async () => {
   try {
