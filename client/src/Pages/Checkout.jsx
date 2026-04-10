@@ -5,6 +5,8 @@ import Header from "../Header&Footer/Header";
 import Footer from "../Header&Footer/Footer";
 import "./Checkout.css";
 
+const API_BASE = import.meta.env.VITE_API_URL || "/api";
+
 export default function Checkout() {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
@@ -90,7 +92,7 @@ export default function Checkout() {
     }));
 
     try {
-      await fetch("/api/orders", {
+      await fetch(`${API_BASE}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

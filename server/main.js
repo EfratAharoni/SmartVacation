@@ -24,7 +24,7 @@ const allowedOrigins = [
   "http://localhost:5173"
 ];
 
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -32,20 +32,25 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 
 // Users Routes
 app.get("/api/users", userController.getUsers);
-app.get("/api/users/:id", userController.getUser);
+app.get("/api/users/me", authenticateToken, userController.getMe);
+app.post("/api/users/login", userController.login);
 app.post("/api/users/add", userController.createUser);
 app.post("/api/users/addMany", userController.addManyUsers);
 app.delete("/api/users/remove/:id", userController.removeUser);
 app.delete("/api/users/removeAll", userController.removeAllUsers);
 app.put("/api/users/update/:id", userController.updateUser);
-app.post("/api/users/login", userController.login);
-app.get("/api/users/me", authenticateToken, userController.getMe);
+app.get("/api/users/:id", userController.getUser);
 app.put("/api/users/change-password", userController.changePassword);
 
 // Attraction Routes

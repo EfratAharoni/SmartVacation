@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Register.css";
 
 const Register = () => {
@@ -456,7 +456,7 @@ const Register = () => {
             {/* Login Link */}
             <div className="login-link">
               <p>
-                כבר יש לך חשבון? <a href="/login">התחבר עכשיו</a>
+                כבר יש לך חשבון? <Link to="/login">התחבר עכשיו</Link>
               </p>
             </div>
 
