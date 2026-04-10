@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const useDestinationInfo = (destination) => {
   const [info, setInfo] = useState(null);
+  const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
   useEffect(() => {
     if (!destination) return;
@@ -9,14 +10,14 @@ const useDestinationInfo = (destination) => {
     // חילוץ שם העיר בלבד (לפני הפסיק)
     const cityName = destination.split(",")[0].trim();
 
-    fetch(`/api/destination-info?destination=${encodeURIComponent(cityName)}`)
+    fetch(`${API_BASE_URL}/destination-info?destination=${encodeURIComponent(cityName)}`)
       .then((res) => {
         if (!res.ok) return null;
         return res.json();
       })
       .then((data) => setInfo(data))
       .catch(() => setInfo(null));
-  }, [destination]);
+  }, [destination, API_BASE_URL]);
 
   return info;
 };
