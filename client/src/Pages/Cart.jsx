@@ -56,9 +56,9 @@ const Cart = () => {
     const removeFromCart = (itemId, itemType) => {
         const userName = localStorage.getItem('userName');
         const userKey = userName.replace(/\s/g, '_');
-        
-        const updated = cartItems.filter(item => 
-            !(item.id === itemId && item.type === itemType)
+
+        const updated = cartItems.filter(item =>
+            !((item._id || item.id) === itemId && item.type === itemType)
         );
         
         setCartItems(updated);
@@ -305,7 +305,7 @@ const Cart = () => {
                                     )}
                                     <button
                                         className="remove-btn"
-                                        onClick={() => removeFromCart(item.id, item.type)}
+                                        onClick={() => removeFromCart(item._id || item.id, item.type)}
                                     >
                                         <Trash2 className="btn-icon" />
                                         הסר
