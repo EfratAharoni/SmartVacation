@@ -516,8 +516,9 @@
 
 .modal-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
     padding: 0.95rem 1rem;
     background: #f8f9fa;
     border-radius: 12px;
@@ -571,7 +572,7 @@
     background: #fff5f5;
 }
 
-.attractions-page .modal-book-btn {
+.modal-book-btn {
     padding: 0.82rem 1.05rem;
     background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
@@ -584,7 +585,7 @@
     flex: 1;
 }
 
-.attractions-page .modal-book-btn:hover {
+.modal-book-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(20,78,165,0.4);
 }

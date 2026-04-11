@@ -462,7 +462,7 @@ const Attractions = () => {
                   </span>
                 </div>
                 <button
-                  className="book-btn"
+                  className="modal-book-btn"
                   onClick={(e) => openAttractionBooking(selectedAttraction, e)}
                 >
                   הזמן עכשיו
