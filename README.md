@@ -71,8 +71,8 @@ smartVacation/
 ### AI & Smart Search
 | Technology | Purpose |
 |---|---|
-| **Anthropic Claude Haiku** (`@anthropic-ai/sdk`) | AI-powered Hebrew NLP — parses free-text vacation queries into structured search parameters (destination, dates, budget, guests) |
-| **fuzzySearch.js** (client-side) | Zero-dependency rule-based Hebrew NLP parser — handles typos, Latin transliterations, country→city mapping, vibe detection, and duration parsing without an API call |
+| **Anthropic Claude Haiku** (`@anthropic-ai/sdk`) | AI-powered Hebrew NLP - parses free-text vacation queries into structured search parameters (destination, dates, budget, guests) |
+| **fuzzySearch.js** (client-side) | Zero-dependency rule-based Hebrew NLP parser - handles typos, Latin transliterations, country→city mapping, vibe detection, and duration parsing without an API call |
 
 ### DevOps & Deployment
 | Technology | Purpose |
@@ -86,7 +86,7 @@ smartVacation/
 ## Features
 
 ### Smart Search (Two-Layer)
-- **Client-side fuzzy search** (`fuzzySearch.js`): instantly matches Hebrew free-text against 18 destinations using aliases, typo tolerance, and Latin transliterations. Also parses vacations queries like "שבוע ביוון בספטמבר ב-5000 ₪ לזוג" into structured filter params — no API call needed.
+- **Client-side fuzzy search** (`fuzzySearch.js`): instantly matches Hebrew free-text against 18 destinations using aliases, typo tolerance, and Latin transliterations. Also parses vacations queries like "שבוע ביוון בספטמבר ב-5000 ₪ לזוג" into structured filter params - no API call needed.
 - **AI-powered search** (server `/api/ai/parse`): sends the query to Claude Haiku which extracts destination, start/end dates, budget, and number of guests from natural Hebrew text.
 
 ### Vibe-Based Filtering
@@ -225,19 +225,19 @@ docker-compose up --build
 ## Available Scripts
 
 ### Server
-- `npm start` — Start production server
-- `npm run dev` — Start with nodemon (auto-restart)
-- `npm run seed` — Seed all data (attractions, deals, destinations)
-- `npm run seed:attractions` — Seed only attractions
-- `npm run seed:deals` — Seed only deals
-- `npm run seed:destinations` — Seed only destination info
-- `npm test` — Run Mocha/Chai test suite
+- `npm start` - Start production server
+- `npm run dev` - Start with nodemon (auto-restart)
+- `npm run seed` - Seed all data (attractions, deals, destinations)
+- `npm run seed:attractions` - Seed only attractions
+- `npm run seed:deals` - Seed only deals
+- `npm run seed:destinations` - Seed only destination info
+- `npm test` - Run Mocha/Chai test suite
 
 ### Client
-- `npm run dev` — Start Vite dev server
-- `npm run build` — Build for production
-- `npm run preview` — Preview production build
-- `npm run lint` — Run ESLint
+- `npm run dev` - Start Vite dev server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
 ---
 
