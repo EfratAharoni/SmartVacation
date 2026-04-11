@@ -153,6 +153,8 @@ const HomePage = () => {
     }
     if (aiResult?.isKosher) params.set("kosher", "true");
     if (aiResult?.vibe && aiResult.vibe !== "kosher") params.set("vibe", aiResult.vibe);
+    if (aiResult?.budget) params.set("budget", aiResult.budget);
+    if (aiResult?.guests) params.set("guests", aiResult.guests);
     navigate(params.toString() ? `/deals?${params}` : "/deals");
   };
 
@@ -223,7 +225,7 @@ const HomePage = () => {
                 ref={aiInputRef}
                 type="text"
                 className="ai-mode-input"
-                placeholder='תאר לי את החופשה שלך: "זוג, יוון, אוגוסט, ₪5,000"'
+                placeholder='תאר לי את החופשה שלך: "שבוע באיטליה באוגוסט, 5000 ₪ לזוג"'
                 value={aiQuery}
                 onChange={(e) => { setAiQuery(e.target.value); setAiError(null); }}
                 onKeyDown={(e) => e.key === "Enter" && handleAiSearch()}

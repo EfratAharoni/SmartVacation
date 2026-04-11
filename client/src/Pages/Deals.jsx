@@ -29,7 +29,7 @@ const HEBREW_MONTH_MAP = {
 };
 
 const parseDealStartDate = (dateText) => {
-    const text = Array.isArray(dateText) ? dateText[0] : dateText;
+    const text = typeof dateText === 'string' ? dateText : null;
     if (!text) return null;
     const match = text.match(/(\d{1,2})\s*-\s*\d{1,2}\s+([^\s]+)\s+(\d{4})/);
     if (!match) return null;
@@ -158,6 +158,15 @@ const Deals = () => {
             setVibeFilter(vibeQuery);
             if (vibeQuery === 'cheap') setSortBy('price-low');
         }
+
+        const budgetQuery = searchParams.get('budget');
+        const guestsQuery = searchParams.get('guests');
+        if (budgetQuery) {
+            const totalBudget = parseInt(budgetQuery, 10);
+            const guests = guestsQuery ? parseInt(guestsQuery, 10) : 1;
+            const perPersonMax = Math.floor(totalBudget / guests);
+            setPriceRange([0, perPersonMax]);
+        }
     }, [searchParams]);
 
     useEffect(() => {
@@ -280,8 +289,11 @@ const Deals = () => {
             endDate.setHours(23, 59, 59, 999);
 
             filtered = filtered.filter((deal) => {
-                const dealStart = parseDealStartDate(deal.dates);
-                return dealStart && dealStart >= startDate && dealStart <= endDate;
+                const allDates = Array.isArray(deal.dates) ? deal.dates : [deal.dates];
+                return allDates.some((dateText) => {
+                    const dealStart = parseDealStartDate(dateText);
+                    return dealStart && dealStart >= startDate && dealStart <= endDate;
+                });
             });
         }
 

@@ -13,7 +13,7 @@ const DESTINATION_INDEX = [
   },
   {
     name: "רומא, איטליה",
-    aliases: ["rome", "roma", "italy", "איטליה", "רומה", "איטלי"],
+    aliases: ["rome", "roma", "italy", "איטליה", "רומה", "רומא", "איטלי"],
   },
   {
     name: "ברצלונה, ספרד",
@@ -258,30 +258,17 @@ export function parseHebrewVacationQuery(text) {
     result.budget = parseInt(budgetMatch[1].replace(/,/g, ""), 10);
   }
 
-  // ── Month → start date ──
-  let duration = 7;
+  // ── Month → full-month date range ──
   for (const [name, idx] of Object.entries(MONTH_MAP)) {
     if (text.includes(name)) {
       const year = new Date().getFullYear();
       const start = new Date(year, idx, 1);
+      // end = last day of that month
+      const end = new Date(year, idx + 1, 0);
       result.startDate = start.toISOString().slice(0, 10);
+      result.endDate = end.toISOString().slice(0, 10);
       break;
     }
-  }
-
-  // ── Duration ──
-  const daysMatch = text.match(/(\d+)\s*ימים/);
-  const nightsMatch = text.match(/(\d+)\s*לילות/);
-  if (daysMatch) duration = parseInt(daysMatch[1], 10);
-  else if (nightsMatch) duration = parseInt(nightsMatch[1], 10) + 1;
-  else if (/שבועיים/.test(text)) duration = 14;
-  else if (/שבוע/.test(text)) duration = 7;
-  else if (/סוף שבוע/.test(text)) duration = 3;
-
-  if (result.startDate) {
-    const end = new Date(result.startDate);
-    end.setDate(end.getDate() + duration);
-    result.endDate = end.toISOString().slice(0, 10);
   }
 
   // ── Destination — fuzzy search (skip if vibe covers all destinations) ──
