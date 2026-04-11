@@ -127,17 +127,61 @@ export default function Checkout() {
       setForm({ ...form, passengers });
       return;
     }
+    // כרטיס אשראי: ספרות בלבד + פורמט אוטומטי
+    if (name === "cardNumber") {
+      const digits = value.replace(/\D/g, "").slice(0, 16);
+      const formatted = digits.replace(/(.{4})/g, "$1 ").trim();
+      setForm({ ...form, cardNumber: formatted });
+      return;
+    }
+    // תוקף: פורמט אוטומטי MM/YY
+    if (name === "cardExp") {
+      const digits = value.replace(/\D/g, "").slice(0, 4);
+      const formatted = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+      setForm({ ...form, cardExp: formatted });
+      return;
+    }
+    // CVV: ספרות בלבד, עד 3
+    if (name === "cardCvv") {
+      const digits = value.replace(/\D/g, "").slice(0, 3);
+      setForm({ ...form, cardCvv: digits });
+      return;
+    }
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
   const validateCustomerStep = () => {
+    const englishOrHebrew = /^[a-zA-Z\u05D0-\u05EA\s''-]+$/;
+    const englishOnly = /^[a-zA-Z\s''-]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[\d+\-\s()]{7,15}$/;
+
     if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.country) {
       setFormError("אנא מלא/י את כל פרטי המזמין");
+      return false;
+    }
+    if (!englishOrHebrew.test(form.firstName) || !englishOrHebrew.test(form.lastName)) {
+      setFormError("שם המזמין/ה יכול להכיל אותיות בעברית או באנגלית בלבד");
+      return false;
+    }
+    if (!emailRegex.test(form.email)) {
+      setFormError("כתובת האימייל אינה תקינה");
+      return false;
+    }
+    if (!phoneRegex.test(form.phone)) {
+      setFormError("מספר הטלפון אינו תקין (ספרות בלבד, 7–15 תווים)");
       return false;
     }
     if (form.passengers.some((p) => !p.firstName || !p.lastName)) {
       setFormError("אנא מלא/י שם פרטי ושם משפחה לכל הנוסעים");
       return false;
+    }
+    for (let i = 0; i < form.passengers.length; i++) {
+      const p = form.passengers[i];
+      if (!englishOnly.test(p.firstName) || !englishOnly.test(p.lastName)) {
+        setFormError(`פרטי נוסע ${i + 1} חייבים להיות באנגלית בלבד (כפי שמופיע בדרכון)`);
+        return false;
+      }
     }
     setFormError("");
     return true;
@@ -148,9 +192,37 @@ export default function Checkout() {
       setFormError("אנא בחר/י אמצעי תשלום");
       return false;
     }
-    if (form.payment === "credit" && (!form.cardNumber || !form.cardExp || !form.cardCvv)) {
-      setFormError("אנא מלא/י את כל פרטי כרטיס האשראי");
-      return false;
+    if (form.payment === "credit") {
+      const cardDigits = form.cardNumber.replace(/\s/g, "");
+      if (!cardDigits) {
+        setFormError("אנא מלא/י את פרטי כרטיס האשראי");
+        return false;
+      }
+      if (!/^\d{16}$/.test(cardDigits)) {
+        setFormError("מספר כרטיס האשראי חייב להכיל 16 ספרות בלבד");
+        return false;
+      }
+      if (!/^\d{3}$/.test(form.cardCvv)) {
+        setFormError("CVV חייב להכיל 3 ספרות בלבד");
+        return false;
+      }
+      const expMatch = form.cardExp.match(/^(\d{2})\/(\d{2})$/);
+      if (!expMatch) {
+        setFormError("תוקף הכרטיס חייב להיות בפורמט MM/YY");
+        return false;
+      }
+      const month = parseInt(expMatch[1], 10);
+      const year = 2000 + parseInt(expMatch[2], 10);
+      if (month < 1 || month > 12) {
+        setFormError("חודש תוקף הכרטיס אינו תקין");
+        return false;
+      }
+      const now = new Date();
+      const expDate = new Date(year, month, 0); // יום אחרון של חודש התוקף
+      if (expDate < now) {
+        setFormError("כרטיס האשראי פג תוקף – אנא השתמש/י בכרטיס בתוקף");
+        return false;
+      }
     }
     setFormError("");
     return true;

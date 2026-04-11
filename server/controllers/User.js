@@ -51,7 +51,10 @@ export const createUser = async(req, res) => {
             token,
         });
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        const message = err.code === 11000
+            ? "האימייל כבר רשום במערכת"
+            : err.message;
+        res.status(400).json({ message });
     }
 };
 
