@@ -4,6 +4,8 @@ A full-stack web application for finding and booking travel deals, built for Isr
 
 **Live Demo:** [https://smartvacation.onrender.com](https://smartvacation.onrender.com)
 
+**Project Demo Video:** [Watch here](https://drive.google.com/file/d/1vuJgELxCJhhb_DPZAa5UZQX7zZRsVziB/view?usp=sharing)
+
 ---
 
 ## Project Structure
