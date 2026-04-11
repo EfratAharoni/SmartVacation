@@ -86,7 +86,7 @@ smartVacation/
 ## Features
 
 ### Smart Search (Two-Layer)
-- **Client-side fuzzy search** (`fuzzySearch.js`): instantly matches Hebrew free-text against 18 destinations using aliases, typo tolerance, and Latin transliterations. Also parses vacations queries like "שבוע ביוון בספטמבר ב-5000 ₪ לזוג" into structured filter params - no API call needed.
+- **Client-side fuzzy search** (`fuzzySearch.js`): instantly matches Hebrew free-text against 18 destinations using aliases, typo tolerance, and Latin transliterations. Also parses vacations queries like "שבוע ביוון בספטמבר עד-7000 ₪ לזוג" into structured filter params - no API call needed.
 - **AI-powered search** (server `/api/ai/parse`): sends the query to Claude Haiku which extracts destination, start/end dates, budget, and number of guests from natural Hebrew text.
 
 ### Vibe-Based Filtering
