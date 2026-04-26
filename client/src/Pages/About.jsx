@@ -1,141 +1,107 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Users, HeartHandshake, Trophy, ShieldCheck } from "lucide-react";
 import "./About.css";
 
-const About = () => {
-const [index, setIndex] = useState(0);
 
-const nextSlide = () => {
-  setIndex((prev) => (prev + 1) % reviews.length);
+const useInView = (threshold = 0.2) => {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
+      { threshold }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, inView];
 };
 
-useEffect(() => {
-  const interval = setInterval(nextSlide, 4000);
-  return () => clearInterval(interval);
-}, []);
+const AnimatedNumber = ({ value, inView }) => {
+  const [display, setDisplay] = useState("0");
+  useEffect(() => {
+    if (!inView) return;
+    const num = parseFloat(value.replace(/[^0-9.]/g, ""));
+    const suffix = value.replace(/[0-9.]/g, "");
+    const isDecimal = value.includes(".");
+    const duration = 1800;
+    let start = null;
+    const step = (ts) => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const cur = eased * num;
+      setDisplay((isDecimal ? cur.toFixed(1) : Math.floor(cur)) + suffix);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, value]);
+  return <span>{display}</span>;
+};
+
+const HERO_SUBTITLE = "מחלום קטן לפלטפורמה מובילה לתכנון חופשות";
+
+const About = () => {
+  const [index, setIndex] = useState(0);
+  const [typedText, setTypedText] = useState("");
+  const [valuesRef, valuesInView] = useInView(0.15);
+  const [statsRef, statsInView]   = useInView(0.3);
+
+  useEffect(() => {
+    let i = 0;
+    const delay = setTimeout(() => {
+      const timer = setInterval(() => {
+        setTypedText(HERO_SUBTITLE.slice(0, i + 1));
+        i++;
+        if (i >= HERO_SUBTITLE.length) clearInterval(timer);
+      }, 55);
+      return () => clearInterval(timer);
+    }, 600);
+    return () => clearTimeout(delay);
+  }, []);
+
+  const nextSlide = () => setIndex((prev) => (prev + 1) % reviews.length);
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const values = [
-    {
-      icon: Users,
-      title: "מקצועיות",
-      description: "אנחנו מביאים ניסיון של שנים בתחום התיירות והנופש",
-    },
-    {
-      icon: HeartHandshake,
-      title: "אכפתיות",
-      description: "החופשה שלכם חשובה לנו כאילו הייתה החופשה שלנו",
-    },
-    {
-      icon: Trophy,
-      title: "מצוינות",
-      description: "אנחנו שואפים למצוינות בכל שירות ובכל פרט",
-    },
-    {
-      icon: ShieldCheck,
-      title: "אמינות",
-      description: "שקיפות מלאה ללא הפתעות או עלויות נסתרות",
-    },
+    { icon: Users,         title: "מקצועיות", description: "אנחנו מביאים ניסיון של שנים בתחום התיירות והנופש" },
+    { icon: HeartHandshake, title: "אכפתיות", description: "החופשה שלכם חשובה לנו כאילו הייתה החופשה שלנו" },
+    { icon: Trophy,         title: "מצוינות",  description: "אנחנו שואפים למצוינות בכל שירות ובכל פרט" },
+    { icon: ShieldCheck,    title: "אמינות",   description: "שקיפות מלאה ללא הפתעות או עלויות נסתרות" },
   ];
 
   const stats = [
-    {
-      number: "10,000+",
-      label: "משתמשים מרוצים",
-    },
-    {
-      number: "150+",
-      label: "יעדים ברחבי העולם",
-    },
-    {
-      number: "5",
-      label: "שנות ניסיון",
-    },
-    {
-      number: "4.9",
-      label: "דירוג ממוצע",
-    },
+    { number: "10,000+", label: "משתמשים מרוצים" },
+    { number: "150+",    label: "יעדים ברחבי העולם" },
+    { number: "5",       label: "שנות ניסיון" },
+    { number: "4.9",     label: "דירוג ממוצע" },
   ];
 
-  //   const team = [
-  //     {
-  //       name: "דני כהן",
-  //       role: 'מייסד ומנכ"ל',
-  //       image: "👨‍💼",
-  //       description: "בעל ניסיון של 15 שנה בתחום התיירות",
-  //     },
-  //     {
-  //       name: "שרה לוי",
-  //       role: "מנהלת שירות לקוחות",
-  //       image: "👩‍💼",
-  //       description: "מתמחה ביצירת חוויות לקוח מושלמות",
-  //     },
-  //     {
-  //       name: "יוסי ברקוביץ",
-  //       role: "מנהל מכירות",
-  //       image: "👨‍💻",
-  //       description: "מומחה לתכנון טיולים מותאמים אישית",
-  //     },
-  //   ];
-
-const reviews = [
-  {
-    name: "נועה כהן",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    text: "בנינו חופשה לפריז תוך דקות. הכל היה פשוט, זול וברור.",
-    location: "פריז, צרפת",
-    date: "ינואר 2026",
-  },
-  {
-    name: "יובל לוי",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    text: "חסכנו מאות שקלים על חבילת נופש לברצלונה.",
-    location: "ברצלונה, ספרד",
-    date: "דצמבר 2025",
-  },
-  {
-    name: "מיכל אברהם",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-    text: "החופשה בדובאי הייתה מושלמת מהטיסה ועד המלון.",
-    location: "דובאי, איחוד האמירויות",
-    date: "נובמבר 2025",
-  },
-  {
-    name: "דניאל פרץ",
-    image: "https://randomuser.me/api/portraits/men/11.jpg",
-    text: "האתר הכי נוח שמצאתי להזמנת חופשות.",
-    location: "רומא, איטליה",
-    date: "אוקטובר 2025",
-  },
-  {
-    name: "שירה בן דוד",
-    image: "https://randomuser.me/api/portraits/women/22.jpg",
-    text: "השוואת המחירים חסכה לנו המון כסף.",
-    location: "לונדון, בריטניה",
-    date: "ספטמבר 2025",
-  },
-  {
-    name: "איתי מזרחי",
-    image: "https://randomuser.me/api/portraits/men/54.jpg",
-    text: "מצאנו טיסות ומלון מושלמים תוך כמה דקות.",
-    location: "ברלין, גרמניה",
-    date: "אוגוסט 2025",
-  },
-  {
-    name: "לירון אוחנה",
-    image: "https://randomuser.me/api/portraits/women/12.jpg",
-    text: "אין ספק שזה האתר הכי נוח להזמנת חופשות.",
-    location: "אתונה, יוון",
-    date: "יולי 2025",
-  },
-];
+  const reviews = [
+    { name: "נועה כהן",    image: "https://randomuser.me/api/portraits/women/44.jpg", text: "בנינו חופשה לפריז תוך דקות. הכל היה פשוט, זול וברור.",         location: "פריז, צרפת",             date: "ינואר 2026"  },
+    { name: "יובל לוי",    image: "https://randomuser.me/api/portraits/men/32.jpg",   text: "חסכנו מאות שקלים על חבילת נופש לברצלונה.",                   location: "ברצלונה, ספרד",          date: "דצמבר 2025" },
+    { name: "מיכל אברהם",  image: "https://randomuser.me/api/portraits/women/65.jpg", text: "החופשה בדובאי הייתה מושלמת מהטיסה ועד המלון.",               location: "דובאי, איחוד האמירויות", date: "נובמבר 2025" },
+    { name: "דניאל פרץ",   image: "https://randomuser.me/api/portraits/men/11.jpg",   text: "האתר הכי נוח שמצאתי להזמנת חופשות.",                        location: "רומא, איטליה",           date: "אוקטובר 2025"},
+    { name: "שירה בן דוד", image: "https://randomuser.me/api/portraits/women/22.jpg", text: "השוואת המחירים חסכה לנו המון כסף.",                          location: "לונדון, בריטניה",        date: "ספטמבר 2025" },
+    { name: "איתי מזרחי",  image: "https://randomuser.me/api/portraits/men/54.jpg",   text: "מצאנו טיסות ומלון מושלמים תוך כמה דקות.",                   location: "ברלין, גרמניה",          date: "אוגוסט 2025"  },
+    { name: "לירון אוחנה", image: "https://randomuser.me/api/portraits/women/12.jpg", text: "אין ספק שזה האתר הכי נוח להזמנת חופשות.",                   location: "אתונה, יוון",            date: "יולי 2025"    },
+  ];
 
   return (
     <div className="about-page">
+
       {/* Hero Section */}
       <section className="about-hero">
-        <div className="hero-content">
+<div className="hero-content">
           <h1>הסיפור שלנו</h1>
-          <p>מחלום קטן לפלטפורמה מובילה לתכנון חופשות</p>
+          <p className="hero-subtitle">
+            {typedText}
+            <span className="typing-cursor" aria-hidden="true">|</span>
+          </p>
         </div>
       </section>
 
@@ -159,11 +125,6 @@ const reviews = [
               תהיה בדיוק מה שחלמתם עליה - ואפילו יותר.
             </p>
           </div>
-          {/* <div className="story-image">
-            <div className="image-placeholder">
-              <span className="placeholder-icon">✈️</span>
-            </div>
-          </div> */}
           <div className="story-image">
             <img
               src="/images/vacation-hero.jpg"
@@ -176,28 +137,19 @@ const reviews = [
 
       {/* Values Section */}
       <section className="values-section">
-        {/* <div className="values-container">
-          <h2 className="section-title">הערכים שלנו</h2>
+        <div ref={valuesRef} className="values-container">
+          <h2 className={`section-title reveal ${valuesInView ? "visible" : ""}`}>הערכים שלנו</h2>
           <div className="values-grid">
-            {values.map((value, index) => (
-              <div key={index} className="value-card">
-                <div className="value-icon">{value.icon}</div>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div> */}
-        <div className="values-container">
-          <h2 className="section-title">הערכים שלנו</h2>
-          <div className="values-grid">
-            {values.map((value, index) => {
-              const Icon = value.icon; // יוצרים קומפוננטה מהאייקון
+            {values.map((value, i) => {
+              const Icon = value.icon;
               return (
-                <div key={index} className="value-card">
+                <div
+                  key={i}
+                  className={`value-card reveal ${valuesInView ? "visible" : ""}`}
+                  style={{ "--reveal-delay": `${i * 0.12}s` }}
+                >
                   <div className="value-icon">
-                    <Icon size={40} color="#667eea" />{" "}
-                    {/* ניתן לשנות צבע וגודל */}
+                    <Icon size={40} color="#667eea" />
                   </div>
                   <h3>{value.title}</h3>
                   <p>{value.description}</p>
@@ -208,119 +160,56 @@ const reviews = [
         </div>
       </section>
 
-{/* Testimonials PRO — 3 cards visible, move 1 at a time */}
-<section className="pro-testimonials">
-  <div className="pro-container">
-    <h2 className="section-title">לקוחות משתפים</h2>
-
-    <div className="pro-slider-wrapper">
-      {/* כפתור אחורה */}
-      <button className="nav-btn left" onClick={() => setIndex((index - 1 + reviews.length) % reviews.length)}>
-        ‹
-      </button>
-
-      {/* Slider */}
-      <div className="pro-slider">
-        {Array.from({ length: 3 }).map((_, i) => {
-          const r = reviews[(index + i) % reviews.length]; // תצוגה סיבובית
-          return (
-            <div key={i} className="pro-card">
-              <div className="pro-header">
-                <img src={r.image} alt={r.name} />
-                <strong>{r.name}</strong>
-              </div>
-
-              <div className="stars">★★★★★</div>
-
-              <p>"{r.text}"</p>
-
-              <div className="pro-footer">
-                <span>{r.location}</span>
-                <span>{r.date}</span>
-              </div>
+      {/* Testimonials */}
+      <section className="pro-testimonials">
+        <div className="pro-container">
+          <h2 className="section-title">לקוחות משתפים</h2>
+          <div className="pro-slider-wrapper">
+            <button className="nav-btn left" onClick={() => setIndex((index - 1 + reviews.length) % reviews.length)}>‹</button>
+            <div className="pro-slider">
+              {Array.from({ length: 3 }).map((_, i) => {
+                const r = reviews[(index + i) % reviews.length];
+                return (
+                  <div key={i} className="pro-card">
+                    <div className="pro-header">
+                      <img src={r.image} alt={r.name} />
+                      <strong>{r.name}</strong>
+                    </div>
+                    <div className="stars">★★★★★</div>
+                    <p>"{r.text}"</p>
+                    <div className="pro-footer">
+                      <span>{r.location}</span>
+                      <span>{r.date}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
-
-      {/* כפתור קדימה */}
-      <button className="nav-btn right" onClick={() => setIndex((index + 1) % reviews.length)}>
-        ›
-      </button>
-    </div>
-  </div>
-</section>
+            <button className="nav-btn right" onClick={() => setIndex((index + 1) % reviews.length)}>›</button>
+          </div>
+        </div>
+      </section>
 
       {/* Stats Section */}
       <section className="stats-section">
-        <div className="stats-container">
+        <div ref={statsRef} className="stats-container">
           <h2 className="section-title">המספרים מדברים בעד עצמם</h2>
           <div className="stats-grid">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card">
-                <div className="stat-number">{stat.number}</div>
+            {stats.map((stat, i) => (
+              <div
+                key={i}
+                className={`stat-card reveal ${statsInView ? "visible" : ""}`}
+                style={{ "--reveal-delay": `${i * 0.13}s` }}
+              >
+                <div className="stat-number">
+                  <AnimatedNumber value={stat.number} inView={statsInView} />
+                </div>
                 <div className="stat-label">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Mission Section */}
-      {/* <section className="mission-section">
-        <div className="mission-container">
-          <div className="mission-content">
-            <h2>המשימה שלנו</h2>
-            <p>
-              אנחנו מאמינים שכל אחד ראוי לחופשה מושלמת. המטרה שלנו היא להפוך את
-              תכנון הטיולים לפשוט, נגיש ומהנה עבור כולם.
-            </p>
-            <p>
-              אנחנו עובדים קשה כדי למצוא עבורכם את המחירים הטובים ביותר, היעדים
-              המדהימים ביותר והחוויות הבלתי נשכחות ביותר.
-            </p>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Team Section */}
-      {/* <section className="team-section">
-        <div className="team-container">
-          <h2 className="section-title">הצוות שלנו</h2>
-          <p className="team-intro">
-            הצוות המקצועי שלנו כאן כדי להפוך את החופשה שלכם למציאות
-          </p>
-          <div className="team-grid">
-            {team.map((member, index) => (
-              <div key={index} className="team-card">
-                <div className="team-image">{member.image}</div>
-                <h3>{member.name}</h3>
-                <div className="team-role">{member.role}</div>
-                <p>{member.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* CTA Section */}
-      {/* <section className="cta-section">
-        <div className="cta-container">
-          <h2>?מוכנים להתחיל</h2>
-          <p>בואו נתכנן ביחד את החופשה המושלמת שלכם</p>
-          <div className="cta-buttons">
-            <button className="btn btn-primary" onClick={() => navigate("/")}>
-              גלה יעדים
-            </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => navigate("/contact")}
-            >
-              צור קשר
-            </button>
-          </div>
-        </div>
-      </section> */}
 
     </div>
   );

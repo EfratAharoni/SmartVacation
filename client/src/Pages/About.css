@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --about-primary: #27b4d3;
     --about-primary-dark: #144ea5;
     --about-surface: #ffffff;
@@ -24,13 +24,28 @@
     color: var(--about-text);
 }
 
-/* Hero Section */
+/* ── Hero ─────────────────────────────────────────────── */
 .about-hero {
     margin-top: 85px;
     padding: 5rem 5% 4rem;
     text-align: center;
     background: linear-gradient(135deg, var(--about-primary) 0%, var(--about-primary-dark) 100%);
     color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    animation: heroFadeUp 0.8s ease both;
+}
+
+@keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .hero-content h1 {
@@ -38,16 +53,47 @@
     margin-bottom: 1rem;
 }
 
-.hero-content p {
+.hero-subtitle {
     font-size: 1.3rem;
     opacity: 0.95;
+    min-height: 2rem;
 }
 
-/* Story Section */
+/* Typing cursor blink */
+.typing-cursor {
+    display: inline-block;
+    font-weight: 100;
+    margin-inline-start: 2px;
+    animation: cursorBlink 1s step-end infinite;
+    color: rgba(255,255,255,0.85);
+}
+
+@keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+/* ── Story image animations ───────────────────────────── */
+
+/* ── Scroll-reveal base ───────────────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: var(--reveal-delay, 0s);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Story Section ───────────────────────────────────── */
 .story-section {
     padding: clamp(4rem, 8vw, 7rem) 5%;
     background: var(--about-surface);
     position: relative;
+    animation: sectionFade 0.7s ease both 0.05s;
 }
 
 .story-section::after {
@@ -85,6 +131,26 @@
 
 .story-image {
     width: 100%;
+    position: relative;
+    /* entrance: slide in from the right */
+    animation: slideInRight 0.85s cubic-bezier(0.22, 1, 0.36, 1) both 0.2s;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(60px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* soft glow behind image */
+.story-image::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: calc(var(--about-radius-lg) + 8px);
+    background: linear-gradient(135deg, var(--about-primary), var(--about-primary-dark));
+    z-index: 0;
+    opacity: 0.18;
+    filter: blur(18px);
 }
 
 .story-img {
@@ -93,19 +159,29 @@
     border-radius: var(--about-radius-lg);
     object-fit: cover;
     aspect-ratio: 4 / 3;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.15);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 16px 40px rgba(20, 78, 165, 0.18);
+    position: relative;
+    z-index: 1;
+    animation: imgLevitate 6s ease-in-out infinite;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+@keyframes imgLevitate {
+    0%,  100% { transform: translateY(0);    }
+    50%        { transform: translateY(-5px); }
 }
 
 .story-img:hover {
+    animation-play-state: paused;
     transform: scale(1.02) translateY(-4px);
-    box-shadow: 0 22px 45px rgba(20, 78, 165, 0.22);
+    box-shadow: 0 22px 48px rgba(20, 78, 165, 0.25);
 }
 
-/* Values Section */
+/* ── Values Section ──────────────────────────────────── */
 .values-section {
     padding: clamp(4.2rem, 8vw, 7rem) 5%;
     background: linear-gradient(180deg, #f8fbff 0%, #f2f7fd 100%);
+    animation: sectionFade 0.7s ease both 0.12s;
 }
 
 .values-container {
@@ -143,9 +219,21 @@
     border-color: rgba(39, 180, 211, 0.42);
 }
 
+.value-card:hover .value-icon svg {
+    color: #27b4d3 !important;
+    filter: drop-shadow(0 0 8px rgba(39, 180, 211, 0.7));
+    transition: color 0.35s ease, filter 0.35s ease;
+}
+
 .value-icon {
     font-size: 3.5rem;
     margin-bottom: 1.1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.value-icon svg {
+    transition: color 0.35s ease, filter 0.35s ease;
 }
 
 .value-card h3 {
@@ -160,10 +248,11 @@
     font-size: 0.99rem;
 }
 
-/* Testimonials */
+/* ── Testimonials ────────────────────────────────────── */
 .pro-testimonials {
     padding: clamp(4.2rem, 8vw, 6rem) 5%;
     background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+    animation: sectionFade 0.7s ease both 0.18s;
 }
 
 .pro-container {
@@ -257,10 +346,7 @@
 }
 
 .nav-btn:focus,
-.nav-btn:active {
-    outline: none;
-    box-shadow: none;
-}
+.nav-btn:active { outline: none; box-shadow: none; }
 
 .nav-btn:hover {
     background: rgba(20, 78, 165, 0.08);
@@ -269,25 +355,20 @@
 
 .nav-btn:active {
     transform: translateY(-50%) scale(0.85);
-    border-radius: 999px;
     background: rgba(20, 78, 165, 0.13);
 }
 
-.nav-btn.left {
-    left: 10px;
-}
+.nav-btn.left  { left: 10px; }
+.nav-btn.right { right: 10px; }
 
-.nav-btn.right {
-    right: 10px;
-}
-
-/* Stats Section */
+/* ── Stats Section ───────────────────────────────────── */
 .stats-section {
     padding: clamp(2.8rem, 5vw, 4.4rem) 5%;
     background: linear-gradient(135deg, var(--about-primary) 0%, var(--about-primary-dark) 100%);
     color: white;
     position: relative;
     overflow: hidden;
+    animation: sectionFade 0.7s ease both 0.24s;
 }
 
 .stats-section::before {
@@ -302,6 +383,19 @@
     pointer-events: none;
 }
 
+/* second decorative circle */
+.stats-section::after {
+    content: '';
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    right: -100px;
+    bottom: -140px;
+    pointer-events: none;
+}
+
 .stats-container {
     max-width: 1240px;
     margin: 0 auto;
@@ -309,9 +403,7 @@
     z-index: 1;
 }
 
-.stats-section .section-title {
-    color: white;
-}
+.stats-section .section-title { color: white; }
 
 .stats-grid {
     display: grid;
@@ -322,6 +414,16 @@
 .stat-card {
     text-align: center;
     padding: clamp(0.55rem, 1.2vw, 0.9rem) 0.5rem;
+}
+
+/* glow pulse when visible */
+.stat-card.visible .stat-number {
+    animation: statGlow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes statGlow {
+    from { filter: drop-shadow(0 0 0px rgba(131,233,255,0)); }
+    to   { filter: drop-shadow(0 0 8px rgba(131,233,255,0.55)); }
 }
 
 .stat-number {
@@ -339,141 +441,53 @@
     opacity: 0.95;
 }
 
-body {
-    direction: rtl;
+body { direction: rtl; }
+
+/* ── sectionFade (on-load) ────────────────────────────── */
+@keyframes sectionFade {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 1024px) {
-    .story-container {
-        grid-template-columns: 1fr;
-    }
-
-    .story-img {
-        max-width: 100%;
-        aspect-ratio: 16 / 10;
-    }
-
-    .pro-slider {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .pro-slider-wrapper {
-        padding: 0 50px;
-    }
+    .story-container { grid-template-columns: 1fr; }
+    .story-img { max-width: 100%; aspect-ratio: 16 / 10; }
+    .pro-slider { grid-template-columns: repeat(2, 1fr); }
+    .pro-slider-wrapper { padding: 0 50px; }
 }
 
 @media (max-width: 768px) {
-    .about-hero {
-        padding: 4rem 5% 3rem;
-    }
-
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-
-    .hero-content p {
-        font-size: 1.1rem;
-    }
-
-    .story-section,
-    .values-section,
-    .stats-section,
-    .pro-testimonials {
-        padding: 4rem 5%;
-    }
-
-    .values-grid {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-
-    .pro-slider {
-        grid-template-columns: 1fr;
-    }
-
-    .pro-slider-wrapper {
-        padding: 0 40px;
-    }
-
-    .nav-btn {
-        font-size: 28px;
-    }
-
-    .nav-btn.left {
-        left: 0;
-    }
-
-    .nav-btn.right {
-        right: 0;
-    }
+    .about-hero { padding: 4rem 5% 3rem; }
+    .hero-content h1 { font-size: 2rem; }
+    .hero-subtitle { font-size: 1.1rem; }
+    .story-section, .values-section, .stats-section, .pro-testimonials { padding: 4rem 5%; }
+    .values-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .pro-slider { grid-template-columns: 1fr; }
+    .pro-slider-wrapper { padding: 0 40px; }
+    .nav-btn { font-size: 28px; }
+    .nav-btn.left  { left: 0; }
+    .nav-btn.right { right: 0; }
 }
+
 
 @media (max-width: 480px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .pro-slider-wrapper {
-        padding: 0 28px;
-    }
-}
-
-/* Subtle on-load reveal for modern transitions */
-.about-hero,
-.story-section,
-.values-section,
-.pro-testimonials,
-.stats-section {
-    animation: sectionFade 0.7s ease both;
-}
-
-.story-section {
-    animation-delay: 0.05s;
-}
-
-.values-section {
-    animation-delay: 0.12s;
-}
-
-.pro-testimonials {
-    animation-delay: 0.18s;
-}
-
-.stats-section {
-    animation-delay: 0.24s;
-}
-
-@keyframes sectionFade {
-    from {
-        opacity: 0;
-        transform: translateY(24px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    .stats-grid { grid-template-columns: 1fr; }
+    .pro-slider-wrapper { padding: 0 28px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .about-hero,
-    .story-section,
-    .values-section,
-    .pro-testimonials,
-    .stats-section {
-        animation: none;
+    .about-hero, .story-section, .values-section, .pro-testimonials, .stats-section,
+    .reveal, .typing-cursor,
+    .story-image, .story-image::before, .story-image::after, .story-img {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
     }
+    .reveal { opacity: 1; transform: none; }
 }
 
 .stats-section,
-.stats-section *:not(.stat-number) {
-    color: white !important;
-}
-
-
-
+.stats-section *:not(.stat-number) { color: white !important; }
