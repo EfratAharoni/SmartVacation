@@ -99,42 +99,70 @@ const HomePage = () => {
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  /* ── Smart search: parse free Hebrew text locally (no API) ── */
-  const handleAiSearch = () => {
+  /* ── Smart search: call Groq via server, fallback to local parser ── */
+  const handleAiSearch = async () => {
     if (!aiQuery.trim()) return;
     setAiLoading(true);
     setAiError(null);
     setAiResult(null);
     setFilledByAi(false);
 
-    setTimeout(() => {
-      try {
-        const data = parseHebrewVacationQuery(aiQuery);
-        const hasResult = data.destination || data.startDate || data.budget || data.guests || data.isKosher || data.vibe;
+    const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
-        if (!hasResult) {
-          setAiError("לא הצלחתי לזהות פרטים — נסי לכלול יעד, חודש, תקציב או נוסעים.");
-          setAiLoading(false);
-          return;
-        }
+    let data = null;
+    let rankedDeals = null;
 
-        setAiResult(data);
-        if (data.destination) setDestinationQuery(data.destination);
-        if (data.startDate && data.endDate) {
-          setDateRange([{ startDate: new Date(data.startDate), endDate: new Date(data.endDate), key: "selection" }]);
-          setIsDateActive(true);
-        }
+    try {
+      const resp = await fetch(`${API_BASE_URL}/ai/search`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: aiQuery }),
+      });
 
-        // Return to regular mode so the user sees the filled bar
-        setAiMode(false);
-        setFilledByAi(true);
-        setTimeout(() => setFilledByAi(false), 3000);
-      } catch {
-        setAiError("אירעה שגיאה בפענוח, נסי שוב.");
-      } finally {
-        setAiLoading(false);
+      if (resp.ok) {
+        const json = await resp.json();
+        data = json.filters;
+        rankedDeals = json.rankedDeals;
+      } else {
+        throw new Error("server error");
       }
-    }, 480);
+    } catch {
+      // Fallback: local regex parser
+      data = parseHebrewVacationQuery(aiQuery);
+    }
+
+    const hasResult = data && (data.destination || data.startDate || data.budget || data.guests || data.isKosher || data.vibe);
+
+    if (!hasResult) {
+      setAiError("לא הצלחתי לזהות פרטים - נסי לכלול יעד, חודש, תקציב או נוסעים.");
+      setAiLoading(false);
+      return;
+    }
+
+    setAiResult(data);
+    if (data.destination) setDestinationQuery(data.destination);
+    if (data.startDate && data.endDate) {
+      setDateRange([{ startDate: new Date(data.startDate), endDate: new Date(data.endDate), key: "selection" }]);
+      setIsDateActive(true);
+    }
+
+    setAiMode(false);
+    setFilledByAi(true);
+    setTimeout(() => setFilledByAi(false), 3000);
+    setAiLoading(false);
+
+    // Navigate to deals — pass only destination/kosher/vibe as URL params so the
+    // regular grid stays meaningful. Dates & budget were already used server-side;
+    // passing them as URL params would over-filter the regular grid to 0 results.
+    const params = new URLSearchParams();
+    if (data.destination) params.set("destination", data.destination);
+    if (data.isKosher)    params.set("kosher", "true");
+    if (data.vibe && data.vibe !== "kosher") params.set("vibe", data.vibe);
+
+    navigate(
+      params.toString() ? `/deals?${params}` : "/deals",
+      { state: { aiRankedDeals: rankedDeals, aiQuery } }
+    );
   };
 
   const exitAiMode = () => {

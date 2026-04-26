@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { DateRange } from 'react-date-range';
 import { CalendarDays, X, Search } from 'lucide-react';
 import 'react-date-range/dist/styles.css';
@@ -52,7 +52,7 @@ const Deals = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [destinationKeyword, setDestinationKeyword] = useState('');
-    const [priceRange, setPriceRange] = useState([0, 10000]);
+    const [priceRange, setPriceRange] = useState([0, 15000]);
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [isDateRangeActive, setIsDateRangeActive] = useState(false);
     const [dateRangeSelection, setDateRangeSelection] = useState([
@@ -68,6 +68,22 @@ const Deals = () => {
     const [vibeFilter, setVibeFilter] = useState(null); // 'beach' | 'adventure' | 'cheap' | 'romantic' | 'city'
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const datePickerRef = useRef(null);
+
+    const location = useLocation();
+    // Deduplicate by destination — keep highest-scored deal per destination
+    const rawAiDeals = location.state?.aiRankedDeals ?? null;
+    const aiRankedDeals = rawAiDeals
+        ? Object.values(
+            rawAiDeals.reduce((acc, item) => {
+                const dest = item.deal.destination;
+                if (!acc[dest] || (item.score ?? 0) > (acc[dest].score ?? 0)) {
+                    acc[dest] = item;
+                }
+                return acc;
+            }, {})
+          )
+        : null;
+    const aiQuery = location.state?.aiQuery ?? null;
 
     const [favorites, setFavorites] = useState(() => {
         const name = localStorage.getItem('userName');
@@ -164,7 +180,7 @@ const Deals = () => {
         if (budgetQuery) {
             const totalBudget = parseInt(budgetQuery, 10);
             const guests = guestsQuery ? parseInt(guestsQuery, 10) : 1;
-            const perPersonMax = Math.floor(totalBudget / guests);
+            const perPersonMax = Math.min(15000, Math.floor(totalBudget / guests));
             setPriceRange([0, perPersonMax]);
         }
     }, [searchParams]);
@@ -511,20 +527,39 @@ const Deals = () => {
                         </div>
 
                         <div className="filter-group price-filter">
-                            <label>טווח מחיר: ₪{priceRange[0]} - ₪{priceRange[1]}</label>
-                            <div className="price-inputs">
-                                <input
-                                    type="number"
-                                    value={priceRange[0]}
-                                    onChange={(e) => setPriceRange([parseInt(e.target.value) || 0, priceRange[1]])}
-                                    placeholder="מינימום"
+                            <label>מחיר: ₪{priceRange[0].toLocaleString()} - ₪{priceRange[1].toLocaleString()}</label>
+                            <div className="price-range-wrapper">
+                                <div className="price-range-track-bg" />
+                                <div
+                                    className="price-range-track-fill"
+                                    style={{
+                                        right: `${(priceRange[0] / 15000) * 100}%`,
+                                        left: `${100 - (priceRange[1] / 15000) * 100}%`,
+                                    }}
                                 />
-                                <span>-</span>
                                 <input
-                                    type="number"
+                                    type="range"
+                                    className="price-slider price-slider-min"
+                                    min={0}
+                                    max={15000}
+                                    step={250}
+                                    value={priceRange[0]}
+                                    onChange={(e) => {
+                                        const val = parseInt(e.target.value);
+                                        if (val < priceRange[1]) setPriceRange([val, priceRange[1]]);
+                                    }}
+                                />
+                                <input
+                                    type="range"
+                                    className="price-slider price-slider-max"
+                                    min={0}
+                                    max={15000}
+                                    step={250}
                                     value={priceRange[1]}
-                                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 10000])}
-                                    placeholder="מקסימום"
+                                    onChange={(e) => {
+                                        const val = parseInt(e.target.value);
+                                        if (val > priceRange[0]) setPriceRange([priceRange[0], val]);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -570,8 +605,63 @@ const Deals = () => {
                 </div>
             </section>
 
-            {/* Deals Grid */}
-            <section className="deals-grid-section">
+            {/* AI Ranked Results */}
+            {aiRankedDeals && aiRankedDeals.length > 0 && (
+                <section className="ai-results-section">
+                    <div className="ai-results-header">
+                        <span className="ai-results-icon">✨</span>
+                        <div>
+                            <h2>המלצות סוכן AI</h2>
+                            {aiQuery && <p className="ai-results-query">"{aiQuery}"</p>}
+                        </div>
+                    </div>
+                    <div className="deals-grid">
+                        {aiRankedDeals.map(({ deal, score, explanation }) => (
+                            <div
+                                key={deal._id}
+                                className="deal-card destination-card ai-ranked-card"
+                                onClick={() => navigate(`/deals/${encodeURIComponent(deal.destination)}`)}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                {score !== null && (
+                                    <div className="ai-score-badge">התאמה {score.toFixed(1)}/10</div>
+                                )}
+                                <div className="deal-badge">
+                                    <span className="discount">עד -{deal.discount}%</span>
+                                </div>
+                                <div className="deal-image">
+                                    <img src={deal.image} alt={deal.destination} />
+                                </div>
+                                <div className="deal-content">
+                                    <h3>{deal.destination}</h3>
+                                    <div className="rating-section">
+                                        <div className="stars">{renderStars(deal.rating)}</div>
+                                        <span className="rating-text">{deal.rating?.toFixed(1)}</span>
+                                    </div>
+                                    {explanation && (
+                                        <p className="ai-explanation">{explanation}</p>
+                                    )}
+                                    <div className="price-section">
+                                        <div className="price-info">
+                                            <span className="price-label">החל מ-</span>
+                                            <span className="current-price">₪{deal.price}</span>
+                                        </div>
+                                        <button
+                                            className="view-packages-btn"
+                                            onClick={(e) => { e.stopPropagation(); navigate(`/deals/${encodeURIComponent(deal.destination)}`); }}
+                                        >
+                                            צפה בחבילות
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* Deals Grid — hidden when AI results are shown to avoid duplicates */}
+            {!(aiRankedDeals && aiRankedDeals.length > 0) && <section className="deals-grid-section">
                 <div className="results-info">
                     <h2>נמצאו {filteredDestinations.length} יעדים</h2>
                     <p className="hot-tip">💡 לחץ על יעד לצפייה בכל החבילות הזמינות</p>
@@ -663,7 +753,7 @@ const Deals = () => {
                         <p>נסה לשנות את הפילטרים או לחפש יעד אחר</p>
                     </div>
                 )}
-            </section>
+            </section>}
         </div>
     );
 };
