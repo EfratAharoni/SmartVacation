@@ -839,21 +839,56 @@
     transition: box-shadow 0.4s ease;
 }
 
-/* ── AI mode: the bar morphs in place ── */
+/* ── AI mode: white bar with spinning gradient border ── */
 .hero-search-bar--ai-mode {
-    background: linear-gradient(135deg, #0f2554 0%, #1d4ed8 100%);
-    box-shadow: 0 14px 40px rgba(29, 78, 216, 0.45);
+    background: #ffffff;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
     transition: background 0.3s ease, box-shadow 0.3s ease;
     animation: none;
-    min-height: 70px; /* matches regular mode height */
+    min-height: 70px;
+    position: relative;
+    z-index: 0;
+    overflow: visible;
+}
+
+.hero-search-bar--ai-mode::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    background: conic-gradient(
+        from var(--angle, 0deg),
+        #a855f7, #6366f1, #22d3ee, #a855f7
+    );
+    z-index: -1;
+    animation: ai-border-spin 3s linear infinite;
+}
+
+.hero-search-bar--ai-mode::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 999px;
+    background: #ffffff;
+    z-index: -1;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes ai-border-spin {
+    to { --angle: 360deg; }
 }
 
 /* ── AI toggle button (lives inside the pill in regular mode) ── */
 .ai-pill-btn {
     border: none;
     border-radius: 999px;
-    background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
-    color: #fff;
+    background: #fff;
+    color: #4f46e5;
     font-size: 0.88rem;
     font-weight: 700;
     display: inline-flex;
@@ -866,22 +901,44 @@
     flex-shrink: 0;
     margin-right: 0.3rem;
     letter-spacing: 0.01em;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    box-shadow: 0 2px 12px rgba(37, 99, 235, 0.38);
+    transition: transform 0.2s ease;
     white-space: nowrap;
+    position: relative;
+    z-index: 0;
+}
+
+.ai-pill-btn::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    background: conic-gradient(
+        from var(--angle, 0deg),
+        #a855f7, #6366f1, #22d3ee, #a855f7
+    );
+    z-index: -1;
+    animation: ai-border-spin 3s linear infinite;
+}
+
+.ai-pill-btn::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 999px;
+    background: #fff;
+    z-index: -1;
 }
 
 .ai-pill-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 18px rgba(37, 99, 235, 0.52);
 }
 
 /* ── Content inside the bar while in AI mode ── */
 .ai-back-btn {
-    border: none;
+    border: 1.5px solid #e2e8f0;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.9);
+    background: #f8fafc;
+    color: #64748b;
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
@@ -897,11 +954,12 @@
 }
 
 .ai-back-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: #f1f5f9;
+    color: #1e293b;
 }
 
 .ai-mode-sparkle {
-    color: #a5b4fc;
+    color: #6366f1;
     flex-shrink: 0;
     margin: 0 0.3rem;
 }
@@ -910,27 +968,27 @@
     flex: 1;
     border: none;
     background: transparent;
-    color: #fff;
+    color: #1e293b;
     font-size: 0.97rem;
     font-weight: 500;
     outline: none;
     text-align: right;
     min-width: 0;
     padding: 0;
-    min-height: 52px; /* matches regular search cell height */
+    min-height: 52px;
     direction: rtl;
 }
 
 .ai-mode-input::placeholder {
-    color: rgba(255, 255, 255, 0.45);
+    color: #94a3b8;
     font-weight: 400;
 }
 
 .ai-mode-submit {
     border: none;
     border-radius: 999px;
-    background: #fff;
-    color: #1d4ed8;
+    background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+    color: #fff;
     font-size: 0.92rem;
     font-weight: 800;
     cursor: pointer;
@@ -942,12 +1000,12 @@
     justify-content: center;
     flex-shrink: 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.35);
 }
 
 .ai-mode-submit:hover:not(:disabled) {
     transform: scale(1.04);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 18px rgba(99, 102, 241, 0.5);
 }
 
 .ai-mode-submit:disabled {

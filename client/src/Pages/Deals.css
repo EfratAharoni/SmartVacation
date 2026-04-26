@@ -199,6 +199,7 @@ nav {
 }
 
 .filter-container {
+    position: relative;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -555,6 +556,26 @@ nav {
     z-index: 4;
 }
 
+.clear-filters-btn {
+    height: 30px;
+    padding: 0 0.75rem;
+    border: 1.5px solid #e05050;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #e05050;
+    background: #fff5f5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.clear-filters-btn:hover {
+    background: #e05050;
+    color: white;
+}
+
 /* Deals Grid Section */
 .deals-grid-section {
     padding: 4rem 5%;
@@ -564,6 +585,12 @@ nav {
 .results-info {
     text-align: center;
     margin-bottom: 3rem;
+}
+
+.results-info-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .results-info h2 {
@@ -1234,40 +1261,141 @@ textarea {
 
 /* ── AI Ranked Results Section ─────────────────────────────── */
 .ai-results-section {
-    max-width: 1400px;
-    margin: 30px auto 60px;
-    padding: 0 20px;
+    padding: 4rem 5%;
+    background: #f5f5f5;
+}
+
+.ai-results-header-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 680px;
+    margin: 0 auto 2rem;
+    padding: 0.35rem 0.35rem 0.35rem 1.2rem;
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+    position: relative;
+    z-index: 0;
+    display: flex;
+}
+
+/* spinning gradient border on the whole bar */
+.ai-results-header-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    background: conic-gradient(
+        from var(--angle, 0deg),
+        #a855f7, #6366f1, #22d3ee, #a855f7
+    );
+    z-index: -1;
+    animation: ai-border-spin 3s linear infinite;
+}
+
+.ai-results-header-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 999px;
+    background: #fff;
+    z-index: -1;
 }
 
 .ai-results-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
-    border-radius: 14px;
-    border-right: 4px solid #27b4d3;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
 }
 
 .ai-results-icon {
-    font-size: 28px;
-    line-height: 1;
+    flex-shrink: 0;
+}
+
+.ai-icon-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #6366f1;
+    animation: ai-search-pulse 2s ease-in-out infinite;
+}
+
+.ai-icon-pill svg {
+    width: 28px;
+    height: 28px;
+}
+
+@keyframes ai-search-pulse {
+    0%, 100% { transform: scale(1) rotate(0deg); color: #6366f1; }
+    30%       { transform: scale(1.18) rotate(-12deg); color: #a855f7; }
+    60%       { transform: scale(1.08) rotate(6deg); color: #22d3ee; }
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes ai-border-spin {
+    to { --angle: 360deg; }
+}
+
+.ai-clear-pill-btn {
+    flex-shrink: 0;
+    height: 42px;
+    padding: 0 1.4rem;
+    border-radius: 999px;
+    border: none;
+    background: #fff5f5;
+    color: #e05050;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    outline: 1.5px solid #f8c8c8;
+}
+
+.ai-clear-pill-btn:hover {
+    background: #e05050;
+    color: #fff;
+    outline-color: #e05050;
+}
+
+.ai-results-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .ai-results-header h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
-    color: #144ea5;
+    color: #1e293b;
     margin: 0;
+    white-space: nowrap;
 }
 
 .ai-results-query {
-    font-size: 14px;
-    color: #666;
-    margin: 2px 0 0;
+    font-size: 13.5px;
+    color: #94a3b8;
+    margin: 0;
     font-style: italic;
+    white-space: nowrap;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.ai-results-query::before { content: '"'; }
+.ai-results-query::after  { content: '"'; }
 
 .ai-ranked-card {
     position: relative;

@@ -601,6 +601,7 @@ const Deals = () => {
                                 {isKosherOnly ? 'כשר בלבד' : 'כל החבילות'}
                             </button>
                         </div>
+
                     </div>
                 </div>
             </section>
@@ -608,14 +609,37 @@ const Deals = () => {
             {/* AI Ranked Results */}
             {aiRankedDeals && aiRankedDeals.length > 0 && (
                 <section className="ai-results-section">
-                    <div className="ai-results-header">
-                        <span className="ai-results-icon">✨</span>
-                        <div>
-                            <h2>המלצות סוכן AI</h2>
-                            {aiQuery && <p className="ai-results-query">"{aiQuery}"</p>}
+                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                    <div className="ai-results-header-wrapper">
+                        <div className="ai-results-header">
+                            <span className="ai-results-icon">
+                                <span className="ai-icon-pill">
+                                    <Search size={18} strokeWidth={2} />
+                                </span>
+                            </span>
+                            <div className="ai-results-text">
+                                <h2>המלצות סוכן AI</h2>
+                                {aiQuery && <p className="ai-results-query">{aiQuery}</p>}
+                            </div>
                         </div>
+                        <button
+                            type="button"
+                            className="ai-clear-pill-btn"
+                            onClick={() => {
+                                setDestinationKeyword('');
+                                setPriceRange([0, 15000]);
+                                setIsDateRangeActive(false);
+                                setIsKosherOnly(false);
+                                setVibeFilter(null);
+                                setSortBy('price-low');
+                                navigate('/deals', { replace: true });
+                            }}
+                        >
+                            ✕ נקה סינון
+                        </button>
                     </div>
-                    <div className="deals-grid">
+                    </div>
+                    <div className="deals-grid" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 5%' }}>
                         {aiRankedDeals.map(({ deal, score, explanation }) => (
                             <div
                                 key={deal._id}
@@ -663,7 +687,26 @@ const Deals = () => {
             {/* Deals Grid — hidden when AI results are shown to avoid duplicates */}
             {!(aiRankedDeals && aiRankedDeals.length > 0) && <section className="deals-grid-section">
                 <div className="results-info">
-                    <h2>נמצאו {filteredDestinations.length} יעדים</h2>
+                    <div className="results-info-row">
+                        <h2>נמצאו {filteredDestinations.length} יעדים</h2>
+                        {(destinationKeyword || isDateRangeActive || isKosherOnly || vibeFilter || priceRange[0] > 0 || priceRange[1] < 15000) && (
+                            <button
+                                type="button"
+                                className="clear-filters-btn"
+                                onClick={() => {
+                                    setDestinationKeyword('');
+                                    setPriceRange([0, 15000]);
+                                    setIsDateRangeActive(false);
+                                    setIsKosherOnly(false);
+                                    setVibeFilter(null);
+                                    setSortBy('price-low');
+                                    navigate('/deals', { replace: true });
+                                }}
+                            >
+                                ✕ נקה סינון
+                            </button>
+                        )}
+                    </div>
                     <p className="hot-tip">💡 לחץ על יעד לצפייה בכל החבילות הזמינות</p>
                 </div>
 
