@@ -71,8 +71,8 @@ smartVacation/
 ### AI & Smart Search
 | Technology | Purpose |
 |---|---|
-| **Anthropic Claude Haiku** (`@anthropic-ai/sdk`) | AI-powered Hebrew NLP - parses free-text vacation queries into structured search parameters (destination, dates, budget, guests) |
-| **fuzzySearch.js** (client-side) | Zero-dependency rule-based Hebrew NLP parser - handles typos, Latin transliterations, country→city mapping, vibe detection, and duration parsing without an API call |
+| **Groq API + LLaMA 3.1 8B** (`groq-sdk`) | Primary AI engine — parses free-text Hebrew vacation queries into structured filters, queries MongoDB for matching deals, then ranks and explains results in Hebrew |
+| **fuzzySearch.js** (client-side) | Zero-dependency rule-based Hebrew NLP parser — handles typos, Latin transliterations, country→city mapping, vibe detection, and duration parsing. Also serves as server-side fallback when Groq is unavailable |
 
 ### DevOps & Deployment
 | Technology | Purpose |
@@ -85,9 +85,14 @@ smartVacation/
 
 ## Features
 
-### Smart Search (Two-Layer)
-- **Client-side fuzzy search** (`fuzzySearch.js`): instantly matches Hebrew free-text against 18 destinations using aliases, typo tolerance, and Latin transliterations. Also parses vacations queries like "שבוע ביוון בספטמבר עד-7000 ₪ לזוג" into structured filter params - no API call needed.
-- **AI-powered search** (server `/api/ai/parse`): sends the query to Claude Haiku which extracts destination, start/end dates, budget, and number of guests from natural Hebrew text.
+### Smart Search (Three-Step AI Flow)
+- **Client-side fuzzy search** (`fuzzySearch.js`): instantly matches Hebrew free-text against 18 destinations using aliases, typo tolerance, and Latin transliterations.
+- **AI-powered search** (server `POST /api/ai/search`): three-step pipeline using Groq (LLaMA 3.1 8B):
+  1. **Parse** — extracts destination, dates, budget, guests, kosher, and vibe from free Hebrew text
+  2. **Query** — fetches matching deals from MongoDB based on the parsed filters
+  3. **Rank & Explain** — ranks results by relevance and adds a short Hebrew explanation per deal
+- **Local fallback parser**: if Groq is unavailable, the server falls back to a rule-based regex parser (same logic as `fuzzySearch.js`) so search always works.
+- Results are displayed in a dedicated **"המלצות סוכן AI"** section with a match score badge (x/10) and explanation per deal.
 
 ### Vibe-Based Filtering
 Deals can be filtered by "vibe" categories:
@@ -102,7 +107,7 @@ Deals can be filtered by "vibe" categories:
 - Browse deals across 18 international destinations
 - Each deal includes: price & discount, hotel name, airline, flight duration, included services, travel tips, visa info, weather, electricity info, and emergency contacts (police, ambulance, Israeli embassy)
 - Date range filtering with a Hebrew calendar picker
-- Guest count and budget filtering
+- Guest count and budget filtering with a dual range slider (0–15,000 ₪)
 
 ### User Authentication
 - Register and login with email/password
@@ -168,7 +173,7 @@ Deals can be filtered by "vibe" categories:
 ### AI
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | `/api/ai/parse` | Parse Hebrew vacation query with Claude Haiku |
+| POST | `/api/ai/search` | Parse Hebrew query, fetch & rank matching deals with Groq (LLaMA 3.1 8B) |
 
 ### Health
 | Method | Endpoint | Description |
@@ -183,7 +188,7 @@ Deals can be filtered by "vibe" categories:
 - Node.js (v18+)
 - MongoDB (local or Atlas)
 - npm
-- An [Anthropic API key](https://console.anthropic.com/) (for AI search)
+- A [Groq API key](https://console.groq.com/) (free) — for AI-powered search
 
 ### Installation
 
@@ -198,7 +203,7 @@ cd server && npm install
 cd ../client && npm install
 ```
 
-3. Configure environment variables for the server (`PORT`, `MONGODB_URI`, `JWT_SECRET`, `ANTHROPIC_API_KEY`) and client (`VITE_API_URL`).
+3. Configure environment variables for the server (`PORT`, `MONGODB_URI`, `JWT_SECRET`, `GROQ_API_KEY`) and client (`VITE_API_URL`).
 
 4. Seed the database:
 ```bash
