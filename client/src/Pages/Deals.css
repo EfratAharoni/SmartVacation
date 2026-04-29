@@ -233,15 +233,23 @@ nav {
 
 .filter-select {
     height: 38px;
-    padding: 0 0.9rem;
+    padding: 0 0.9rem 0 2.2rem;
     border: 2px solid #e0e0e0;
     border-radius: 10px;
     font-size: 0.9rem;
-    background: #f8f9fa;
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    color-scheme: light;
+    background: #f8f9fa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat left 0.9rem center;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
     box-sizing: border-box;
+    direction: rtl;
+    text-align: right;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 .filter-select:focus {
@@ -249,6 +257,8 @@ nav {
     border-color: #1f8ec1;
     background: white;
     box-shadow: 0 0 0 4px rgba(39, 180, 211, 0.18);
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
 }
 
 .search-input-wrapper {
@@ -1079,10 +1089,6 @@ footer {
 
 input,
 textarea {
-    color: #000;
-}
-
-.filter-select {
     color: #000;
 }
 
