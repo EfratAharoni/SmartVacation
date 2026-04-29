@@ -53,6 +53,8 @@ const Deals = () => {
 
     const [destinationKeyword, setDestinationKeyword] = useState('');
     const [priceRange, setPriceRange] = useState([0, 15000]);
+    const minDealPrice = deals.length > 0 ? Math.min(...deals.map(d => d.price)) : 0;
+    const maxDealPrice = deals.length > 0 ? Math.max(...deals.map(d => d.price)) : 15000;
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [isDateRangeActive, setIsDateRangeActive] = useState(false);
     const [dateRangeSelection, setDateRangeSelection] = useState([
@@ -113,6 +115,11 @@ const Deals = () => {
                 if (!response.ok) throw new Error('Failed to fetch deals');
                 const data = await response.json();
                 setDeals(data);
+                if (data.length > 0) {
+                    const min = Math.min(...data.map(d => d.price));
+                    const max = Math.max(...data.map(d => d.price));
+                    setPriceRange([min, max]);
+                }
             } catch (error) {
                 console.error("Error fetching deals:", error);
             } finally {
@@ -533,15 +540,15 @@ const Deals = () => {
                                 <div
                                     className="price-range-track-fill"
                                     style={{
-                                        right: `${(priceRange[0] / 15000) * 100}%`,
-                                        left: `${100 - (priceRange[1] / 15000) * 100}%`,
+                                        right: `${((priceRange[0] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
+                                        left: `${100 - ((priceRange[1] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
                                     }}
                                 />
                                 <input
                                     type="range"
                                     className="price-slider price-slider-min"
-                                    min={0}
-                                    max={15000}
+                                    min={minDealPrice}
+                                    max={maxDealPrice}
                                     step={250}
                                     value={priceRange[0]}
                                     onChange={(e) => {
@@ -552,8 +559,8 @@ const Deals = () => {
                                 <input
                                     type="range"
                                     className="price-slider price-slider-max"
-                                    min={0}
-                                    max={15000}
+                                    min={minDealPrice}
+                                    max={maxDealPrice}
                                     step={250}
                                     value={priceRange[1]}
                                     onChange={(e) => {
@@ -627,7 +634,7 @@ const Deals = () => {
                             className="ai-clear-pill-btn"
                             onClick={() => {
                                 setDestinationKeyword('');
-                                setPriceRange([0, 15000]);
+                                setPriceRange([minDealPrice, maxDealPrice]);
                                 setIsDateRangeActive(false);
                                 setIsKosherOnly(false);
                                 setVibeFilter(null);
@@ -689,13 +696,13 @@ const Deals = () => {
                 <div className="results-info">
                     <div className="results-info-row">
                         <h2>נמצאו {filteredDestinations.length} יעדים</h2>
-                        {(destinationKeyword || isDateRangeActive || isKosherOnly || vibeFilter || priceRange[0] > 0 || priceRange[1] < 15000) && (
+                        {(destinationKeyword || isDateRangeActive || isKosherOnly || vibeFilter || priceRange[0] > minDealPrice || priceRange[1] < maxDealPrice) && (
                             <button
                                 type="button"
                                 className="clear-filters-btn"
                                 onClick={() => {
                                     setDestinationKeyword('');
-                                    setPriceRange([0, 15000]);
+                                    setPriceRange([minDealPrice, maxDealPrice]);
                                     setIsDateRangeActive(false);
                                     setIsKosherOnly(false);
                                     setVibeFilter(null);
