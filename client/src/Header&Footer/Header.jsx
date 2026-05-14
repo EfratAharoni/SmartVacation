@@ -195,6 +195,9 @@ const Header = () => {
           </div>
         </div>
       </nav>
+      {isMobileMenuOpen && (
+        <div className="mobile-menu-overlay" onClick={closeMobileMenu} />
+      )}
     </header>
   );
 };

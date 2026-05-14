@@ -550,73 +550,111 @@
 }
 
 @media (max-width: 768px) {
-    nav {
-        padding: 1rem 5%;
-    }
-
-    .nav-center {
-        position: fixed;
-        right: -100%;
-        top: 70px;
-        flex-direction: column;
-        background: white;
-        width: 100%;
-        padding: 2rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease;
-        gap: 2rem;
-    }
-
-    .nav-center.active {
-        right: 0;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .auth-buttons {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .auth-buttons .btn {
-        width: 100%;
-    }
-
-    .mobile-menu-btn {
-        display: block;
-    }
-
+    /* ── Hero ── */
     .hero {
-        padding: 5rem 5% 4rem;
-        min-height: 400px;
+        padding: 3rem 4% 2rem;
+        min-height: 420px;
         background-attachment: scroll; /* Fix iOS Safari parallax bug */
+        margin-top: 85px;
     }
 
+    /* Hero title — one line, scales to fit */
     .hero h1 {
-        font-size: 2.2rem;
+        font-size: clamp(1.5rem, 6.5vw, 2.4rem);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.25;
+        margin-bottom: 1rem;
+        width: 100%;
+        text-align: center;
     }
 
     .hero p {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin-bottom: 1.75rem;
     }
 
+    /* Slogans — one line, scales to fit */
+    .hero-slogans {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        white-space: nowrap;
+        overflow: hidden;
+        gap: 0;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-slogans span {
+        font-size: clamp(0.72rem, 3.2vw, 1.05rem);
+        white-space: nowrap;
+    }
+
+    .hero-icon {
+        font-size: clamp(0.72rem, 3.2vw, 1.05rem);
+        margin: 0 0.25rem;
+    }
+
+    /* ── Search bar – 3-row mobile layout ── */
     .hero-search-bar {
-        flex-direction: column;
-        gap: 0.45rem;
-        max-width: 520px;
-        border-radius: 18px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0;
+        width: calc(100% - 2.5rem);
+        max-width: 420px;
+        border-radius: 16px;
+        padding: 0.3rem;
+        overflow: visible;
+        background: #ffffff;
+        box-shadow: 0 6px 24px rgba(15, 23, 42, 0.15);
+        margin-top: 1.5rem;
+        margin-bottom: 0;
     }
 
-    .search-cell,
-    .search-submit-btn {
+    /* Row 1: destination – full width */
+    .destination-cell {
+        flex: 0 0 100%;
+        min-height: 46px;
+        padding: 0 0.9rem;
+        border-radius: 10px 10px 0 0;
+        border-bottom: 1px solid #e5e7eb;
+        background: transparent;
+        width: 100%;
+    }
+
+    /* Row 2: date – full width */
+    .date-cell {
+        flex: 0 0 100%;
+        min-height: 46px;
+        padding: 0 0.9rem;
+        border-radius: 0;
+        border-bottom: 1px solid #e5e7eb;
+        border-right: none;
+        background: transparent;
         width: 100%;
     }
 
     .search-cell + .search-cell {
         border-right: none;
+    }
+
+    .search-input,
+    .date-trigger-btn {
+        font-size: 0.88rem;
+    }
+
+    /* Row 3: חיפוש (right) + AI (left) with gap */
+    .search-submit-btn {
+        flex: 1 1 auto;
+        min-width: 0;
+        margin-right: 0.25rem;
+        margin-left: 1rem;
+        margin-top: 0.3rem;
+        border-radius: 10px;
+        min-height: 44px;
+        font-size: 0.9rem;
+        font-weight: 800;
     }
 
     .search-popover,
@@ -626,34 +664,113 @@
         transform: translateX(50%);
     }
 
-    .search-submit-btn {
-        margin-right: 0;
+    /* ── Sections ── */
+    .section-title {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
     }
 
-    .section-title {
-        font-size: 2rem;
+    .features {
+        padding: 3.5rem 5%;
     }
 
     .features-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
+    .feature-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .destinations {
+        padding: 3.5rem 4%;
+    }
+
+    /* ── 2-column cards for tablet ── */
     .destinations-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .destination-image {
+        height: 160px;
+    }
+
+    .destination-image img {
+        height: 220px;
+    }
+
+    .destination-info {
+        padding: 0.9rem 1rem 1rem;
+        padding-top: 1.2rem;
+    }
+
+    .destination-info h3 {
+        font-size: 1.05rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .destination-info p {
+        font-size: 0.85rem;
+        line-height: 1.4;
     }
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 2.5rem 4% 1.5rem;
+        min-height: 360px;
+    }
+
+    /* Smaller phones — shrink further to stay on one line */
     .hero h1 {
-        font-size: 1.8rem;
+        font-size: clamp(1.2rem, 5.8vw, 1.9rem);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .hero p {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     .section-title {
-        font-size: 1.6rem;
+        font-size: 0.82rem;
+        margin-bottom: 1.2rem;
+    }
+
+    /* Single column on phone — compact */
+    .destinations {
+        padding: 2rem 4%;
+    }
+
+    .destinations-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .destination-image {
+        height: 140px;
+    }
+
+    .destination-image img {
+        height: 170px;
+    }
+
+    .destination-info {
+        padding: 0.7rem 1rem 0.9rem;
+        padding-top: 0.8rem;
+    }
+
+    .destination-info h3 {
+        font-size: 1rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .destination-info p {
+        font-size: 0.85rem;
+        line-height: 1.35;
     }
 }
 
@@ -699,7 +816,8 @@
     display: flex;
     gap: 20px;
     font-weight: 600;
-    color: #007bff; /* צבע דגש */
+    color: #007bff;
+    justify-content: center;
 }
 
 /* הצד הבהיר - צור קשר */
@@ -766,13 +884,70 @@
     border-bottom-color: #1a1a1a;
 }
 
-/* התאמה למובייל - הופך את זה לאחד מעל השני */
+/* Mobile: stack split section vertically */
 @media (max-width: 768px) {
     .split-section {
         flex-direction: column;
+        min-height: unset;
     }
+
     .side {
-        padding: 40px 20px;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .side-content {
+        max-width: 100%;
+    }
+
+    .title-light,
+    .title-dark {
+        font-size: 1.8rem;
+        margin-bottom: 14px;
+    }
+
+    .text-light {
+        font-size: 1rem;
+    }
+
+    .mini-bullets {
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+        font-size: 0.9rem;
+    }
+
+    .split-form {
+        gap: 12px;
+    }
+
+    .split-form input {
+        padding: 14px 5px;
+        font-size: 1rem;
+    }
+
+    .split-form button {
+        width: 100%;
+        padding: 16px;
+        font-size: 1rem;
+        border-radius: 8px;
+        margin-top: 12px;
+    }
+
+    .social-links-minimal {
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .social-links-minimal a {
+        padding: 0.65rem 1rem;
+        background: #f8fafc;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        flex: 1;
+        min-width: 90px;
+        justify-content: center;
+        font-size: 0.9rem;
     }
 }
 
@@ -781,14 +956,16 @@
     text-align: right;
 }
 
-/* HomePage.css */
-.home-page .nav-center ul.nav-links {
-  display: flex;
-  flex-direction: row-reverse; /* רק בעמוד הבית */
-  gap: 40px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* Desktop only: reverse link order for RTL aesthetic on home page */
+@media (min-width: 769px) {
+    .home-page .nav-center ul.nav-links {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 40px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 }
 
 .social-links-minimal {
@@ -1084,15 +1261,22 @@
 
 /* Mobile */
 @media (max-width: 768px) {
-    .ai-pill-btn span {
-        display: none;
-    }
+    /* AI pill – row 3, left of חיפוש button */
     .ai-pill-btn {
-        padding: 0 0.75rem;
-        height: 40px;
+        flex-shrink: 0;
+        height: 44px;
+        padding: 0 0.8rem;
+        margin-top: 0.3rem;
+        margin-right: 0;
     }
+
+    .ai-pill-btn span {
+        display: inline;
+        font-size: 0.78rem;
+    }
+
     .ai-back-btn span {
-        display: none; /* icon only on mobile */
+        display: none;
     }
     .ai-back-btn {
         padding: 0 0.6rem;
@@ -1108,5 +1292,63 @@
         min-width: 60px;
         min-height: 44px;
         padding: 0 1rem;
+    }
+}
+
+/* ══════════════════════════════════════
+   Global mobile polish
+══════════════════════════════════════ */
+
+/* Prevent horizontal overflow on all screens */
+@media (max-width: 768px) {
+    .home-page {
+        overflow-x: hidden;
+    }
+
+    /* Smooth scroll behavior */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Improve tap highlight removal */
+    .destination-card,
+    .search-cell,
+    .search-submit-btn,
+    .ai-pill-btn,
+    .popover-action-btn {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Destination card hover → active for touch */
+    .destination-card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+
+    /* Better popover layout on mobile */
+    .search-popover {
+        border-radius: 12px;
+    }
+
+    .search-suggestion-item {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        padding: 0 0.95rem;
+    }
+
+    /* AI mode bar stays horizontal on mobile */
+    .hero-search-bar--ai-mode {
+        flex-direction: row;
+        border-radius: 14px;
+        min-height: 58px;
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+    }
+
+    /* Better badge on mobile */
+    .ai-result-badge {
+        font-size: 0.78rem;
+        padding: 0.32rem 0.75rem 0.32rem 0.45rem;
     }
 }
