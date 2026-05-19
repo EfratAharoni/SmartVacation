@@ -70,6 +70,9 @@ const Deals = () => {
     const [vibeFilter, setVibeFilter] = useState(null); // 'beach' | 'adventure' | 'cheap' | 'romantic' | 'city'
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const datePickerRef = useRef(null);
+    const sliderWrapperRef = useRef(null);
+    const sliderMinRef = useRef(null);
+    const sliderMaxRef = useRef(null);
 
     const location = useLocation();
     // Deduplicate by destination — keep highest-scored deal per destination
@@ -201,6 +204,20 @@ const Deals = () => {
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        if (!sliderWrapperRef.current || !sliderMinRef.current || !sliderMaxRef.current) return;
+        const wrapper = sliderWrapperRef.current.getBoundingClientRect();
+        const sliderMin = sliderMinRef.current.getBoundingClientRect();
+        const sliderMax = sliderMaxRef.current.getBoundingClientRect();
+        console.group('[SliderDiag] BoundingClientRects');
+        console.log('wrapper :', { left: wrapper.left, right: wrapper.right, width: wrapper.width });
+        console.log('sliderMin:', { left: sliderMin.left, right: sliderMin.right, width: sliderMin.width });
+        console.log('sliderMax:', { left: sliderMax.left, right: sliderMax.right, width: sliderMax.width });
+        console.log('sliderMin offset from wrapper → left gap:', sliderMin.left - wrapper.left, 'right gap:', wrapper.right - sliderMin.right);
+        console.log('sliderMax offset from wrapper → left gap:', sliderMax.left - wrapper.left, 'right gap:', wrapper.right - sliderMax.right);
+        console.groupEnd();
     }, []);
 
     const toggleFavorite = (dealId) => {
@@ -535,16 +552,17 @@ const Deals = () => {
 
                         <div className="filter-group price-filter">
                             <label>מחיר: ₪{priceRange[0].toLocaleString()} - ₪{priceRange[1].toLocaleString()}</label>
-                            <div className="price-range-wrapper">
+                            <div className="price-range-wrapper" ref={sliderWrapperRef}>
                                 <div className="price-range-track-bg" />
                                 <div
                                     className="price-range-track-fill"
                                     style={{
-                                        right: `${((priceRange[0] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
-                                        left: `${100 - ((priceRange[1] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
+                                        left: `${((priceRange[0] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
+                                        right: `${(1 - (priceRange[1] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
                                     }}
                                 />
                                 <input
+                                    ref={sliderMinRef}
                                     type="range"
                                     className="price-slider price-slider-min"
                                     min={minDealPrice}
@@ -557,6 +575,7 @@ const Deals = () => {
                                     }}
                                 />
                                 <input
+                                    ref={sliderMaxRef}
                                     type="range"
                                     className="price-slider price-slider-max"
                                     min={minDealPrice}

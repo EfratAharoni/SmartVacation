@@ -9,6 +9,7 @@
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
     z-index: 1000;
     transition: all 0.3s ease;
+    overflow: visible;
 }
 
 .header.scrolled {
@@ -23,6 +24,7 @@ nav {
     height: 100%;
     padding: 0 3%;
     position: relative;
+    overflow: visible;
 }
 
 .logo {
@@ -35,6 +37,8 @@ nav {
     left: 3%;
     top: 50%;
     transform: translateY(-50%);
+    height: 44px;
+    overflow: hidden;
 }
 
 .logo-badge {
@@ -562,23 +566,25 @@ nav {
 
     /* Full-width slide-in menu from the right */
     .nav-center {
-        position: fixed;
-        right: -100%;
-        top: 85px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
         flex-direction: column;
         background: #ffffff;
-        width: 100%;
         padding: 1.5rem 2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease;
+        transition: transform 0.3s ease;
         gap: 1.5rem;
-        overflow-y: auto;
+        overflow: hidden;
         max-height: calc(100vh - 85px);
         z-index: 999;
+        transform: translateX(100%);
     }
 
     .nav-center.active {
-        right: 0;
+        transform: translateX(0);
+        overflow-y: auto;
     }
 
     /* Nav links list in drawer */

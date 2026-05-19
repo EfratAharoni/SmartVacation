@@ -462,10 +462,12 @@ body { direction: rtl; }
     .hero-content h1 { font-size: 2rem; }
     .hero-subtitle { font-size: 1.1rem; }
     .story-section, .values-section, .stats-section, .pro-testimonials { padding: 4rem 5%; }
-    .values-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    .values-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .pro-slider { grid-template-columns: 1fr; }
     .pro-slider-wrapper { padding: 0 40px; }
+    .pro-card:nth-child(2),
+    .pro-card:nth-child(3) { display: none; }
     .nav-btn { font-size: 28px; }
     .nav-btn.left  { left: 0; }
     .nav-btn.right { right: 0; }
@@ -473,7 +475,6 @@ body { direction: rtl; }
 
 
 @media (max-width: 480px) {
-    .stats-grid { grid-template-columns: 1fr; }
     .pro-slider-wrapper { padding: 0 28px; }
 }
 

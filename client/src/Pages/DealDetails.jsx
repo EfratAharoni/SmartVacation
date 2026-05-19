@@ -262,14 +262,14 @@ const DealDetails = () => {
 
     return (
         <div className="deal-details-page">
-            {/* Hero Section with Destination Background */}
+            <button onClick={() => navigate('/deals')} className="btn-back-floating">
+                חזרה לדילים
+            </button>
 
+            {/* Hero Section with Destination Background */}
             <section className="destination-hero" style={{ backgroundImage: `url(${mainDeal.image})` }}>
                 <div className="hero-overlay"></div>
                 <div className="hero-content-details">
-                    <button onClick={() => navigate('/deals')} className="btn-back-floating">
-                        ← חזרה לדילים
-                    </button>
                     <div className="destination-title-row">
                         <h1 className="destination-title">{mainDeal.destination}</h1>
                         {destinationInfo && (
