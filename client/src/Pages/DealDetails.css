@@ -636,7 +636,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 1010;
     padding: 20px;
     overflow-y: auto;
     scrollbar-width: none;
@@ -1087,16 +1087,132 @@
     }
 
     .destination-meta {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: nowrap;
+        justify-content: center;
+    }
+
+    .meta-item {
+        font-size: 12px;
+        padding: 7px 10px;
+        gap: 4px;
+    }
+
+    .packages-section {
+        padding: 0 32px;
     }
 
     .packages-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .package-card {
+        border-radius: 14px;
+    }
+
+    .package-header {
+        padding: 14px 16px;
+    }
+
+    .dates-prominent {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .dates-select {
+        font-size: 13px;
+    }
+
+    .rating-num {
+        font-size: 15px;
+    }
+
+    .reviews-count {
+        font-size: 12px;
+    }
+
+    .package-details-grid {
+        padding: 12px 16px;
+        gap: 10px;
+        min-height: unset;
+    }
+
+    .detail-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .detail-text strong {
+        font-size: 13px;
+    }
+
+    .detail-text span {
+        font-size: 12px;
+    }
+
+    .package-included {
+        padding: 0 16px 14px;
+        min-height: unset;
+    }
+
+    .package-included h4 {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .included-compact {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 5px;
+    }
+
+    .included-compact li {
+        font-size: 12px;
+    }
+
+    .package-footer {
+        padding: 14px 16px;
+    }
+
+    .price-display {
+        margin-bottom: 10px;
+        gap: 8px;
+        align-items: baseline;
+    }
+
+    .current-price-large {
+        font-size: 24px;
+    }
+
+    .original-price-small {
+        font-size: 13px;
+    }
+
+    .price-per {
+        font-size: 12px;
+    }
+
+    .btn-details,
+    .btn-book-now {
+        padding: 11px;
+        font-size: 14px;
+        border-radius: 9px;
+    }
+
+    .package-actions {
+        gap: 8px;
     }
 
     .details-filter-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+    }
+
+    .details-filter-section .filter-select,
+    .details-filter-section .btn-compare {
+        height: 38px;
+        font-size: 0.85rem;
     }
 
     .comparison-grid {
@@ -1104,15 +1220,15 @@
     }
 
     .btn-back-floating {
-        top: 92px;
-        left: 8px;
-        right: auto;
-        padding: 10px 20px;
-        font-size: 14px;
+        top: 98px !important;
+        left: 10px !important;
+        right: auto !important;
+        padding: 8px 14px;
+        font-size: 13px;
     }
 
     .deal-full-modal { max-height: 92vh; }
-    .deal-modal-overlay { align-items: flex-start; }
+    .deal-modal-overlay { align-items: center; }
     .deal-modal-hero-image { height: 160px; }
 
     .deal-modal-body {
