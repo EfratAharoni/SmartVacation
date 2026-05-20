@@ -532,8 +532,18 @@
 
 /* Responsive Design */
 @media (max-width: 968px) {
+    .login-page {
+        height: calc(100dvh / 0.85);
+        align-items: center;
+        justify-content: center;
+    }
+
     .login-container {
         grid-template-columns: 1fr;
+        min-height: unset;
+        margin-top: 0;
+        overflow-y: auto;
+        max-height: calc((100dvh / 0.85) - 1.5rem);
     }
 
     .login-visual-section {
@@ -547,7 +557,13 @@
 
 @media (max-width: 480px) {
     .login-page {
+        height: calc(100dvh / 0.85);
         padding: 0.75rem;
+    }
+
+    .login-container {
+        overflow-y: auto;
+        max-height: calc((100dvh / 0.85) - 1.5rem);
     }
 
     .login-form-section {
