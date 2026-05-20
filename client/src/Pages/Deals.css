@@ -501,7 +501,7 @@ nav {
     box-sizing: border-box;
     margin-left: -9px;
     margin-right: -9px;
-    direction: ltr;
+    direction: rtl;
 }
 
 .price-range-track-bg {
@@ -527,8 +527,7 @@ nav {
     position: absolute;
     left: 0;
     right: 0;
-    width: 100%;
-    direction: ltr;
+    direction: rtl;
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
