@@ -501,6 +501,7 @@ nav {
     box-sizing: border-box;
     margin-left: -9px;
     margin-right: -9px;
+    direction: ltr;
 }
 
 .price-range-track-bg {

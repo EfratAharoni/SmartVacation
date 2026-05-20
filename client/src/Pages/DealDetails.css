@@ -1215,8 +1215,78 @@
         font-size: 0.85rem;
     }
 
+    .deal-comparison-modal {
+        overflow: hidden;
+    }
+
+    .comparison-title {
+        font-size: 18px;
+        padding: 16px;
+    }
+
     .comparison-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 10px;
+        padding: 14px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .comparison-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .comparison-column {
+        flex: 0 0 calc(50vw - 22px);
+        min-width: 150px;
+    }
+
+    .comparison-header {
+        padding: 12px;
+    }
+
+    .comparison-header h3 {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .comparison-price {
+        font-size: 22px;
+        margin: 6px 0;
+    }
+
+    .comparison-discount {
+        font-size: 11px;
+        padding: 3px 10px;
+    }
+
+    .comparison-body {
+        padding: 10px 12px;
+    }
+
+    .comparison-row {
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 0;
+    }
+
+    .comparison-row strong {
+        font-size: 11px;
+    }
+
+    .comparison-row span {
+        font-size: 11px;
+    }
+
+    .comparison-list li {
+        font-size: 11px;
+    }
+
+    .btn-select-package {
+        font-size: 13px;
+        padding: 10px 12px;
     }
 
     .btn-back-floating {
