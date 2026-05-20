@@ -557,8 +557,8 @@ const Deals = () => {
                                 <div
                                     className="price-range-track-fill"
                                     style={{
-                                        right: `${((priceRange[0] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
-                                        left: `${(1 - (priceRange[1] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
+                                        left: `${((priceRange[0] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
+                                        right: `${(1 - (priceRange[1] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
                                     }}
                                 />
                                 <input
