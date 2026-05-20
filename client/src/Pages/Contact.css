@@ -720,6 +720,8 @@
 
     .faq-question h3 {
         font-size: 1rem;
+        flex: 1;
+        text-align: right;
     }
 
     .info-card {
@@ -728,6 +730,7 @@
 
     .section-title {
         font-size: 2rem;
+        text-align: center;
     }
 }
 
