@@ -112,7 +112,7 @@ const Header = () => {
             </svg>
           </div>
           <div className="drawer-greeting-text">
-            <div className="drawer-hello">שלום{isLoggedIn && userName ? `, ${userName}` : ''}!</div>
+            <div className="drawer-hello">שלום{isLoggedIn && userName ? `, ${userName.split(' ')[0]}` : ''}!</div>
             <div className="drawer-tagline">החופשה המושלמת מתחילה כאן</div>
           </div>
         </div>
