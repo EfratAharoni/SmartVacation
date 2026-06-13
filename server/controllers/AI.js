@@ -208,11 +208,31 @@ Return ONLY a valid JSON array, no markdown, no explanation:
     .filter(Boolean);
 }
 
+const MAX_QUERY_LENGTH = 300;
+const SUSPICIOUS_PATTERNS = [
+  /ignore\s+(all\s+)?(previous|prior|above)\s+instructions/i,
+  /system\s*prompt/i,
+  /you\s+are\s+now/i,
+  /forget\s+(everything|all)/i,
+  /jailbreak/i,
+];
+
+function sanitizeQuery(raw) {
+  const q = String(raw).trim().slice(0, MAX_QUERY_LENGTH);
+  if (SUSPICIOUS_PATTERNS.some((p) => p.test(q))) return null;
+  return q;
+}
+
 // ── Main endpoint ────────────────────────────────────────────────────────────
 export const aiSearch = async (req, res) => {
-  const { query } = req.body;
-  if (!query?.trim()) {
+  const raw = req.body?.query;
+  if (!raw?.trim()) {
     return res.status(400).json({ error: "query required" });
+  }
+
+  const query = sanitizeQuery(raw);
+  if (!query) {
+    return res.status(400).json({ error: "Invalid query" });
   }
 
   // Step 1: Parse
