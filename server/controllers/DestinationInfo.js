@@ -11,7 +11,7 @@ export const getDestinationInfos = async (req, res) => {
         const all = await destinationInfoService.getAllDestinationInfos();
         res.json(all);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -20,7 +20,7 @@ export const createDestinationInfo = async (req, res) => {
         const created = await destinationInfoService.createDestinationInfo(req.body);
         res.status(201).json(created);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -29,7 +29,7 @@ export const addManyDestinationInfos = async (req, res) => {
         const created = await destinationInfoService.createManyDestinationInfos(req.body);
         res.status(201).json(created);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -39,7 +39,7 @@ export const updateDestinationInfo = async (req, res) => {
         if (!updated) return res.status(404).json({ message: "Destination not found" });
         res.json(updated);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -49,6 +49,6 @@ export const removeDestinationInfo = async (req, res) => {
         if (!deleted) return res.status(404).json({ message: "Destination not found" });
         res.json({ message: "Deleted", deleted });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "שגיאת שרת פנימית" });
     }
 };

@@ -6,7 +6,7 @@ export const getAttractions = async (req, res) => {
         const attractions = await attractionService.getAllAttractions();
         res.json(attractions);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -17,7 +17,7 @@ export const getAttraction = async (req, res) => {
         if (!attraction) return res.status(404).json({ message: "Attraction not found" });
         res.json(attraction);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -27,7 +27,7 @@ export const createAttraction = async (req, res) => {
         const newAttraction = await attractionService.createAttraction(req.body);
         res.status(201).json(newAttraction);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -37,7 +37,7 @@ export const addManyAttractions = async (req, res) => {
         const attractions = await attractionService.createManyAttractions(req.body);
         res.status(201).json(attractions);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -48,7 +48,7 @@ export const removeAttraction = async (req, res) => {
         if (!deleted) return res.status(404).json({ message: "Attraction not found" });
         res.json({ message: "Attraction deleted", deleted });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "שגיאת שרת פנימית" });
     }
 };
 
@@ -59,6 +59,6 @@ export const updateAttraction = async (req, res) => {
         if (!updated) return res.status(404).json({ message: "Attraction not found" });
         res.json(updated);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: "שגיאת שרת פנימית" });
     }
 };
