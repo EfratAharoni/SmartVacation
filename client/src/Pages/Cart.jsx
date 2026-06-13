@@ -24,8 +24,6 @@ import {
     PlaneTakeoff,
     Hotel,
 } from 'lucide-react';
-import Header from '../Header&Footer/Header';
-import Footer from '../Header&Footer/Footer';
 import './Cart.css';
 
 const Cart = () => {
@@ -201,7 +199,6 @@ const Cart = () => {
 
     return (
         <div className="cart-page">
-            <Header />
             <section className="cart-hero">
                 <div className="hero-content">
                     <h1 className="hero-title">
@@ -364,7 +361,6 @@ const Cart = () => {
                     {/* אין יותר מודאלים של תשלום/אישור כאן */}
                 </div>
             </section>
-            <Footer />
 
             {/* Edit Attraction Qty Modal */}
             {editingAttraction && editAttrQty && (

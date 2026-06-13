@@ -12,8 +12,6 @@ import {
   Plane,
   Ticket,
 } from "lucide-react";
-import Header from "../Header&Footer/Header";
-import Footer from "../Header&Footer/Footer";
 import "./Profile.css";
 
 const API_BASE = import.meta.env.VITE_API_URL || "/api";
@@ -65,7 +63,6 @@ export default function Profile() {
   if (!isLoggedIn) {
     return (
       <div className="profile-page">
-        <Header />
         <div className="profile-empty-state">
           <div className="empty-icon-wrap">
             <User className="empty-icon-svg" />
@@ -76,14 +73,12 @@ export default function Profile() {
             התחבר עכשיו
           </button>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="profile-page">
-      <Header />
 
       {/* ── Hero ── */}
       <section className="profile-hero">
@@ -291,7 +286,6 @@ export default function Profile() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }

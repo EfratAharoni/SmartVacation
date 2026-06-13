@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, LockKeyhole, User, Users, CreditCard, Plane } from "lucide-react";
-import Header from "../Header&Footer/Header";
-import Footer from "../Header&Footer/Footer";
 import "./Checkout.css";
 
 const API_BASE = import.meta.env.VITE_API_URL || "/api";
@@ -71,7 +69,7 @@ export default function Checkout() {
     () => cartItems.reduce((sum, item) => sum + (item.totalPrice || item.price || 0), 0),
     [cartItems]
   );
-  const orderId = useMemo(() => `SV-${Date.now().toString().slice(-6)}`, []);
+  const [orderId] = useState(() => `SV-${Date.now().toString().slice(-6)}`);
 
   const saveOrderToBackend = async (paymentMethod) => {
     const token = localStorage.getItem("authToken");
@@ -230,7 +228,6 @@ export default function Checkout() {
 
   return (
     <div className="checkout-page">
-      <Header />
       <div className="checkout-fullpage-bg">
         <div className="checkout-content-wrapper">
 
@@ -498,7 +495,6 @@ export default function Checkout() {
           </div>{/* /checkout-main-grid */}
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

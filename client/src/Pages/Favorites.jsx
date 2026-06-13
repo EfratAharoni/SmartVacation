@@ -10,8 +10,6 @@ import {
   Flame,
   Trash2,
 } from "lucide-react";
-import Header from "../Header&Footer/Header";
-import Footer from "../Header&Footer/Footer";
 import "./Favorites.css";
 
 const Favorites = () => {
@@ -111,7 +109,6 @@ const Favorites = () => {
   if (!isLoggedIn) {
     return (
       <div className="favorites-page">
-        <Header />
         <div className="favorites-empty-state">
           <div className="empty-icon">
             <Heart className="empty-icon-svg" />
@@ -125,7 +122,6 @@ const Favorites = () => {
             התחבר עכשיו
           </button>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -133,7 +129,6 @@ const Favorites = () => {
   if (favoriteItems.length === 0) {
     return (
       <div className="favorites-page">
-        <Header />
         <div className="favorites-empty-state">
           <div className="empty-icon">
             <Heart className="empty-icon-svg" />
@@ -155,14 +150,12 @@ const Favorites = () => {
             </button>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="favorites-page">
-      <Header />
 
       <section className="favorites-hero">
         <div className="hero-content">
@@ -269,7 +262,6 @@ const Favorites = () => {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };
