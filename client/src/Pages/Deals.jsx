@@ -6,6 +6,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import './Deals.css';
 import { VIBE_DESTINATIONS, VIBE_LABELS } from './fuzzySearch';
+import { API_BASE_URL } from '../utils/api';
 
 // Helper: get user-specific localStorage key
 const getUserKey = () => {
@@ -45,7 +46,6 @@ const parseDealStartDate = (dateText) => {
 const Deals = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
     
     // --- הוספת State לניהול הנתונים מה-DB ---
     const [deals, setDeals] = useState([]);
@@ -55,6 +55,9 @@ const Deals = () => {
     const [priceRange, setPriceRange] = useState([0, 15000]);
     const minDealPrice = deals.length > 0 ? Math.min(...deals.map(d => d.price)) : 0;
     const maxDealPrice = deals.length > 0 ? Math.max(...deals.map(d => d.price)) : 15000;
+    const priceRange_ = maxDealPrice === minDealPrice ? 1 : maxDealPrice - minDealPrice;
+    const ratioMin = Math.max(0, Math.min(1, (priceRange[0] - minDealPrice) / priceRange_));
+    const ratioMax = Math.max(0, Math.min(1, (priceRange[1] - minDealPrice) / priceRange_));
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [isDateRangeActive, setIsDateRangeActive] = useState(false);
     const [dateRangeSelection, setDateRangeSelection] = useState([
@@ -130,7 +133,7 @@ const Deals = () => {
             }
         };
         fetchDeals();
-    }, [API_BASE_URL]);
+    }, []);
 
     // Sync login state on mount and reload favorites/cart per user
     useEffect(() => {
@@ -553,14 +556,16 @@ const Deals = () => {
                         <div className="filter-group price-filter">
                             <label>מחיר: ₪{priceRange[0].toLocaleString()} - ₪{priceRange[1].toLocaleString()}</label>
                             <div className="price-range-wrapper" ref={sliderWrapperRef}>
-                                <div className="price-range-track-bg" />
-                                <div
-                                    className="price-range-track-fill"
-                                    style={{
-                                        left: `${((priceRange[0] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
-                                        right: `${(1 - (priceRange[1] - minDealPrice) / (maxDealPrice - minDealPrice)) * 100}%`,
-                                    }}
-                                />
+                                <div className="price-range-track-container">
+                                    <div className="price-range-track-bg" />
+                                    <div
+                                        className="price-range-track-fill"
+                                        style={{
+                                            left: `${ratioMin * 100}%`,
+                                            right: `${(1 - ratioMax) * 100}%`,
+                                        }}
+                                    />
+                                </div>
                                 <input
                                     ref={sliderMinRef}
                                     type="range"
