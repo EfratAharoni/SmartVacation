@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { Globe, Landmark, Images, Trees, Building2, Gift, Star, MapPin } from "lucide-react";
 import "./Attractions.css";
+import { API_BASE_URL } from "../utils/api";
 
 const getUserKey = () => {
   const name = localStorage.getItem("userName");
@@ -11,7 +12,6 @@ const getUserKey = () => {
 
 const Attractions = () => {
   const navigate = useNavigate();
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [attractions, setAttractions] = useState([]); // הנתונים מגיעים מכאן
@@ -64,7 +64,7 @@ const Attractions = () => {
       setFavorites(savedFavs);
       setCart(savedCart);
     }
-  }, [API_BASE_URL]);
+  }, []);
 
   // סינון אטרקציות
   useEffect(() => {

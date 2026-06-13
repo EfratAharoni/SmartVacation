@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../utils/api';
 
 const useDestinationInfo = (destination) => {
   const [info, setInfo] = useState(null);
-  const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
   useEffect(() => {
     if (!destination) return;
@@ -17,7 +17,7 @@ const useDestinationInfo = (destination) => {
       })
       .then((data) => setInfo(data))
       .catch(() => setInfo(null));
-  }, [destination, API_BASE_URL]);
+  }, [destination]);
 
   return info;
 };

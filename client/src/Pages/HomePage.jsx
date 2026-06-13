@@ -9,6 +9,7 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { fuzzySearchDestinations, parseHebrewVacationQuery, VIBE_LABELS } from "./fuzzySearch";
+import { API_BASE_URL } from "../utils/api";
 
 const HomePage = () => {
   const [isScrolled, setIsScrolled] = useState(false);

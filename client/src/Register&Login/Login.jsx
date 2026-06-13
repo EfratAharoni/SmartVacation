@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+import { API_BASE_URL } from "../utils/api";
 
 const Login = () => {
   const navigate = useNavigate();
-  const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
   const [formData, setFormData] = useState({
     email: "",
     password: "",

@@ -5,6 +5,8 @@ import './DealDetails.css';
 
 import useDestinationInfo from './useDestinationInfo';
 import { Info } from 'lucide-react';
+import { API_BASE_URL } from '../utils/api';
+
 const getUserKey = () => {
     const name = localStorage.getItem('userName');
     return name ? name.replace(/\s/g, '_') : 'guest';
@@ -16,7 +18,6 @@ const DealDetails = () => {
     const { destination } = useParams();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [allDeals, setAllDeals] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -75,7 +76,7 @@ const DealDetails = () => {
             }
         };
         fetchDeals();
-    }, [API_BASE_URL]);
+    }, []);
 
     const allDealsWithAttractions = allDeals.map((deal) => {
         const existingAttractions = Array.isArray(deal.attractions)

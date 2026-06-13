@@ -27,13 +27,17 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
       </Route>
 
+      {/* ראוטים עם Header */}
+      <Route element={<Layout />}>
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/profile" element={<Profile />} />
+      </Route>
+
       {/* ראוטים בלי Header */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/favorites" element={<Favorites />} /> 
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 };
