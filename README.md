@@ -115,13 +115,38 @@ Deals can be filtered by "vibe" categories:
 - JWT tokens for protected routes
 - Change password from profile page
 
+### Hebrew / English
+- Language switch in the header (and on login/register); the choice is remembered
+- The whole layout flips RTL ↔ LTR: `<html dir>` is set by i18n and the CSS uses logical properties (`margin-inline-start`, `inset-inline-end`...)
+- UI strings live in `client/src/i18n/locales/{he,en}.json` (react-i18next)
+- DB content is bilingual: Hebrew fields stay canonical (search/filtering), English display text is stored under `en` on each deal/attraction/destination
+- API messages are returned in the language sent in `Accept-Language`
+
 ### Cart, Checkout & Orders
-- Add deals and attractions to a shopping cart (persisted per user in `localStorage`)
+- Add deals and attractions to a shopping cart; synced to the user's account so it follows them across devices
 - Full checkout flow: customer info, passenger details, payment method
-- Orders saved to MongoDB and viewable in the user's profile
+- Orders saved to MongoDB (total computed server-side), viewable and cancellable in the user's profile
+- Optional order-confirmation email
 
 ### Favorites
-- Save and manage favorite deals per user (persisted in `localStorage`)
+- Save and manage favorite deals and attractions; synced to the user's account
+
+### Reviews
+- Logged-in users can rate (1–5) and review destinations and attractions
+
+### Account
+- Forgot / reset password by email link (valid for one hour)
+- Change password from the profile page
+
+### Display preferences
+- Currency picker (₪ / $ / €) – display-only conversion with approximate rates in `client/src/context/PreferencesContext.jsx`; orders are always charged in ₪
+- Dark mode toggle (implemented as a page-wide inversion filter, photos keep their real colors)
+
+### Admin Panel (`/admin`)
+- Add/edit deals and attractions with a bilingual form (Hebrew + English), including image upload
+  (Cloudinary when `CLOUDINARY_URL` is set, otherwise stored in `server/uploads`)
+- View orders, users, contact-form messages, and moderate reviews
+- Promote a user: `cd server && npm run make-admin -- user@example.com`
 
 ### Destination Info
 - Custom React hook (`useDestinationInfo`) fetches enriched destination data (tips, local info) from the backend to display alongside deal details
@@ -137,8 +162,12 @@ Deals can be filtered by "vibe" categories:
 | POST | `/api/users/login` | — | Login, returns JWT |
 | GET | `/api/users/me` | JWT | Get current user |
 | PUT | `/api/users/update/:id` | — | Update user |
-| PUT | `/api/users/change-password` | — | Change password |
-| DELETE | `/api/users/remove/:id` | — | Delete user |
+| PUT | `/api/users/change-password` | JWT | Change password |
+| GET/PUT | `/api/users/me/lists` | JWT | Get / save cart & favorites |
+| PUT | `/api/users/me/language` | JWT | Save preferred language |
+| POST | `/api/users/forgot-password` | — | Send password-reset link |
+| POST | `/api/users/reset-password` | — | Set a new password with the emailed token |
+| DELETE | `/api/users/remove/:id` | Admin | Delete user |
 
 ### Deals
 | Method | Endpoint | Description |
@@ -163,6 +192,18 @@ Deals can be filtered by "vibe" categories:
 |---|---|---|---|
 | POST | `/api/orders` | JWT | Create order |
 | GET | `/api/orders/my` | JWT | Get user's orders |
+| PUT | `/api/orders/:id/cancel` | JWT | Cancel own order |
+| GET | `/api/orders` | Admin | All orders |
+
+### Contact & Reviews
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| POST | `/api/contact` | — | Send a contact-form message (rate limited) |
+| GET | `/api/contact` | Admin | List messages |
+| PUT | `/api/contact/:id/handled` | Admin | Toggle handled |
+| GET | `/api/reviews/:type/:key` | — | Reviews for a deal destination / attraction |
+| POST | `/api/reviews/:type/:key` | JWT | Add a review |
+| DELETE | `/api/reviews/:id` | Admin | Remove a review |
 
 ### Destination Info
 | Method | Endpoint | Description |
@@ -203,7 +244,7 @@ cd server && npm install
 cd ../client && npm install
 ```
 
-3. Configure environment variables for the server (`PORT`, `MONGODB_URI`, `JWT_SECRET`, `GROQ_API_KEY`) and client (`VITE_API_URL`).
+3. Configure environment variables for the server (`PORT`, `MONGODB_URI`, `JWT_SECRET`, `GROQ_API_KEY`, and optionally `CLIENT_URL` + `SMTP_*` for emails – see `server/.env.example`) and client (`VITE_API_URL`). Without SMTP settings, emails are printed to the server console.
 
 4. Seed the database:
 ```bash
@@ -236,7 +277,11 @@ docker-compose up --build
 - `npm run seed:attractions` - Seed only attractions
 - `npm run seed:deals` - Seed only deals
 - `npm run seed:destinations` - Seed only destination info
-- `npm test` - Run Mocha/Chai test suite
+- `npm run translate` - Regenerate the `en` translations in `data/*.json` from `data/translations.en.json`
+- `npm run translate:db` - Same, and add `en` to documents already in MongoDB (non-destructive, keeps `_id`s)
+- `npm run make-admin -- <email>` - Give a user admin rights
+- `npm run migrate` - Non-destructive data fixes for an existing DB (real departure dates for deals, Berlin visa note)
+- `npm test` - Run the API test suite (Mocha/Chai/Supertest against an in-memory MongoDB – the real DB is never touched)
 
 ### Client
 - `npm run dev` - Start Vite dev server

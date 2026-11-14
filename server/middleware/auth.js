@@ -1,3 +1,4 @@
+import { t } from "../utils/i18n.js";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/jwt.js";
 
@@ -5,7 +6,7 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Missing or invalid token" });
+    return res.status(401).json({ message: t(req, "missingToken") });
   }
 
   const token = authHeader.split(" ")[1];
@@ -15,7 +16,7 @@ const authenticateToken = (req, res, next) => {
     req.userId = payload.sub;
     next();
   } catch {
-    return res.status(401).json({ message: "Invalid or expired token" });
+    return res.status(401).json({ message: t(req, "invalidToken") });
   }
 };
 

@@ -1,618 +1,1422 @@
 [
-    {
-      "name": "מגדל אייפל",
-      "location": "פריז, צרפת",
-      "category": "landmarks",
-      "price": 150,
-      "duration": "2-3 שעות",
-      "rating": 4.8,
-      "image": "/images/eiffel-tower.jpg",
-      "description": "סמל העיר פריז המפורסם, גובה 330 מטר עם נוף מרהיב על העיר",
-      "highlights": ["נוף פנורמי", "תצפית מהקומה העליונה", "מסעדה יוקרתית"]
-    },
-    {
-      "name": "הקולוסיאום",
-      "location": "רומא, איטליה",
-      "category": "landmarks",
-      "price": 120,
-      "duration": "2-3 שעות",
-      "rating": 4.9,
-      "image": "/images/colosseum.jpg",
-      "description": "אמפיתיאטרון עתיק מרשים, אחד משבעת פלאי העולם",
-      "highlights": ["היסטוריה עתיקה", "סיורים מודרכים", "אדריכלות רומית"]
-    },
-    {
-      "name": "סגרדה פמיליה",
-      "location": "ברצלונה, ספרד",
-      "category": "landmarks",
-      "price": 95,
-      "duration": "1-2 שעות",
-      "rating": 4.7,
-      "image": "/images/sagrada-familia.jpg",
-      "description": "בזיליקה מדהימה בעיצוב אנטוני גאודי, בניה מתמשכת מ-1882",
-      "highlights": ["אדריכלות ייחודית", "ויטראז'ים צבעוניים", "מבנה איקוני"]
-    },
-    {
-      "name": "לובר",
-      "location": "פריז, צרפת",
-      "category": "museums",
-      "price": 135,
-      "duration": "3-4 שעות",
-      "rating": 4.8,
-      "image": "/images/louvre.jpg",
-      "description": "המוזיאון הגדול והמפורסם בעולם, ביתה של המונה ליזה",
-      "highlights": ["אוסף אמנות עצום", "יצירות מופת", "פירמידת זכוכית"]
-    },
-    {
-      "name": "טוקיו סקייטרי",
-      "location": "טוקיו, יפן",
-      "category": "landmarks",
-      "price": 180,
-      "duration": "2 שעות",
-      "rating": 4.6,
-      "image": "/images/tokyo-skytree.jpg",
-      "description": "המגדל הגבוה בעולם (634 מטר) עם תצפית מרהיבה",
-      "highlights": ["תצפית 360 מעלות", "רצפת זכוכית", "קניון ענק"]
-    },
-    {
-      "name": "מקדש אנגקור וואט",
-      "location": "סיאם ריפ, קמבודיה",
-      "category": "temples",
-      "price": 90,
-      "duration": "4-5 שעות",
-      "rating": 4.9,
-      "image": "/images/angkor-wat.jpg",
-      "description": "מתחם מקדשים עתיק ומרשים, אתר מורשת עולמית",
-      "highlights": ["זריחה מרהיבה", "ארכיאולוגיה", "ג'ונגל טרופי"]
-    },
-    {
-      "name": "חומת סין הגדולה",
-      "location": "בייג'ינג, סין",
-      "category": "landmarks",
-      "price": 110,
-      "duration": "3-4 שעות",
-      "rating": 4.8,
-      "image": "/images/great-wall.jpg",
-      "description": "אחד משבעת פלאי העולם, מבנה הגנה עתיק ומרשים",
-      "highlights": ["נוף הררי", "היסטוריה עשירה", "צילומים מרהיבים"]
-    },
-    {
-      "name": "טאג' מהאל",
-      "location": "אגרה, הודו",
-      "category": "landmarks",
-      "price": 75,
-      "duration": "2-3 שעות",
-      "rating": 4.9,
-      "image": "/images/taj-mahal.jpg",
-      "description": "ארמון שיש לבן מרהיב, סמל לאהבה נצחית",
-      "highlights": ["אדריכלות מוגולית", "גנים מטופחים", "שקיעה קסומה"]
-    },
-    {
-      "name": "פסל החירות",
-      "location": "ניו יורק, ארה\"ב",
-      "category": "landmarks",
-      "price": 145,
-      "duration": "2-3 שעות",
-      "rating": 4.7,
-      "image": "/images/statue-liberty.jpg",
-      "description": "סמל החופש האמריקאי, מתנה מצרפת",
-      "highlights": ["שייט באוניה", "מוזיאון", "נוף על מנהטן"]
-    },
-    {
-      "name": "מפלי ניאגרה",
-      "location": "ניו יורק/אונטריו",
-      "category": "nature",
-      "price": 95,
-      "duration": "3-4 שעות",
-      "rating": 4.8,
-      "image": "/images/niagara-falls.jpg",
-      "description": "מפלים מרהיבים בגבול ארה\"ב-קנדה",
-      "highlights": ["שייט מתחת למפלים", "תצפיות מרהיבות", "תאורה לילית"]
-    },
-    {
-      "name": "מאצ'ו פיצ'ו",
-      "location": "קוסקו, פרו",
-      "category": "landmarks",
-      "price": 200,
-      "duration": "יום שלם",
-      "rating": 4.9,
-      "image": "/images/machu-picchu.jpg",
-      "description": "עיר האינקה המסתורית בין ההרים",
-      "highlights": ["טיפוס הררי", "חורבות עתיקות", "נוף עוצר נשימה"]
-    },
-    {
-      "name": "גראנד קניון",
-      "location": "אריזונה, ארה\"ב",
-      "category": "nature",
-      "price": 120,
-      "duration": "4-5 שעות",
-      "rating": 4.8,
-      "image": "/images/grand-canyon.jpg",
-      "description": "קניון עצום ומרהיב, פלא טבע אמיתי",
-      "highlights": ["מסלולי הליכה", "שקיעות מדהימות", "גשר זכוכית"]
-    },
-    {
-      "name": "בית האופרה של סידני",
-      "location": "סידני, אוסטרליה",
-      "category": "landmarks",
-      "price": 110,
-      "duration": "1-2 שעות",
-      "rating": 4.7,
-      "image": "/images/sydney-opera.jpg",
-      "description": "מבנה אייקוני בעיצוב ייחודי על שפת הים",
-      "highlights": ["אדריכלות מודרנית", "סיורים מודרכים", "הופעות"]
-    },
-    {
-      "name": "הפירמידות של גיזה",
-      "location": "קהיר, מצרים",
-      "category": "landmarks",
-      "price": 85,
-      "duration": "3-4 שעות",
-      "rating": 4.9,
-      "image": "/images/pyramids.jpg",
-      "description": "הפירמידות העתיקות והספינקס המפורסם",
-      "highlights": ["היסטוריה עתיקה", "ספינקס", "רכיבה על גמלים"]
-    },
-    {
-      "name": "סאגרי פארק",
-      "location": "קייפטאון, דרום אפריקה",
-      "category": "nature",
-      "price": 250,
-      "duration": "יום שלם",
-      "rating": 4.8,
-      "image": "/images/safari.jpg",
-      "description": "ספארי בר עם חיות בר באפריקה",
-      "highlights": ["אריות", "פילים", "ג'ירפות", "נוף אפריקאי"]
-    },
-    {
-      "name": "הגשר הזהוב",
-      "location": "סן פרנסיסקו, ארה\"ב",
-      "category": "landmarks",
-      "price": 65,
-      "duration": "1-2 שעות",
-      "rating": 4.6,
-      "image": "/images/golden-gate.jpg",
-      "description": "גשר התליה האייקוני בצבע אדום-כתום",
-      "highlights": ["הליכה על הגשר", "צילומים", "רכיבת אופניים"]
-    },
-    {
-      "name": "מוזיאון ד'אורסה",
-      "location": "פריז, צרפת",
-      "category": "museums",
-      "price": 110,
-      "duration": "2-3 שעות",
-      "rating": 4.8,
-      "image": "/images/orsay.jpg",
-      "description": "מוזיאון אומנות בתחנת רכבת היסטורית עם יצירות אימפרסיוניסטיות",
-      "highlights": ["מונה", "ואן גוך", "מבנה ייחודי"]
-    },
-    {
-      "name": "שער הניצחון",
-      "location": "פריז, צרפת",
-      "category": "landmarks",
-      "price": 70,
-      "duration": "1-2 שעות",
-      "rating": 4.7,
-      "image": "/images/arc-triomphe.jpg",
-      "description": "אנדרטה מפוארת במרכז כיכר שארל דה גול",
-      "highlights": ["תצפית על השאנז אליזה", "היסטוריה צרפתית"]
-    },
-    {
-      "name": "הוותיקן",
-      "location": "רומא, איטליה",
-      "category": "landmarks",
-      "price": 130,
-      "duration": "3-4 שעות",
-      "rating": 4.9,
-      "image": "/images/vatican.jpg",
-      "description": "מדינת העיר הקטנה בעולם ומרכז הנצרות הקתולית",
-      "highlights": ["כנסיית פטרוס הקדוש", "קפלה סיסטינית"]
-    },
-    {
-      "name": "מזרקת טרווי",
-      "location": "רומא, איטליה",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1 שעה",
-      "rating": 4.8,
-      "image": "/images/trevi.jpg",
-      "description": "המזרקה המפורסמת שבה זורקים מטבע לחזרה לרומא",
-      "highlights": ["אדריכלות בארוקית", "צילום לילה"]
-    },
-    {
-      "name": "שיבויה קרוסינג",
-      "location": "טוקיו, יפן",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1 שעה",
-      "rating": 4.7,
-      "image": "/images/shibuya.jpg",
-      "description": "מעבר החצייה העמוס בעולם",
-      "highlights": ["אורות ניאון", "קניות", "אווירה אורבנית"]
-    },
-    {
-      "name": "מקדש סנסו-ג'י",
-      "location": "טוקיו, יפן",
-      "category": "temples",
-      "price": 0,
-      "duration": "1-2 שעות",
-      "rating": 4.8,
-      "image": "/images/sensoji.jpg",
-      "description": "המקדש הבודהיסטי העתיק ביותר בטוקיו",
-      "highlights": ["שער קמינרימון", "דוכני מזכרות"]
-    },
-    {
-      "name": "מקדש אולוואטו",
-      "location": "באלי, אינדונזיה",
-      "category": "temples",
-      "price": 60,
-      "duration": "2 שעות",
-      "rating": 4.7,
-      "image": "/images/uluwatu.jpg",
-      "description": "מקדש על צוק מעל האוקיינוס",
-      "highlights": ["שקיעה מרהיבה", "ריקוד קצ'אק"]
-    },
-    {
-      "name": "יער הקופים אובוד",
-      "location": "באלי, אינדונזיה",
-      "category": "nature",
-      "price": 55,
-      "duration": "2 שעות",
-      "rating": 4.6,
-      "image": "/images/monkey-forest.jpg",
-      "description": "שמורת טבע עם מאות קופים",
-      "highlights": ["ג'ונגל טרופי", "מקדשים עתיקים"]
-    },
-    {
-      "name": "סנטרל פארק",
-      "location": "ניו יורק, ארה\"ב",
-      "category": "nature",
-      "price": 0,
-      "duration": "2-3 שעות",
-      "rating": 4.9,
-      "image": "/images/central-park.jpg",
-      "description": "פארק עירוני עצום בלב מנהטן",
-      "highlights": ["אגמים", "פיקניקים", "השכרת אופניים"]
-    },
-    {
-      "name": "טיימס סקוור",
-      "location": "ניו יורק, ארה\"ב",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1-2 שעות",
-      "rating": 4.7,
-      "image": "/images/times-square.jpg",
-      "description": "כיכר מוארת במסכי ענק ושלטי פרסום",
-      "highlights": ["חנויות", "תיאטראות ברודוויי"]
-    },
-    {
-      "name": "ארמון בקינגהאם",
-      "location": "לונדון, אנגליה",
-      "category": "landmarks",
-      "price": 95,
-      "duration": "2 שעות",
-      "rating": 4.6,
-      "image": "/images/buckingham.jpg",
-      "description": "מעון המלוכה הבריטי",
-      "highlights": ["החלפת המשמר", "גנים מלכותיים"]
-    },
-    {
-      "name": "הלונדון איי",
-      "location": "לונדון, אנגליה",
-      "category": "landmarks",
-      "price": 120,
-      "duration": "1 שעה",
-      "rating": 4.7,
-      "image": "/images/london-eye.jpg",
-      "description": "גלגל ענק עם תצפית על העיר",
-      "highlights": ["תא זכוכית", "נהר התמזה"]
-    },
-    {
-      "name": "רייקסמוזיאום",
-      "location": "אמסטרדם, הולנד",
-      "category": "museums",
-      "price": 110,
-      "duration": "2-3 שעות",
-      "rating": 4.8,
-      "image": "/images/rijksmuseum.jpg",
-      "description": "המוזיאון הלאומי של הולנד",
-      "highlights": ["רמברנדט", "אמנות הולנדית"]
-    },
-    {
-      "name": "בית אנה פרנק",
-      "location": "אמסטרדם, הולנד",
-      "category": "museums",
-      "price": 85,
-      "duration": "1-2 שעות",
-      "rating": 4.9,
-      "image": "/images/anne-frank.jpg",
-      "description": "בית המחבוא שבו הסתתרה אנה פרנק",
-      "highlights": ["היסטוריה מרגשת", "תערוכה אינטראקטיבית"]
-    },
-    {
-      "name": "פארק גואל",
-      "location": "ברצלונה, ספרד",
-      "category": "landmarks",
-      "price": 80,
-      "duration": "2 שעות",
-      "rating": 4.8,
-      "image": "/images/park-guell.jpg",
-      "description": "פארק צבעוני בעיצוב גאודי",
-      "highlights": ["פסיפסים", "נוף לעיר"]
-    },
-    {
-      "name": "לה רמבלה",
-      "location": "ברצלונה, ספרד",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1-2 שעות",
-      "rating": 4.6,
-      "image": "/images/ramblas.jpg",
-      "description": "שדרה תוססת עם חנויות ואמני רחוב",
-      "highlights": ["שווקים", "מסעדות", "הופעות רחוב"]
-    },
-    {
-      "name": "מונמארטר",
-      "location": "פריז, צרפת",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "2 שעות",
-      "rating": 4.7,
-      "image": "/images/montmartre.jpg",
-      "description": "רובע אמנים ציורי על גבעה",
-      "highlights": ["בזיליקת סקרה קר", "סמטאות ציוריות"]
-    },
-    {
-      "name": "פיאצה נבונה",
-      "location": "רומא, איטליה",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1 שעה",
-      "rating": 4.7,
-      "image": "/images/navona.jpg",
-      "description": "כיכר יפה עם מזרקות וארמונות",
-      "highlights": ["אמני רחוב", "בתי קפה"]
-    },
-    {
-      "name": "מגדל טוקיו",
-      "location": "טוקיו, יפן",
-      "category": "landmarks",
-      "price": 95,
-      "duration": "1-2 שעות",
-      "rating": 4.6,
-      "image": "/images/tokyo-tower.jpg",
-      "description": "מגדל תצפית אדום בהשראת מגדל אייפל",
-      "highlights": ["תצפית פנורמית", "תאורת לילה"]
-    },
-    {
-      "name": "חוף קוטה",
-      "location": "באלי, אינדונזיה",
-      "category": "nature",
-      "price": 0,
-      "duration": "3-4 שעות",
-      "rating": 4.5,
-      "image": "/images/kuta.jpg",
-      "description": "חוף פופולרי לגלישה ושקיעות",
-      "highlights": ["גלים טובים לגלישה", "חיי לילה"]
-    },
-    {
-      "name": "ספארי במדבר",
-      "location": "דובאי, איחוד האמירויות",
-      "category": "nature",
-      "price": 220,
-      "duration": "5-6 שעות",
-      "rating": 4.9,
-      "image": "/images/desert-safari.jpg",
-      "description": "נסיעה ברכבי שטח בדיונות כולל ארוחת ערב ומופעים",
-      "highlights": ["גלישת דיונות", "רכיבה על גמלים", "טיול גיפים בנסיעה עצמית"]
-    },
-    {
-      "name": "תצפית אי הדקלים",
-      "location": "דובאי, איחוד האמירויות",
-      "category": "landmarks",
-      "price": 160,
-      "duration": "1-2 שעות",
-      "rating": 4.8,
-      "image": "/images/palm-view.jpg",
-      "description": "תצפית מרהיבה על אי הדקלים המלאכותי",
-      "highlights": ["נוף פנורמי", "צילום מגבוה", "מבנה ייחודי"]
-    },
-    {
-      "name": "מסגרת דובאי",
-      "location": "דובאי, איחוד האמירויות",
-      "category": "landmarks",
-      "price": 80,
-      "duration": "1-2 שעות",
-      "rating": 4.7,
-      "image": "/images/dubai-frame.jpg",
-      "description": "מבנה ענק בצורת מסגרת עם רצפת זכוכית",
-      "highlights": ["רצפת זכוכית", "נוף לעיר הישנה והחדשה"]
-    },
-    {
-      "name": "בורג' ח'ליפה והמזרקות (מבחוץ)",
-      "location": "דובאי, איחוד האמירויות",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1-2 שעות",
-      "rating": 4.9,
-      "image": "/images/burj-khalifa-fountain.jpg",
-      "description": "צפייה במגדל הגבוה בעולם ובמופע המזרקות המפורסם למרגלותיו",
-      "highlights": ["מופע מים ואורות", "תצפית על המגדל מבחוץ", "אווירה ערב קסומה", "מתאים לכל המשפחה"]
-    },
-    {
-      "name": "סאות' ביץ'",
-      "location": "מיאמי, ארה\"ב",
-      "category": "nature",
-      "price": 0,
-      "duration": "3-4 שעות",
-      "rating": 4.8,
-      "image": "/images/south-beach.jpg",
-      "description": "חוף מפורסם עם מים טורקיז ואווירה תוססת",
-      "highlights": ["חול לבן", "ספורט ימי", "טיילת יפה"]
-    },
-    {
-      "name": "צ'יצ'ן איצה",
-      "location": "קנקון, מקסיקו",
-      "category": "landmarks",
-      "price": 210,
-      "duration": "יום שלם",
-      "rating": 4.9,
-      "image": "/images/chichen-itza.jpg",
-      "description": "אתר מאיה עתיק ואחד משבעת פלאי העולם",
-      "highlights": ["פירמידת קוקולקן", "היסטוריה עתיקה"]
-    },
-    {
-      "name": "כפר אויה",
-      "location": "סנטוריני, יוון",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "2-3 שעות",
-      "rating": 4.9,
-      "image": "/images/oia.jpg",
-      "description": "כפר לבן מפורסם עם שקיעות מרהיבות",
-      "highlights": ["בתים לבנים", "כיפות כחולות", "שקיעה"]
-    },
-    {
-      "name": "גשר קארל",
-      "location": "פראג, צ'כיה",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1-2 שעות",
-      "rating": 4.8,
-      "image": "/images/charles-bridge.jpg",
-      "description": "גשר היסטורי עם פסלים ונוף לעיר העתיקה",
-      "highlights": ["אמני רחוב", "נוף לנהר", "אווירה רומנטית"]
-    },
-    {
-      "name": "הארמון המלכותי",
-      "location": "בנגקוק, תאילנד",
-      "category": "landmarks",
-      "price": 130,
-      "duration": "2-3 שעות",
-      "rating": 4.8,
-      "image": "/images/grand-palace.jpg",
-      "description": "מתחם מפואר הכולל מקדשים וזהב",
-      "highlights": ["בודהה האזמרגד", "אדריכלות תאילנדית"]
-    },
-    {
-      "name": "שנירקול עם דולפינים",
-      "location": "מלדיביים",
-      "category": "nature",
-      "price": 260,
-      "duration": "3 שעות",
-      "rating": 4.9,
-      "image": "/images/dolphins.jpg",
-      "description": "שחייה עם דולפינים ושוניות אלמוגים",
-      "highlights": ["מים צלולים", "דגים טרופיים", "חוויה ייחודית"]
-    },
-    {
-      "name": "איה סופיה",
-      "location": "איסטנבול, טורקיה",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1-2 שעות",
-      "rating": 4.9,
-      "image": "/images/hagia-sophia.jpg",
-      "description": "מבנה היסטורי מרשים שהיה כנסייה ומסגד",
-      "highlights": ["כיפה ענקית", "פסיפסים עתיקים"]
-    },
-    {
-      "name": "משחק של ברצלונה בקאמפ נואו",
-      "location": "ברצלונה, ספרד",
-      "category": "sports",
-      "price": 420,
-      "duration": "2-3 שעות",
-      "rating": 4.9,
-      "image": "/images/barcelona-match.jpg",
-      "description": "צפייה במשחק בית של ברצלונה באווירה מטורפת",
-      "highlights": ["אצטדיון מהגדולים בעולם", "אוהדים מכל העולם", "חוויית כדורגל אמיתית"]
-    },
-    {
-      "name": "שער ברנדנבורג",
-      "location": "ברלין, גרמניה",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1 שעה",
-      "rating": 4.8,
-      "image": "/images/brandenburg-gate.jpg",
-      "description": "שער ניאו-קלאסי מרהיב, סמל איחוד גרמניה ואחד הסמלים המפורסמים באירופה",
-      "highlights": ["כניסה חופשית", "צילום מרהיב", "היסטוריה עשירה"]
-    },
-    {
-      "name": "מוזיאון פרגמון",
-      "location": "ברלין, גרמניה",
-      "category": "museums",
-      "price": 110,
-      "duration": "2-3 שעות",
-      "rating": 4.7,
-      "image": "/images/pergamon-museum.jpg",
-      "description": "אחד המוזיאונים הגדולים בגרמניה עם ממצאים ארכיאולוגיים עצומים מיוון עתיקה ובבל",
-      "highlights": ["מזבח פרגמון", "שער עיר בבל", "קולקציה עתיקה"]
-    },
-    {
-      "name": "חומת ברלין וגלריית איסט סייד",
-      "location": "ברלין, גרמניה",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "1-2 שעות",
-      "rating": 4.8,
-      "image": "/images/berlin-wall.jpg",
-      "description": "שריד מהחומה ההיסטורית מצויר בציורי גרפיטי מרהיבים המספרים את סיפור הפיצול והאיחוד",
-      "highlights": ["גרפיטי אמנותי", "היסטוריה מרתקת", "כניסה חופשית"]
-    },
-    {
-      "name": "מנזר ז'רונימוש",
-      "location": "ליסבון, פורטוגל",
-      "category": "landmarks",
-      "price": 85,
-      "duration": "1-2 שעות",
-      "rating": 4.9,
-      "image": "/images/jeronimos-monastery.jpg",
-      "description": "מנזר מפואר בסגנון מנואליני מהמאה ה-16, אתר מורשת עולמית של יונסקו",
-      "highlights": ["אדריכלות מרהיבה", "קברי וסקו דה גאמה", "גן מטופח"]
-    },
-    {
-      "name": "מגדל בלם",
-      "location": "ליסבון, פורטוגל",
-      "category": "landmarks",
-      "price": 70,
-      "duration": "1 שעה",
-      "rating": 4.7,
-      "image": "/images/belem-tower.jpg",
-      "description": "מגדל ביצורים עתיק מהמאה ה-16 על גדת נהר הטאחו, סמל עידן הגילויים הפורטוגזי",
-      "highlights": ["נוף לנהר", "אדריכלות גותית", "היסטוריה ימית"]
-    },
-    {
-      "name": "סינטרה",
-      "location": "סינטרה, פורטוגל",
-      "category": "nature",
-      "price": 130,
-      "duration": "יום שלם",
-      "rating": 4.9,
-      "image": "/images/sintra.jpg",
-      "description": "עיירה קסומה עם ארמונות צבעוניים ביערות ירוקים, כשעה מליסבון",
-      "highlights": ["ארמון פנה הצבעוני", "טיולי יער", "נוף לאוקיינוס"]
-    },
-    {
-      "name": "שוק הגדול - גראנד בזאר",
-      "location": "איסטנבול, טורקיה",
-      "category": "landmarks",
-      "price": 0,
-      "duration": "2-3 שעות",
-      "rating": 4.7,
-      "image": "/images/grand-bazaar.jpg",
-      "description": "אחד השווקים המקורים הגדולים בעולם עם למעלה מ-4,000 חנויות של תבלינים, שטיחים ותכשיטים",
-      "highlights": ["4,000 חנויות", "מיקוח ושווקים", "אווירה אותנטית"]
-    },
-    {
-      "name": "טירת פראג",
-      "location": "פראג, צ'כיה",
-      "category": "landmarks",
-      "price": 90,
-      "duration": "2-3 שעות",
-      "rating": 4.8,
-      "image": "/images/prague-castle.jpg",
-      "description": "מתחם טירה מהגדולים בעולם עם כנסיות, גלריות וגני ארמון עם נוף עוצר נשימה על העיר",
-      "highlights": ["כנסיית סנט ויטוס", "נוף לעיר", "שמירת הכבוד"]
+  {
+    "name": "מגדל אייפל",
+    "location": "פריז, צרפת",
+    "category": "landmarks",
+    "price": 150,
+    "duration": "2-3 שעות",
+    "rating": 4.8,
+    "image": "/images/eiffel-tower.jpg",
+    "description": "סמל העיר פריז המפורסם, גובה 330 מטר עם נוף מרהיב על העיר",
+    "highlights": [
+      "נוף פנורמי",
+      "תצפית מהקומה העליונה",
+      "מסעדה יוקרתית"
+    ],
+    "en": {
+      "name": "Eiffel Tower",
+      "location": "Paris, France",
+      "duration": "2-3 hours",
+      "description": "Paris's famous icon, 330 meters tall with stunning views over the city",
+      "highlights": [
+        "Panoramic view",
+        "Top-floor observation deck",
+        "Fine-dining restaurant"
+      ]
     }
-  ]
+  },
+  {
+    "name": "הקולוסיאום",
+    "location": "רומא, איטליה",
+    "category": "landmarks",
+    "price": 120,
+    "duration": "2-3 שעות",
+    "rating": 4.9,
+    "image": "/images/colosseum.jpg",
+    "description": "אמפיתיאטרון עתיק מרשים, אחד משבעת פלאי העולם",
+    "highlights": [
+      "היסטוריה עתיקה",
+      "סיורים מודרכים",
+      "אדריכלות רומית"
+    ],
+    "en": {
+      "name": "The Colosseum",
+      "location": "Rome, Italy",
+      "duration": "2-3 hours",
+      "description": "An impressive ancient amphitheater, one of the Seven Wonders of the World",
+      "highlights": [
+        "Ancient history",
+        "Guided tours",
+        "Roman architecture"
+      ]
+    }
+  },
+  {
+    "name": "סגרדה פמיליה",
+    "location": "ברצלונה, ספרד",
+    "category": "landmarks",
+    "price": 95,
+    "duration": "1-2 שעות",
+    "rating": 4.7,
+    "image": "/images/sagrada-familia.jpg",
+    "description": "בזיליקה מדהימה בעיצוב אנטוני גאודי, בניה מתמשכת מ-1882",
+    "highlights": [
+      "אדריכלות ייחודית",
+      "ויטראז'ים צבעוניים",
+      "מבנה איקוני"
+    ],
+    "en": {
+      "name": "Sagrada Família",
+      "location": "Barcelona, Spain",
+      "duration": "1-2 hours",
+      "description": "A stunning basilica designed by Antoni Gaudí, under construction since 1882",
+      "highlights": [
+        "Unique architecture",
+        "Colorful stained glass",
+        "Iconic building"
+      ]
+    }
+  },
+  {
+    "name": "לובר",
+    "location": "פריז, צרפת",
+    "category": "museums",
+    "price": 135,
+    "duration": "3-4 שעות",
+    "rating": 4.8,
+    "image": "/images/louvre.jpg",
+    "description": "המוזיאון הגדול והמפורסם בעולם, ביתה של המונה ליזה",
+    "highlights": [
+      "אוסף אמנות עצום",
+      "יצירות מופת",
+      "פירמידת זכוכית"
+    ],
+    "en": {
+      "name": "Louvre",
+      "location": "Paris, France",
+      "duration": "3-4 hours",
+      "description": "The world's largest and most famous museum, home of the Mona Lisa",
+      "highlights": [
+        "Vast art collection",
+        "Masterpieces",
+        "Glass pyramid"
+      ]
+    }
+  },
+  {
+    "name": "טוקיו סקייטרי",
+    "location": "טוקיו, יפן",
+    "category": "landmarks",
+    "price": 180,
+    "duration": "2 שעות",
+    "rating": 4.6,
+    "image": "/images/tokyo-skytree.jpg",
+    "description": "המגדל הגבוה בעולם (634 מטר) עם תצפית מרהיבה",
+    "highlights": [
+      "תצפית 360 מעלות",
+      "רצפת זכוכית",
+      "קניון ענק"
+    ],
+    "en": {
+      "name": "Tokyo Skytree",
+      "location": "Tokyo, Japan",
+      "duration": "2 hours",
+      "description": "The world's tallest tower (634 m) with a spectacular view",
+      "highlights": [
+        "360-degree view",
+        "Glass floor",
+        "Huge mall"
+      ]
+    }
+  },
+  {
+    "name": "מקדש אנגקור וואט",
+    "location": "סיאם ריפ, קמבודיה",
+    "category": "temples",
+    "price": 90,
+    "duration": "4-5 שעות",
+    "rating": 4.9,
+    "image": "/images/angkor-wat.jpg",
+    "description": "מתחם מקדשים עתיק ומרשים, אתר מורשת עולמית",
+    "highlights": [
+      "זריחה מרהיבה",
+      "ארכיאולוגיה",
+      "ג'ונגל טרופי"
+    ],
+    "en": {
+      "name": "Angkor Wat Temple",
+      "location": "Siem Reap, Cambodia",
+      "duration": "4-5 hours",
+      "description": "An impressive ancient temple complex and World Heritage Site",
+      "highlights": [
+        "Spectacular sunrise",
+        "Archaeology",
+        "Tropical jungle"
+      ]
+    }
+  },
+  {
+    "name": "חומת סין הגדולה",
+    "location": "בייג'ינג, סין",
+    "category": "landmarks",
+    "price": 110,
+    "duration": "3-4 שעות",
+    "rating": 4.8,
+    "image": "/images/great-wall.jpg",
+    "description": "אחד משבעת פלאי העולם, מבנה הגנה עתיק ומרשים",
+    "highlights": [
+      "נוף הררי",
+      "היסטוריה עשירה",
+      "צילומים מרהיבים"
+    ],
+    "en": {
+      "name": "Great Wall of China",
+      "location": "Beijing, China",
+      "duration": "3-4 hours",
+      "description": "One of the Seven Wonders of the World, an impressive ancient fortification",
+      "highlights": [
+        "Mountain views",
+        "Rich history",
+        "Stunning photos"
+      ]
+    }
+  },
+  {
+    "name": "טאג' מהאל",
+    "location": "אגרה, הודו",
+    "category": "landmarks",
+    "price": 75,
+    "duration": "2-3 שעות",
+    "rating": 4.9,
+    "image": "/images/taj-mahal.jpg",
+    "description": "ארמון שיש לבן מרהיב, סמל לאהבה נצחית",
+    "highlights": [
+      "אדריכלות מוגולית",
+      "גנים מטופחים",
+      "שקיעה קסומה"
+    ],
+    "en": {
+      "name": "Taj Mahal",
+      "location": "Agra, India",
+      "duration": "2-3 hours",
+      "description": "A breathtaking white-marble mausoleum, a symbol of eternal love",
+      "highlights": [
+        "Mughal architecture",
+        "Manicured gardens",
+        "Magical sunset"
+      ]
+    }
+  },
+  {
+    "name": "פסל החירות",
+    "location": "ניו יורק, ארה\"ב",
+    "category": "landmarks",
+    "price": 145,
+    "duration": "2-3 שעות",
+    "rating": 4.7,
+    "image": "/images/statue-liberty.jpg",
+    "description": "סמל החופש האמריקאי, מתנה מצרפת",
+    "highlights": [
+      "שייט באוניה",
+      "מוזיאון",
+      "נוף על מנהטן"
+    ],
+    "en": {
+      "name": "Statue of Liberty",
+      "location": "New York, USA",
+      "duration": "2-3 hours",
+      "description": "The symbol of American freedom, a gift from France",
+      "highlights": [
+        "Boat cruise",
+        "Museum",
+        "View of Manhattan"
+      ]
+    }
+  },
+  {
+    "name": "מפלי ניאגרה",
+    "location": "ניו יורק/אונטריו",
+    "category": "nature",
+    "price": 95,
+    "duration": "3-4 שעות",
+    "rating": 4.8,
+    "image": "/images/niagara-falls.jpg",
+    "description": "מפלים מרהיבים בגבול ארה\"ב-קנדה",
+    "highlights": [
+      "שייט מתחת למפלים",
+      "תצפיות מרהיבות",
+      "תאורה לילית"
+    ],
+    "en": {
+      "name": "Niagara Falls",
+      "location": "New York / Ontario",
+      "duration": "3-4 hours",
+      "description": "Spectacular waterfalls on the US–Canada border",
+      "highlights": [
+        "Cruise beneath the falls",
+        "Breathtaking viewpoints",
+        "Night illumination"
+      ]
+    }
+  },
+  {
+    "name": "מאצ'ו פיצ'ו",
+    "location": "קוסקו, פרו",
+    "category": "landmarks",
+    "price": 200,
+    "duration": "יום שלם",
+    "rating": 4.9,
+    "image": "/images/machu-picchu.jpg",
+    "description": "עיר האינקה המסתורית בין ההרים",
+    "highlights": [
+      "טיפוס הררי",
+      "חורבות עתיקות",
+      "נוף עוצר נשימה"
+    ],
+    "en": {
+      "name": "Machu Picchu",
+      "location": "Cusco, Peru",
+      "duration": "Full day",
+      "description": "The mysterious Inca city among the mountains",
+      "highlights": [
+        "Mountain hiking",
+        "Ancient ruins",
+        "Breathtaking scenery"
+      ]
+    }
+  },
+  {
+    "name": "גראנד קניון",
+    "location": "אריזונה, ארה\"ב",
+    "category": "nature",
+    "price": 120,
+    "duration": "4-5 שעות",
+    "rating": 4.8,
+    "image": "/images/grand-canyon.jpg",
+    "description": "קניון עצום ומרהיב, פלא טבע אמיתי",
+    "highlights": [
+      "מסלולי הליכה",
+      "שקיעות מדהימות",
+      "גשר זכוכית"
+    ],
+    "en": {
+      "name": "Grand Canyon",
+      "location": "Arizona, USA",
+      "duration": "4-5 hours",
+      "description": "A vast, spectacular canyon, a true natural wonder",
+      "highlights": [
+        "Hiking trails",
+        "Amazing sunsets",
+        "Glass bridge"
+      ]
+    }
+  },
+  {
+    "name": "בית האופרה של סידני",
+    "location": "סידני, אוסטרליה",
+    "category": "landmarks",
+    "price": 110,
+    "duration": "1-2 שעות",
+    "rating": 4.7,
+    "image": "/images/sydney-opera.jpg",
+    "description": "מבנה אייקוני בעיצוב ייחודי על שפת הים",
+    "highlights": [
+      "אדריכלות מודרנית",
+      "סיורים מודרכים",
+      "הופעות"
+    ],
+    "en": {
+      "name": "Sydney Opera House",
+      "location": "Sydney, Australia",
+      "duration": "1-2 hours",
+      "description": "An iconic, uniquely designed building on the waterfront",
+      "highlights": [
+        "Modern architecture",
+        "Guided tours",
+        "Performances"
+      ]
+    }
+  },
+  {
+    "name": "הפירמידות של גיזה",
+    "location": "קהיר, מצרים",
+    "category": "landmarks",
+    "price": 85,
+    "duration": "3-4 שעות",
+    "rating": 4.9,
+    "image": "/images/pyramids.jpg",
+    "description": "הפירמידות העתיקות והספינקס המפורסם",
+    "highlights": [
+      "היסטוריה עתיקה",
+      "ספינקס",
+      "רכיבה על גמלים"
+    ],
+    "en": {
+      "name": "Pyramids of Giza",
+      "location": "Cairo, Egypt",
+      "duration": "3-4 hours",
+      "description": "The ancient pyramids and the famous Sphinx",
+      "highlights": [
+        "Ancient history",
+        "Sphinx",
+        "Camel riding"
+      ]
+    }
+  },
+  {
+    "name": "סאגרי פארק",
+    "location": "קייפטאון, דרום אפריקה",
+    "category": "nature",
+    "price": 250,
+    "duration": "יום שלם",
+    "rating": 4.8,
+    "image": "/images/safari.jpg",
+    "description": "ספארי בר עם חיות בר באפריקה",
+    "highlights": [
+      "אריות",
+      "פילים",
+      "ג'ירפות",
+      "נוף אפריקאי"
+    ],
+    "en": {
+      "name": "Safari park",
+      "location": "Cape Town, South Africa",
+      "duration": "Full day",
+      "description": "A wildlife safari in Africa",
+      "highlights": [
+        "Lions",
+        "Elephants",
+        "Giraffes",
+        "African landscape"
+      ]
+    }
+  },
+  {
+    "name": "הגשר הזהוב",
+    "location": "סן פרנסיסקו, ארה\"ב",
+    "category": "landmarks",
+    "price": 65,
+    "duration": "1-2 שעות",
+    "rating": 4.6,
+    "image": "/images/golden-gate.jpg",
+    "description": "גשר התליה האייקוני בצבע אדום-כתום",
+    "highlights": [
+      "הליכה על הגשר",
+      "צילומים",
+      "רכיבת אופניים"
+    ],
+    "en": {
+      "name": "Golden Gate Bridge",
+      "location": "San Francisco, USA",
+      "duration": "1-2 hours",
+      "description": "The iconic red-orange suspension bridge",
+      "highlights": [
+        "Walk across the bridge",
+        "Photography",
+        "Cycling"
+      ]
+    }
+  },
+  {
+    "name": "מוזיאון ד'אורסה",
+    "location": "פריז, צרפת",
+    "category": "museums",
+    "price": 110,
+    "duration": "2-3 שעות",
+    "rating": 4.8,
+    "image": "/images/orsay.jpg",
+    "description": "מוזיאון אומנות בתחנת רכבת היסטורית עם יצירות אימפרסיוניסטיות",
+    "highlights": [
+      "מונה",
+      "ואן גוך",
+      "מבנה ייחודי"
+    ],
+    "en": {
+      "name": "Musée d'Orsay",
+      "location": "Paris, France",
+      "duration": "2-3 hours",
+      "description": "An art museum in a historic railway station, home to Impressionist works",
+      "highlights": [
+        "Monet",
+        "Van Gogh",
+        "Unique building"
+      ]
+    }
+  },
+  {
+    "name": "שער הניצחון",
+    "location": "פריז, צרפת",
+    "category": "landmarks",
+    "price": 70,
+    "duration": "1-2 שעות",
+    "rating": 4.7,
+    "image": "/images/arc-triomphe.jpg",
+    "description": "אנדרטה מפוארת במרכז כיכר שארל דה גול",
+    "highlights": [
+      "תצפית על השאנז אליזה",
+      "היסטוריה צרפתית"
+    ],
+    "en": {
+      "name": "Arc de Triomphe",
+      "location": "Paris, France",
+      "duration": "1-2 hours",
+      "description": "A grand monument at the center of Place Charles de Gaulle",
+      "highlights": [
+        "View of the Champs-Élysées",
+        "French history"
+      ]
+    }
+  },
+  {
+    "name": "הוותיקן",
+    "location": "רומא, איטליה",
+    "category": "landmarks",
+    "price": 130,
+    "duration": "3-4 שעות",
+    "rating": 4.9,
+    "image": "/images/vatican.jpg",
+    "description": "מדינת העיר הקטנה בעולם ומרכז הנצרות הקתולית",
+    "highlights": [
+      "כנסיית פטרוס הקדוש",
+      "קפלה סיסטינית"
+    ],
+    "en": {
+      "name": "The Vatican",
+      "location": "Rome, Italy",
+      "duration": "3-4 hours",
+      "description": "The world's smallest city-state and the center of Catholicism",
+      "highlights": [
+        "St. Peter's Basilica",
+        "Sistine Chapel"
+      ]
+    }
+  },
+  {
+    "name": "מזרקת טרווי",
+    "location": "רומא, איטליה",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1 שעה",
+    "rating": 4.8,
+    "image": "/images/trevi.jpg",
+    "description": "המזרקה המפורסמת שבה זורקים מטבע לחזרה לרומא",
+    "highlights": [
+      "אדריכלות בארוקית",
+      "צילום לילה"
+    ],
+    "en": {
+      "name": "Trevi Fountain",
+      "location": "Rome, Italy",
+      "duration": "1 hour",
+      "description": "The famous fountain where you toss a coin to ensure your return to Rome",
+      "highlights": [
+        "Baroque architecture",
+        "Night photography"
+      ]
+    }
+  },
+  {
+    "name": "שיבויה קרוסינג",
+    "location": "טוקיו, יפן",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1 שעה",
+    "rating": 4.7,
+    "image": "/images/shibuya.jpg",
+    "description": "מעבר החצייה העמוס בעולם",
+    "highlights": [
+      "אורות ניאון",
+      "קניות",
+      "אווירה אורבנית"
+    ],
+    "en": {
+      "name": "Shibuya Crossing",
+      "location": "Tokyo, Japan",
+      "duration": "1 hour",
+      "description": "The world's busiest pedestrian crossing",
+      "highlights": [
+        "Neon lights",
+        "Shopping",
+        "Urban atmosphere"
+      ]
+    }
+  },
+  {
+    "name": "מקדש סנסו-ג'י",
+    "location": "טוקיו, יפן",
+    "category": "temples",
+    "price": 0,
+    "duration": "1-2 שעות",
+    "rating": 4.8,
+    "image": "/images/sensoji.jpg",
+    "description": "המקדש הבודהיסטי העתיק ביותר בטוקיו",
+    "highlights": [
+      "שער קמינרימון",
+      "דוכני מזכרות"
+    ],
+    "en": {
+      "name": "Sensō-ji Temple",
+      "location": "Tokyo, Japan",
+      "duration": "1-2 hours",
+      "description": "Tokyo's oldest Buddhist temple",
+      "highlights": [
+        "Kaminarimon Gate",
+        "Souvenir stalls"
+      ]
+    }
+  },
+  {
+    "name": "מקדש אולוואטו",
+    "location": "באלי, אינדונזיה",
+    "category": "temples",
+    "price": 60,
+    "duration": "2 שעות",
+    "rating": 4.7,
+    "image": "/images/uluwatu.jpg",
+    "description": "מקדש על צוק מעל האוקיינוס",
+    "highlights": [
+      "שקיעה מרהיבה",
+      "ריקוד קצ'אק"
+    ],
+    "en": {
+      "name": "Uluwatu Temple",
+      "location": "Bali, Indonesia",
+      "duration": "2 hours",
+      "description": "A temple on a cliff above the ocean",
+      "highlights": [
+        "Spectacular sunset",
+        "Kecak dance"
+      ]
+    }
+  },
+  {
+    "name": "יער הקופים אובוד",
+    "location": "באלי, אינדונזיה",
+    "category": "nature",
+    "price": 55,
+    "duration": "2 שעות",
+    "rating": 4.6,
+    "image": "/images/monkey-forest.jpg",
+    "description": "שמורת טבע עם מאות קופים",
+    "highlights": [
+      "ג'ונגל טרופי",
+      "מקדשים עתיקים"
+    ],
+    "en": {
+      "name": "Ubud Monkey Forest",
+      "location": "Bali, Indonesia",
+      "duration": "2 hours",
+      "description": "A nature reserve with hundreds of monkeys",
+      "highlights": [
+        "Tropical jungle",
+        "Ancient temples"
+      ]
+    }
+  },
+  {
+    "name": "סנטרל פארק",
+    "location": "ניו יורק, ארה\"ב",
+    "category": "nature",
+    "price": 0,
+    "duration": "2-3 שעות",
+    "rating": 4.9,
+    "image": "/images/central-park.jpg",
+    "description": "פארק עירוני עצום בלב מנהטן",
+    "highlights": [
+      "אגמים",
+      "פיקניקים",
+      "השכרת אופניים"
+    ],
+    "en": {
+      "name": "Central Park",
+      "location": "New York, USA",
+      "duration": "2-3 hours",
+      "description": "A huge urban park in the heart of Manhattan",
+      "highlights": [
+        "Lakes",
+        "Picnics",
+        "Bike rental"
+      ]
+    }
+  },
+  {
+    "name": "טיימס סקוור",
+    "location": "ניו יורק, ארה\"ב",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1-2 שעות",
+    "rating": 4.7,
+    "image": "/images/times-square.jpg",
+    "description": "כיכר מוארת במסכי ענק ושלטי פרסום",
+    "highlights": [
+      "חנויות",
+      "תיאטראות ברודוויי"
+    ],
+    "en": {
+      "name": "Times Square",
+      "location": "New York, USA",
+      "duration": "1-2 hours",
+      "description": "A square lit up by giant screens and billboards",
+      "highlights": [
+        "Shops",
+        "Broadway theaters"
+      ]
+    }
+  },
+  {
+    "name": "ארמון בקינגהאם",
+    "location": "לונדון, אנגליה",
+    "category": "landmarks",
+    "price": 95,
+    "duration": "2 שעות",
+    "rating": 4.6,
+    "image": "/images/buckingham.jpg",
+    "description": "מעון המלוכה הבריטי",
+    "highlights": [
+      "החלפת המשמר",
+      "גנים מלכותיים"
+    ],
+    "en": {
+      "name": "Buckingham Palace",
+      "location": "London, England",
+      "duration": "2 hours",
+      "description": "The British royal residence",
+      "highlights": [
+        "Changing of the Guard",
+        "Royal gardens"
+      ]
+    }
+  },
+  {
+    "name": "הלונדון איי",
+    "location": "לונדון, אנגליה",
+    "category": "landmarks",
+    "price": 120,
+    "duration": "1 שעה",
+    "rating": 4.7,
+    "image": "/images/london-eye.jpg",
+    "description": "גלגל ענק עם תצפית על העיר",
+    "highlights": [
+      "תא זכוכית",
+      "נהר התמזה"
+    ],
+    "en": {
+      "name": "The London Eye",
+      "location": "London, England",
+      "duration": "1 hour",
+      "description": "A giant Ferris wheel overlooking the city",
+      "highlights": [
+        "Glass capsule",
+        "River Thames"
+      ]
+    }
+  },
+  {
+    "name": "רייקסמוזיאום",
+    "location": "אמסטרדם, הולנד",
+    "category": "museums",
+    "price": 110,
+    "duration": "2-3 שעות",
+    "rating": 4.8,
+    "image": "/images/rijksmuseum.jpg",
+    "description": "המוזיאון הלאומי של הולנד",
+    "highlights": [
+      "רמברנדט",
+      "אמנות הולנדית"
+    ],
+    "en": {
+      "name": "Rijksmuseum",
+      "location": "Amsterdam, Netherlands",
+      "duration": "2-3 hours",
+      "description": "The national museum of the Netherlands",
+      "highlights": [
+        "Rembrandt",
+        "Dutch art"
+      ]
+    }
+  },
+  {
+    "name": "בית אנה פרנק",
+    "location": "אמסטרדם, הולנד",
+    "category": "museums",
+    "price": 85,
+    "duration": "1-2 שעות",
+    "rating": 4.9,
+    "image": "/images/anne-frank.jpg",
+    "description": "בית המחבוא שבו הסתתרה אנה פרנק",
+    "highlights": [
+      "היסטוריה מרגשת",
+      "תערוכה אינטראקטיבית"
+    ],
+    "en": {
+      "name": "Anne Frank House",
+      "location": "Amsterdam, Netherlands",
+      "duration": "1-2 hours",
+      "description": "The hiding place where Anne Frank lived in secret",
+      "highlights": [
+        "Moving history",
+        "Interactive exhibition"
+      ]
+    }
+  },
+  {
+    "name": "פארק גואל",
+    "location": "ברצלונה, ספרד",
+    "category": "landmarks",
+    "price": 80,
+    "duration": "2 שעות",
+    "rating": 4.8,
+    "image": "/images/park-guell.jpg",
+    "description": "פארק צבעוני בעיצוב גאודי",
+    "highlights": [
+      "פסיפסים",
+      "נוף לעיר"
+    ],
+    "en": {
+      "name": "Park Güell",
+      "location": "Barcelona, Spain",
+      "duration": "2 hours",
+      "description": "A colorful park designed by Gaudí",
+      "highlights": [
+        "Mosaics",
+        "City views"
+      ]
+    }
+  },
+  {
+    "name": "לה רמבלה",
+    "location": "ברצלונה, ספרד",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1-2 שעות",
+    "rating": 4.6,
+    "image": "/images/ramblas.jpg",
+    "description": "שדרה תוססת עם חנויות ואמני רחוב",
+    "highlights": [
+      "שווקים",
+      "מסעדות",
+      "הופעות רחוב"
+    ],
+    "en": {
+      "name": "La Rambla",
+      "location": "Barcelona, Spain",
+      "duration": "1-2 hours",
+      "description": "A lively boulevard with shops and street artists",
+      "highlights": [
+        "Markets",
+        "Restaurants",
+        "Street performances"
+      ]
+    }
+  },
+  {
+    "name": "מונמארטר",
+    "location": "פריז, צרפת",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "2 שעות",
+    "rating": 4.7,
+    "image": "/images/montmartre.jpg",
+    "description": "רובע אמנים ציורי על גבעה",
+    "highlights": [
+      "בזיליקת סקרה קר",
+      "סמטאות ציוריות"
+    ],
+    "en": {
+      "name": "Montmartre",
+      "location": "Paris, France",
+      "duration": "2 hours",
+      "description": "A picturesque artists' quarter on a hill",
+      "highlights": [
+        "Sacré-Cœur Basilica",
+        "Picturesque alleys"
+      ]
+    }
+  },
+  {
+    "name": "פיאצה נבונה",
+    "location": "רומא, איטליה",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1 שעה",
+    "rating": 4.7,
+    "image": "/images/navona.jpg",
+    "description": "כיכר יפה עם מזרקות וארמונות",
+    "highlights": [
+      "אמני רחוב",
+      "בתי קפה"
+    ],
+    "en": {
+      "name": "Piazza Navona",
+      "location": "Rome, Italy",
+      "duration": "1 hour",
+      "description": "A beautiful square with fountains and palaces",
+      "highlights": [
+        "Street artists",
+        "Cafés"
+      ]
+    }
+  },
+  {
+    "name": "מגדל טוקיו",
+    "location": "טוקיו, יפן",
+    "category": "landmarks",
+    "price": 95,
+    "duration": "1-2 שעות",
+    "rating": 4.6,
+    "image": "/images/tokyo-tower.jpg",
+    "description": "מגדל תצפית אדום בהשראת מגדל אייפל",
+    "highlights": [
+      "תצפית פנורמית",
+      "תאורת לילה"
+    ],
+    "en": {
+      "name": "Tokyo Tower",
+      "location": "Tokyo, Japan",
+      "duration": "1-2 hours",
+      "description": "A red observation tower inspired by the Eiffel Tower",
+      "highlights": [
+        "Panoramic observation",
+        "Night lighting"
+      ]
+    }
+  },
+  {
+    "name": "חוף קוטה",
+    "location": "באלי, אינדונזיה",
+    "category": "nature",
+    "price": 0,
+    "duration": "3-4 שעות",
+    "rating": 4.5,
+    "image": "/images/kuta.jpg",
+    "description": "חוף פופולרי לגלישה ושקיעות",
+    "highlights": [
+      "גלים טובים לגלישה",
+      "חיי לילה"
+    ],
+    "en": {
+      "name": "Kuta Beach",
+      "location": "Bali, Indonesia",
+      "duration": "3-4 hours",
+      "description": "A popular beach for surfing and sunsets",
+      "highlights": [
+        "Great surfing waves",
+        "Nightlife"
+      ]
+    }
+  },
+  {
+    "name": "ספארי במדבר",
+    "location": "דובאי, איחוד האמירויות",
+    "category": "nature",
+    "price": 220,
+    "duration": "5-6 שעות",
+    "rating": 4.9,
+    "image": "/images/desert-safari.jpg",
+    "description": "נסיעה ברכבי שטח בדיונות כולל ארוחת ערב ומופעים",
+    "highlights": [
+      "גלישת דיונות",
+      "רכיבה על גמלים",
+      "טיול גיפים בנסיעה עצמית"
+    ],
+    "en": {
+      "name": "Desert safari",
+      "location": "Dubai, UAE",
+      "duration": "5-6 hours",
+      "description": "Off-road dune drive including dinner and shows",
+      "highlights": [
+        "Dune boarding",
+        "Camel riding",
+        "Self-drive jeep tour"
+      ]
+    }
+  },
+  {
+    "name": "תצפית אי הדקלים",
+    "location": "דובאי, איחוד האמירויות",
+    "category": "landmarks",
+    "price": 160,
+    "duration": "1-2 שעות",
+    "rating": 4.8,
+    "image": "/images/palm-view.jpg",
+    "description": "תצפית מרהיבה על אי הדקלים המלאכותי",
+    "highlights": [
+      "נוף פנורמי",
+      "צילום מגבוה",
+      "מבנה ייחודי"
+    ],
+    "en": {
+      "name": "The View at The Palm",
+      "location": "Dubai, UAE",
+      "duration": "1-2 hours",
+      "description": "A spectacular view of the artificial Palm Island",
+      "highlights": [
+        "Panoramic view",
+        "Photos from above",
+        "Unique building"
+      ]
+    }
+  },
+  {
+    "name": "מסגרת דובאי",
+    "location": "דובאי, איחוד האמירויות",
+    "category": "landmarks",
+    "price": 80,
+    "duration": "1-2 שעות",
+    "rating": 4.7,
+    "image": "/images/dubai-frame.jpg",
+    "description": "מבנה ענק בצורת מסגרת עם רצפת זכוכית",
+    "highlights": [
+      "רצפת זכוכית",
+      "נוף לעיר הישנה והחדשה"
+    ],
+    "en": {
+      "name": "Dubai Frame",
+      "location": "Dubai, UAE",
+      "duration": "1-2 hours",
+      "description": "A giant frame-shaped structure with a glass floor",
+      "highlights": [
+        "Glass floor",
+        "Views of old and new Dubai"
+      ]
+    }
+  },
+  {
+    "name": "בורג' ח'ליפה והמזרקות (מבחוץ)",
+    "location": "דובאי, איחוד האמירויות",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1-2 שעות",
+    "rating": 4.9,
+    "image": "/images/burj-khalifa-fountain.jpg",
+    "description": "צפייה במגדל הגבוה בעולם ובמופע המזרקות המפורסם למרגלותיו",
+    "highlights": [
+      "מופע מים ואורות",
+      "תצפית על המגדל מבחוץ",
+      "אווירה ערב קסומה",
+      "מתאים לכל המשפחה"
+    ],
+    "en": {
+      "name": "Burj Khalifa & the Fountains (outside)",
+      "location": "Dubai, UAE",
+      "duration": "1-2 hours",
+      "description": "See the world's tallest tower and the famous fountain show at its base",
+      "highlights": [
+        "Water and light show",
+        "View of the tower from outside",
+        "Magical evening atmosphere",
+        "Great for the whole family"
+      ]
+    }
+  },
+  {
+    "name": "סאות' ביץ'",
+    "location": "מיאמי, ארה\"ב",
+    "category": "nature",
+    "price": 0,
+    "duration": "3-4 שעות",
+    "rating": 4.8,
+    "image": "/images/south-beach.jpg",
+    "description": "חוף מפורסם עם מים טורקיז ואווירה תוססת",
+    "highlights": [
+      "חול לבן",
+      "ספורט ימי",
+      "טיילת יפה"
+    ],
+    "en": {
+      "name": "South Beach",
+      "location": "Miami, USA",
+      "duration": "3-4 hours",
+      "description": "A famous beach with turquoise water and a lively vibe",
+      "highlights": [
+        "White sand",
+        "Water sports",
+        "Beautiful promenade"
+      ]
+    }
+  },
+  {
+    "name": "צ'יצ'ן איצה",
+    "location": "קנקון, מקסיקו",
+    "category": "landmarks",
+    "price": 210,
+    "duration": "יום שלם",
+    "rating": 4.9,
+    "image": "/images/chichen-itza.jpg",
+    "description": "אתר מאיה עתיק ואחד משבעת פלאי העולם",
+    "highlights": [
+      "פירמידת קוקולקן",
+      "היסטוריה עתיקה"
+    ],
+    "en": {
+      "name": "Chichén Itzá",
+      "location": "Cancún, Mexico",
+      "duration": "Full day",
+      "description": "An ancient Maya site and one of the Seven Wonders of the World",
+      "highlights": [
+        "Kukulcán Pyramid",
+        "Ancient history"
+      ]
+    }
+  },
+  {
+    "name": "כפר אויה",
+    "location": "סנטוריני, יוון",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "2-3 שעות",
+    "rating": 4.9,
+    "image": "/images/oia.jpg",
+    "description": "כפר לבן מפורסם עם שקיעות מרהיבות",
+    "highlights": [
+      "בתים לבנים",
+      "כיפות כחולות",
+      "שקיעה"
+    ],
+    "en": {
+      "name": "Oia Village",
+      "location": "Santorini, Greece",
+      "duration": "2-3 hours",
+      "description": "A famous white village with stunning sunsets",
+      "highlights": [
+        "White houses",
+        "Blue domes",
+        "Sunset"
+      ]
+    }
+  },
+  {
+    "name": "גשר קארל",
+    "location": "פראג, צ'כיה",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1-2 שעות",
+    "rating": 4.8,
+    "image": "/images/charles-bridge.jpg",
+    "description": "גשר היסטורי עם פסלים ונוף לעיר העתיקה",
+    "highlights": [
+      "אמני רחוב",
+      "נוף לנהר",
+      "אווירה רומנטית"
+    ],
+    "en": {
+      "name": "Charles Bridge",
+      "location": "Prague, Czechia",
+      "duration": "1-2 hours",
+      "description": "A historic bridge with statues and views of the Old Town",
+      "highlights": [
+        "Street artists",
+        "River views",
+        "Romantic atmosphere"
+      ]
+    }
+  },
+  {
+    "name": "הארמון המלכותי",
+    "location": "בנגקוק, תאילנד",
+    "category": "landmarks",
+    "price": 130,
+    "duration": "2-3 שעות",
+    "rating": 4.8,
+    "image": "/images/grand-palace.jpg",
+    "description": "מתחם מפואר הכולל מקדשים וזהב",
+    "highlights": [
+      "בודהה האזמרגד",
+      "אדריכלות תאילנדית"
+    ],
+    "en": {
+      "name": "The Grand Palace",
+      "location": "Bangkok, Thailand",
+      "duration": "2-3 hours",
+      "description": "A magnificent complex of temples and gold",
+      "highlights": [
+        "Emerald Buddha",
+        "Thai architecture"
+      ]
+    }
+  },
+  {
+    "name": "שנירקול עם דולפינים",
+    "location": "מלדיביים",
+    "category": "nature",
+    "price": 260,
+    "duration": "3 שעות",
+    "rating": 4.9,
+    "image": "/images/dolphins.jpg",
+    "description": "שחייה עם דולפינים ושוניות אלמוגים",
+    "highlights": [
+      "מים צלולים",
+      "דגים טרופיים",
+      "חוויה ייחודית"
+    ],
+    "en": {
+      "name": "Snorkeling with dolphins",
+      "location": "Maldives",
+      "duration": "3 hours",
+      "description": "Swimming with dolphins among coral reefs",
+      "highlights": [
+        "Crystal-clear water",
+        "Tropical fish",
+        "Unique experience"
+      ]
+    }
+  },
+  {
+    "name": "איה סופיה",
+    "location": "איסטנבול, טורקיה",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1-2 שעות",
+    "rating": 4.9,
+    "image": "/images/hagia-sophia.jpg",
+    "description": "מבנה היסטורי מרשים שהיה כנסייה ומסגד",
+    "highlights": [
+      "כיפה ענקית",
+      "פסיפסים עתיקים"
+    ],
+    "en": {
+      "name": "Hagia Sophia",
+      "location": "Istanbul, Turkey",
+      "duration": "1-2 hours",
+      "description": "An impressive historic building that has served as both church and mosque",
+      "highlights": [
+        "Giant dome",
+        "Ancient mosaics"
+      ]
+    }
+  },
+  {
+    "name": "משחק של ברצלונה בקאמפ נואו",
+    "location": "ברצלונה, ספרד",
+    "category": "sports",
+    "price": 420,
+    "duration": "2-3 שעות",
+    "rating": 4.9,
+    "image": "/images/barcelona-match.jpg",
+    "description": "צפייה במשחק בית של ברצלונה באווירה מטורפת",
+    "highlights": [
+      "אצטדיון מהגדולים בעולם",
+      "אוהדים מכל העולם",
+      "חוויית כדורגל אמיתית"
+    ],
+    "en": {
+      "name": "FC Barcelona match at Camp Nou",
+      "location": "Barcelona, Spain",
+      "duration": "2-3 hours",
+      "description": "Watch a Barcelona home match in an electric atmosphere",
+      "highlights": [
+        "One of the world's largest stadiums",
+        "Fans from all over the world",
+        "A true football experience"
+      ]
+    }
+  },
+  {
+    "name": "שער ברנדנבורג",
+    "location": "ברלין, גרמניה",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1 שעה",
+    "rating": 4.8,
+    "image": "/images/brandenburg-gate.jpg",
+    "description": "שער ניאו-קלאסי מרהיב, סמל איחוד גרמניה ואחד הסמלים המפורסמים באירופה",
+    "highlights": [
+      "כניסה חופשית",
+      "צילום מרהיב",
+      "היסטוריה עשירה"
+    ],
+    "en": {
+      "name": "Brandenburg Gate",
+      "location": "Berlin, Germany",
+      "duration": "1 hour",
+      "description": "A magnificent neoclassical gate, symbol of German reunification and one of Europe's most famous landmarks",
+      "highlights": [
+        "Free entry",
+        "Stunning photos",
+        "Rich history"
+      ]
+    }
+  },
+  {
+    "name": "מוזיאון פרגמון",
+    "location": "ברלין, גרמניה",
+    "category": "museums",
+    "price": 110,
+    "duration": "2-3 שעות",
+    "rating": 4.7,
+    "image": "/images/pergamon-museum.jpg",
+    "description": "אחד המוזיאונים הגדולים בגרמניה עם ממצאים ארכיאולוגיים עצומים מיוון עתיקה ובבל",
+    "highlights": [
+      "מזבח פרגמון",
+      "שער עיר בבל",
+      "קולקציה עתיקה"
+    ],
+    "en": {
+      "name": "Pergamon Museum",
+      "location": "Berlin, Germany",
+      "duration": "2-3 hours",
+      "description": "One of Germany's largest museums, with monumental archaeological finds from ancient Greece and Babylon",
+      "highlights": [
+        "Pergamon Altar",
+        "Ishtar Gate of Babylon",
+        "Ancient collection"
+      ]
+    }
+  },
+  {
+    "name": "חומת ברלין וגלריית איסט סייד",
+    "location": "ברלין, גרמניה",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "1-2 שעות",
+    "rating": 4.8,
+    "image": "/images/berlin-wall.jpg",
+    "description": "שריד מהחומה ההיסטורית מצויר בציורי גרפיטי מרהיבים המספרים את סיפור הפיצול והאיחוד",
+    "highlights": [
+      "גרפיטי אמנותי",
+      "היסטוריה מרתקת",
+      "כניסה חופשית"
+    ],
+    "en": {
+      "name": "Berlin Wall & East Side Gallery",
+      "location": "Berlin, Germany",
+      "duration": "1-2 hours",
+      "description": "A remnant of the historic wall covered in striking graffiti that tells the story of division and reunification",
+      "highlights": [
+        "Graffiti art",
+        "Fascinating history",
+        "Free entry"
+      ]
+    }
+  },
+  {
+    "name": "מנזר ז'רונימוש",
+    "location": "ליסבון, פורטוגל",
+    "category": "landmarks",
+    "price": 85,
+    "duration": "1-2 שעות",
+    "rating": 4.9,
+    "image": "/images/jeronimos-monastery.jpg",
+    "description": "מנזר מפואר בסגנון מנואליני מהמאה ה-16, אתר מורשת עולמית של יונסקו",
+    "highlights": [
+      "אדריכלות מרהיבה",
+      "קברי וסקו דה גאמה",
+      "גן מטופח"
+    ],
+    "en": {
+      "name": "Jerónimos Monastery",
+      "location": "Lisbon, Portugal",
+      "duration": "1-2 hours",
+      "description": "A magnificent 16th-century Manueline monastery and UNESCO World Heritage Site",
+      "highlights": [
+        "Stunning architecture",
+        "Tomb of Vasco da Gama",
+        "Manicured garden"
+      ]
+    }
+  },
+  {
+    "name": "מגדל בלם",
+    "location": "ליסבון, פורטוגל",
+    "category": "landmarks",
+    "price": 70,
+    "duration": "1 שעה",
+    "rating": 4.7,
+    "image": "/images/belem-tower.jpg",
+    "description": "מגדל ביצורים עתיק מהמאה ה-16 על גדת נהר הטאחו, סמל עידן הגילויים הפורטוגזי",
+    "highlights": [
+      "נוף לנהר",
+      "אדריכלות גותית",
+      "היסטוריה ימית"
+    ],
+    "en": {
+      "name": "Belém Tower",
+      "location": "Lisbon, Portugal",
+      "duration": "1 hour",
+      "description": "A 16th-century fortified tower on the Tagus River, symbol of Portugal's Age of Discovery",
+      "highlights": [
+        "River views",
+        "Gothic architecture",
+        "Maritime history"
+      ]
+    }
+  },
+  {
+    "name": "סינטרה",
+    "location": "סינטרה, פורטוגל",
+    "category": "nature",
+    "price": 130,
+    "duration": "יום שלם",
+    "rating": 4.9,
+    "image": "/images/sintra.jpg",
+    "description": "עיירה קסומה עם ארמונות צבעוניים ביערות ירוקים, כשעה מליסבון",
+    "highlights": [
+      "ארמון פנה הצבעוני",
+      "טיולי יער",
+      "נוף לאוקיינוס"
+    ],
+    "en": {
+      "name": "Sintra",
+      "location": "Sintra, Portugal",
+      "duration": "Full day",
+      "description": "An enchanting town of colorful palaces in green forests, about an hour from Lisbon",
+      "highlights": [
+        "The colorful Pena Palace",
+        "Forest walks",
+        "Ocean views"
+      ]
+    }
+  },
+  {
+    "name": "שוק הגדול - גראנד בזאר",
+    "location": "איסטנבול, טורקיה",
+    "category": "landmarks",
+    "price": 0,
+    "duration": "2-3 שעות",
+    "rating": 4.7,
+    "image": "/images/grand-bazaar.jpg",
+    "description": "אחד השווקים המקורים הגדולים בעולם עם למעלה מ-4,000 חנויות של תבלינים, שטיחים ותכשיטים",
+    "highlights": [
+      "4,000 חנויות",
+      "מיקוח ושווקים",
+      "אווירה אותנטית"
+    ],
+    "en": {
+      "name": "The Grand Bazaar",
+      "location": "Istanbul, Turkey",
+      "duration": "2-3 hours",
+      "description": "One of the world's largest covered markets, with over 4,000 shops selling spices, carpets and jewelry",
+      "highlights": [
+        "4,000 shops",
+        "Bargaining and markets",
+        "Authentic atmosphere"
+      ]
+    }
+  },
+  {
+    "name": "טירת פראג",
+    "location": "פראג, צ'כיה",
+    "category": "landmarks",
+    "price": 90,
+    "duration": "2-3 שעות",
+    "rating": 4.8,
+    "image": "/images/prague-castle.jpg",
+    "description": "מתחם טירה מהגדולים בעולם עם כנסיות, גלריות וגני ארמון עם נוף עוצר נשימה על העיר",
+    "highlights": [
+      "כנסיית סנט ויטוס",
+      "נוף לעיר",
+      "שמירת הכבוד"
+    ],
+    "en": {
+      "name": "Prague Castle",
+      "location": "Prague, Czechia",
+      "duration": "2-3 hours",
+      "description": "One of the world's largest castle complexes, with churches, galleries and palace gardens overlooking the city",
+      "highlights": [
+        "St. Vitus Cathedral",
+        "City views",
+        "Honor guard"
+      ]
+    }
+  }
+]

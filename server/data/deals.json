@@ -6,17 +6,56 @@
     "price": 2499,
     "originalPrice": 3499,
     "discount": 29,
-    "dates": ["15-22 מאי 2026", "15-22 יולי 2026", "15-22 ספטמבר 2026"],
+    "dates": [
+      "15-22 מאי 2026",
+      "15-22 יולי 2026",
+      "15-22 ספטמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "אל על",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "Hotel Eiffel Trocadero",
-    "included": ["טיסות הלוך חזור", "מלון + ארוחת בוקר", "העברות"],
+    "included": [
+      "טיסות הלוך חזור",
+      "מלון + ארוחת בוקר",
+      "העברות"
+    ],
     "reviewsCount": 342,
-    "flightDetails": { "departure": "06:00", "arrival": "10:30", "class": "תיירים" },
-    "attractions": ["מגדל אייפל", "לובר", "שאנז אליזה"]
+    "flightDetails": {
+      "departure": "06:00",
+      "arrival": "10:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "מגדל אייפל",
+      "לובר",
+      "שאנז אליזה"
+    ],
+    "en": {
+      "destination": "Paris, France",
+      "dates": [
+        "May 15-22, 2026",
+        "July 15-22, 2026",
+        "September 15-22, 2026"
+      ],
+      "airline": "El Al",
+      "flightTime": "4.5 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "Hotel Eiffel Trocadero",
+      "included": [
+        "Round-trip flights",
+        "Hotel + breakfast",
+        "Transfers"
+      ],
+      "attractions": [
+        "Eiffel Tower",
+        "Louvre",
+        "Champs-Élysées"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 2,
@@ -25,17 +64,56 @@
     "price": 2199,
     "originalPrice": 2999,
     "discount": 27,
-    "dates": ["3-10 יוני 2026", "3-10 אוגוסט 2026", "3-10 אוקטובר 2026"],
+    "dates": [
+      "3-10 יוני 2026",
+      "3-10 אוגוסט 2026",
+      "3-10 אוקטובר 2026"
+    ],
     "rating": 4.9,
     "airline": "Wizz Air",
     "flightTime": "4 שעות",
     "category": "europe",
     "hotel": "מלון 5 כוכבים",
     "hotelName": "Rome Cavalieri Waldorf Astoria",
-    "included": ["טיסות הלוך חזור", "מלון במרכז העיר", "סיור חינם"],
+    "included": [
+      "טיסות הלוך חזור",
+      "מלון במרכז העיר",
+      "סיור חינם"
+    ],
     "reviewsCount": 428,
-    "flightDetails": { "departure": "07:30", "arrival": "11:30", "class": "תיירים" },
-    "attractions": ["קולוסיאום", "ותיקן", "פונטנה די טרווי"]
+    "flightDetails": {
+      "departure": "07:30",
+      "arrival": "11:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "קולוסיאום",
+      "ותיקן",
+      "פונטנה די טרווי"
+    ],
+    "en": {
+      "destination": "Rome, Italy",
+      "dates": [
+        "June 3-10, 2026",
+        "August 3-10, 2026",
+        "October 3-10, 2026"
+      ],
+      "airline": "Wizz Air",
+      "flightTime": "4 hours",
+      "hotel": "5-star hotel",
+      "hotelName": "Rome Cavalieri Waldorf Astoria",
+      "included": [
+        "Round-trip flights",
+        "City-center hotel",
+        "Free tour"
+      ],
+      "attractions": [
+        "Colosseum",
+        "Vatican",
+        "Fontana di Trevi"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 3,
@@ -44,17 +122,56 @@
     "price": 2299,
     "originalPrice": 3199,
     "discount": 28,
-    "dates": ["10-17 יולי 2026", "10-17 ספטמבר 2026", "10-17 נובמבר 2026"],
+    "dates": [
+      "10-17 יולי 2026",
+      "10-17 ספטמבר 2026",
+      "10-17 נובמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "Ryanair",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון בוטיק",
     "hotelName": "Hotel Arts Barcelona",
-    "included": ["טיסות", "מלון ליד החוף", "ארוחת בוקר"],
+    "included": [
+      "טיסות",
+      "מלון ליד החוף",
+      "ארוחת בוקר"
+    ],
     "reviewsCount": 289,
-    "flightDetails": { "departure": "08:00", "arrival": "12:30", "class": "תיירים" },
-    "attractions": ["סגרדה פמיליה", "פארק גואל", "רמבלס"]
+    "flightDetails": {
+      "departure": "08:00",
+      "arrival": "12:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סגרדה פמיליה",
+      "פארק גואל",
+      "רמבלס"
+    ],
+    "en": {
+      "destination": "Barcelona, Spain",
+      "dates": [
+        "July 10-17, 2026",
+        "September 10-17, 2026",
+        "November 10-17, 2026"
+      ],
+      "airline": "Ryanair",
+      "flightTime": "4.5 hours",
+      "hotel": "Boutique hotel",
+      "hotelName": "Hotel Arts Barcelona",
+      "included": [
+        "Flights",
+        "Hotel near the beach",
+        "Breakfast"
+      ],
+      "attractions": [
+        "Sagrada Família",
+        "Park Güell",
+        "La Rambla"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 4,
@@ -63,17 +180,56 @@
     "price": 2699,
     "originalPrice": 3599,
     "discount": 25,
-    "dates": ["20-27 אפריל 2026", "20-27 יוני 2026", "20-27 אוגוסט 2026"],
+    "dates": [
+      "20-27 אפריל 2026",
+      "20-27 יוני 2026",
+      "20-27 אוגוסט 2026"
+    ],
     "rating": 4.6,
     "airline": "KLM",
     "flightTime": "5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "Waldorf Astoria Amsterdam",
-    "included": ["טיסות", "מלון במרכז", "כרטיס למוזיאונים"],
+    "included": [
+      "טיסות",
+      "מלון במרכז",
+      "כרטיס למוזיאונים"
+    ],
     "reviewsCount": 315,
-    "flightDetails": { "departure": "09:00", "arrival": "14:00", "class": "תיירים" },
-    "attractions": ["מוזיאון ואן גוך", "בית אנה פרנק", "תעלות"]
+    "flightDetails": {
+      "departure": "09:00",
+      "arrival": "14:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "מוזיאון ואן גוך",
+      "בית אנה פרנק",
+      "תעלות"
+    ],
+    "en": {
+      "destination": "Amsterdam, Netherlands",
+      "dates": [
+        "April 20-27, 2026",
+        "June 20-27, 2026",
+        "August 20-27, 2026"
+      ],
+      "airline": "KLM",
+      "flightTime": "5 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "Waldorf Astoria Amsterdam",
+      "included": [
+        "Flights",
+        "Central hotel",
+        "Museum pass"
+      ],
+      "attractions": [
+        "Van Gogh Museum",
+        "Anne Frank House",
+        "Canals"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 5,
@@ -82,17 +238,56 @@
     "price": 2899,
     "originalPrice": 3899,
     "discount": 26,
-    "dates": ["5-12 מאי 2026", "5-12 יולי 2026", "5-12 ספטמבר 2026"],
+    "dates": [
+      "5-12 מאי 2026",
+      "5-12 יולי 2026",
+      "5-12 ספטמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "British Airways",
     "flightTime": "5.5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "The Savoy London",
-    "included": ["טיסות", "מלון במרכז לונדון", "ארוחות בוקר"],
+    "included": [
+      "טיסות",
+      "מלון במרכז לונדון",
+      "ארוחות בוקר"
+    ],
     "reviewsCount": 502,
-    "flightDetails": { "departure": "06:30", "arrival": "12:00", "class": "תיירים" },
-    "attractions": ["ביג בן", "ארמון בקינגהאם", "טאור בריג'"]
+    "flightDetails": {
+      "departure": "06:30",
+      "arrival": "12:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "ביג בן",
+      "ארמון בקינגהאם",
+      "טאור בריג'"
+    ],
+    "en": {
+      "destination": "London, England",
+      "dates": [
+        "May 5-12, 2026",
+        "July 5-12, 2026",
+        "September 5-12, 2026"
+      ],
+      "airline": "British Airways",
+      "flightTime": "5.5 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "The Savoy London",
+      "included": [
+        "Flights",
+        "Central London hotel",
+        "Breakfasts"
+      ],
+      "attractions": [
+        "Big Ben",
+        "Buckingham Palace",
+        "Tower Bridge"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 6,
@@ -101,17 +296,58 @@
     "price": 3499,
     "originalPrice": 4999,
     "discount": 30,
-    "dates": ["1-8 יוני 2026", "1-8 אוגוסט 2026", "1-8 אוקטובר 2026"],
+    "dates": [
+      "1-8 יוני 2026",
+      "1-8 אוגוסט 2026",
+      "1-8 אוקטובר 2026"
+    ],
     "rating": 4.9,
     "airline": "Emirates",
     "flightTime": "4.5 שעות",
     "category": "asia",
     "hotel": "מלון 5 כוכבים",
     "hotelName": "Burj Al Arab",
-    "included": ["טיסות", "מלון יוקרה", "ספא", "העברות"],
+    "included": [
+      "טיסות",
+      "מלון יוקרה",
+      "ספא",
+      "העברות"
+    ],
     "reviewsCount": 681,
-    "flightDetails": { "departure": "02:00", "arrival": "06:30", "class": "עסקים" },
-    "attractions": ["בורג' חליפה", "דובאי מול", "ספארי במדבר"]
+    "flightDetails": {
+      "departure": "02:00",
+      "arrival": "06:30",
+      "class": "עסקים"
+    },
+    "attractions": [
+      "בורג' חליפה",
+      "דובאי מול",
+      "ספארי במדבר"
+    ],
+    "en": {
+      "destination": "Dubai, UAE",
+      "dates": [
+        "June 1-8, 2026",
+        "August 1-8, 2026",
+        "October 1-8, 2026"
+      ],
+      "airline": "Emirates",
+      "flightTime": "4.5 hours",
+      "hotel": "5-star hotel",
+      "hotelName": "Burj Al Arab",
+      "included": [
+        "Flights",
+        "Luxury hotel",
+        "Spa",
+        "Transfers"
+      ],
+      "attractions": [
+        "Burj Khalifa",
+        "Dubai Mall",
+        "Desert safari"
+      ],
+      "flightClass": "Business"
+    }
   },
   {
     "id": 7,
@@ -120,17 +356,58 @@
     "price": 4299,
     "originalPrice": 5799,
     "discount": 26,
-    "dates": ["15-29 אוגוסט 2026", "15-29 אוקטובר 2026", "15-29 ינואר 2027"],
+    "dates": [
+      "15-29 אוגוסט 2026",
+      "15-29 אוקטובר 2026",
+      "15-29 ינואר 2027"
+    ],
     "rating": 4.8,
     "airline": "Turkish Airlines",
     "flightTime": "14 שעות",
     "category": "asia",
     "hotel": "וילה פרטית",
     "hotelName": "Four Seasons Bali",
-    "included": ["טיסות", "וילה עם בריכה", "ארוחות", "סיורים"],
+    "included": [
+      "טיסות",
+      "וילה עם בריכה",
+      "ארוחות",
+      "סיורים"
+    ],
     "reviewsCount": 445,
-    "flightDetails": { "departure": "22:00", "arrival": "16:00+1", "class": "תיירים" },
-    "attractions": ["מקדש טנה לוט", "אובוד", "חופי קוטה"]
+    "flightDetails": {
+      "departure": "22:00",
+      "arrival": "16:00+1",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "מקדש טנה לוט",
+      "אובוד",
+      "חופי קוטה"
+    ],
+    "en": {
+      "destination": "Bali, Indonesia",
+      "dates": [
+        "August 15-29, 2026",
+        "October 15-29, 2026",
+        "January 15-29, 2027"
+      ],
+      "airline": "Turkish Airlines",
+      "flightTime": "14 hours",
+      "hotel": "Private villa",
+      "hotelName": "Four Seasons Bali",
+      "included": [
+        "Flights",
+        "Villa with pool",
+        "Meals",
+        "Tours"
+      ],
+      "attractions": [
+        "Tanah Lot Temple",
+        "Ubud",
+        "Kuta beaches"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 8,
@@ -139,17 +416,56 @@
     "price": 5499,
     "originalPrice": 7299,
     "discount": 25,
-    "dates": ["10-20 ספטמבר 2026", "10-20 נובמבר 2026", "10-20 ינואר 2027"],
+    "dates": [
+      "10-20 ספטמבר 2026",
+      "10-20 נובמבר 2026",
+      "10-20 ינואר 2027"
+    ],
     "rating": 4.9,
     "airline": "ANA",
     "flightTime": "12 שעות",
     "category": "asia",
     "hotel": "מלון מודרני",
     "hotelName": "Park Hyatt Tokyo",
-    "included": ["טיסות", "מלון במרכז טוקיו", "JR Pass"],
+    "included": [
+      "טיסות",
+      "מלון במרכז טוקיו",
+      "JR Pass"
+    ],
     "reviewsCount": 523,
-    "flightDetails": { "departure": "01:00", "arrival": "17:00", "class": "תיירים" },
-    "attractions": ["הר פוג'י", "שיבויה", "מקדש סנסוג'י"]
+    "flightDetails": {
+      "departure": "01:00",
+      "arrival": "17:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "הר פוג'י",
+      "שיבויה",
+      "מקדש סנסוג'י"
+    ],
+    "en": {
+      "destination": "Tokyo, Japan",
+      "dates": [
+        "September 10-20, 2026",
+        "November 10-20, 2026",
+        "January 10-20, 2027"
+      ],
+      "airline": "ANA",
+      "flightTime": "12 hours",
+      "hotel": "Modern hotel",
+      "hotelName": "Park Hyatt Tokyo",
+      "included": [
+        "Flights",
+        "Central Tokyo hotel",
+        "JR Pass"
+      ],
+      "attractions": [
+        "Mount Fuji",
+        "Shibuya",
+        "Sensō-ji Temple"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 9,
@@ -158,17 +474,56 @@
     "price": 4799,
     "originalPrice": 6299,
     "discount": 24,
-    "dates": ["5-15 יולי 2026", "5-15 ספטמבר 2026", "5-15 נובמבר 2026"],
+    "dates": [
+      "5-15 יולי 2026",
+      "5-15 ספטמבר 2026",
+      "5-15 נובמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "United",
     "flightTime": "13 שעות",
     "category": "america",
     "hotel": "מלון במנהטן",
     "hotelName": "The Plaza New York",
-    "included": ["טיסות", "מלון 4 כוכבים", "סיור בעיר"],
+    "included": [
+      "טיסות",
+      "מלון 4 כוכבים",
+      "סיור בעיר"
+    ],
     "reviewsCount": 629,
-    "flightDetails": { "departure": "08:00", "arrival": "12:00", "class": "תיירים" },
-    "attractions": ["פסל החירות", "טיימס סקוור", "סנטרל פארק"]
+    "flightDetails": {
+      "departure": "08:00",
+      "arrival": "12:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "פסל החירות",
+      "טיימס סקוור",
+      "סנטרל פארק"
+    ],
+    "en": {
+      "destination": "New York, USA",
+      "dates": [
+        "July 5-15, 2026",
+        "September 5-15, 2026",
+        "November 5-15, 2026"
+      ],
+      "airline": "United",
+      "flightTime": "13 hours",
+      "hotel": "Manhattan hotel",
+      "hotelName": "The Plaza New York",
+      "included": [
+        "Flights",
+        "4-star hotel",
+        "City tour"
+      ],
+      "attractions": [
+        "Statue of Liberty",
+        "Times Square",
+        "Central Park"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 10,
@@ -177,17 +532,56 @@
     "price": 4299,
     "originalPrice": 5699,
     "discount": 25,
-    "dates": ["20-30 יוני 2026", "20-30 אוגוסט 2026", "20-30 אוקטובר 2026"],
+    "dates": [
+      "20-30 יוני 2026",
+      "20-30 אוגוסט 2026",
+      "20-30 אוקטובר 2026"
+    ],
     "rating": 4.6,
     "airline": "Delta",
     "flightTime": "14 שעות",
     "category": "america",
     "hotel": "מלון על החוף",
     "hotelName": "Fontainebleau Miami Beach",
-    "included": ["טיסות", "מלון על הים", "השכרת רכב"],
+    "included": [
+      "טיסות",
+      "מלון על הים",
+      "השכרת רכב"
+    ],
     "reviewsCount": 384,
-    "flightDetails": { "departure": "10:00", "arrival": "15:00", "class": "תיירים" },
-    "attractions": ["סאות' ביץ'", "אוונגליידס", "ארט דקו"]
+    "flightDetails": {
+      "departure": "10:00",
+      "arrival": "15:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סאות' ביץ'",
+      "אוונגליידס",
+      "ארט דקו"
+    ],
+    "en": {
+      "destination": "Miami, USA",
+      "dates": [
+        "June 20-30, 2026",
+        "August 20-30, 2026",
+        "October 20-30, 2026"
+      ],
+      "airline": "Delta",
+      "flightTime": "14 hours",
+      "hotel": "Beachfront hotel",
+      "hotelName": "Fontainebleau Miami Beach",
+      "included": [
+        "Flights",
+        "Seafront hotel",
+        "Car rental"
+      ],
+      "attractions": [
+        "South Beach",
+        "Everglades",
+        "Art Deco"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 11,
@@ -196,17 +590,56 @@
     "price": 3899,
     "originalPrice": 5199,
     "discount": 25,
-    "dates": ["1-10 אוגוסט 2026", "1-10 אוקטובר 2026", "1-10 ינואר 2027"],
+    "dates": [
+      "1-10 אוגוסט 2026",
+      "1-10 אוקטובר 2026",
+      "1-10 ינואר 2027"
+    ],
     "rating": 4.8,
     "airline": "Aeromexico",
     "flightTime": "15 שעות",
     "category": "america",
     "hotel": "אול אינקלוסיב",
     "hotelName": "Moon Palace Cancun",
-    "included": ["טיסות", "מלון הכל כלול", "פעילויות מים"],
+    "included": [
+      "טיסות",
+      "מלון הכל כלול",
+      "פעילויות מים"
+    ],
     "reviewsCount": 467,
-    "flightDetails": { "departure": "11:00", "arrival": "17:00", "class": "תיירים" },
-    "attractions": ["צ'יצ'ן איצה", "שנורקלינג", "טולום"]
+    "flightDetails": {
+      "departure": "11:00",
+      "arrival": "17:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "צ'יצ'ן איצה",
+      "שנורקלינג",
+      "טולום"
+    ],
+    "en": {
+      "destination": "Cancún, Mexico",
+      "dates": [
+        "August 1-10, 2026",
+        "October 1-10, 2026",
+        "January 1-10, 2027"
+      ],
+      "airline": "Aeromexico",
+      "flightTime": "15 hours",
+      "hotel": "All-inclusive",
+      "hotelName": "Moon Palace Cancun",
+      "included": [
+        "Flights",
+        "All-inclusive hotel",
+        "Water activities"
+      ],
+      "attractions": [
+        "Chichén Itzá",
+        "Snorkeling",
+        "Tulum"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 12,
@@ -215,17 +648,58 @@
     "price": 3299,
     "originalPrice": 4499,
     "discount": 27,
-    "dates": ["15-22 יוני 2026", "15-22 אוגוסט 2026", "15-22 ספטמבר 2026", "15-22 אוקטובר 2026"],
+    "dates": [
+      "15-22 יוני 2026",
+      "15-22 אוגוסט 2026",
+      "15-22 ספטמבר 2026",
+      "15-22 אוקטובר 2026"
+    ],
     "rating": 4.9,
     "airline": "Aegean",
     "flightTime": "4 שעות",
     "category": "europe",
     "hotel": "מלון מול הים",
     "hotelName": "Canaves Oia Suites",
-    "included": ["טיסות", "מלון רומנטי", "שייט בשקיעה"],
+    "included": [
+      "טיסות",
+      "מלון רומנטי",
+      "שייט בשקיעה"
+    ],
     "reviewsCount": 591,
-    "flightDetails": { "departure": "09:30", "arrival": "13:30", "class": "תיירים" },
-    "attractions": ["אויה", "פירה", "חופים שחורים"]
+    "flightDetails": {
+      "departure": "09:30",
+      "arrival": "13:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "אויה",
+      "פירה",
+      "חופים שחורים"
+    ],
+    "en": {
+      "destination": "Santorini, Greece",
+      "dates": [
+        "June 15-22, 2026",
+        "August 15-22, 2026",
+        "September 15-22, 2026",
+        "October 15-22, 2026"
+      ],
+      "airline": "Aegean",
+      "flightTime": "4 hours",
+      "hotel": "Sea-view hotel",
+      "hotelName": "Canaves Oia Suites",
+      "included": [
+        "Flights",
+        "Romantic hotel",
+        "Sunset cruise"
+      ],
+      "attractions": [
+        "Oia",
+        "Fira",
+        "Black-sand beaches"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 13,
@@ -234,17 +708,56 @@
     "price": 1999,
     "originalPrice": 2799,
     "discount": 29,
-    "dates": ["10-17 מאי 2026", "10-17 יולי 2026", "10-17 ספטמבר 2026"],
+    "dates": [
+      "10-17 מאי 2026",
+      "10-17 יולי 2026",
+      "10-17 ספטמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "Czech Airlines",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון היסטורי",
     "hotelName": "Four Seasons Prague",
-    "included": ["טיסות", "מלון בעיר העתיקה", "סיורים"],
+    "included": [
+      "טיסות",
+      "מלון בעיר העתיקה",
+      "סיורים"
+    ],
     "reviewsCount": 398,
-    "flightDetails": { "departure": "07:00", "arrival": "11:30", "class": "תיירים" },
-    "attractions": ["גשר קארל", "טירת פראג", "שעון אסטרונומי"]
+    "flightDetails": {
+      "departure": "07:00",
+      "arrival": "11:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "גשר קארל",
+      "טירת פראג",
+      "שעון אסטרונומי"
+    ],
+    "en": {
+      "destination": "Prague, Czechia",
+      "dates": [
+        "May 10-17, 2026",
+        "July 10-17, 2026",
+        "September 10-17, 2026"
+      ],
+      "airline": "Czech Airlines",
+      "flightTime": "4.5 hours",
+      "hotel": "Historic hotel",
+      "hotelName": "Four Seasons Prague",
+      "included": [
+        "Flights",
+        "Old Town hotel",
+        "Tours"
+      ],
+      "attractions": [
+        "Charles Bridge",
+        "Prague Castle",
+        "Astronomical Clock"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 14,
@@ -253,17 +766,58 @@
     "price": 3799,
     "originalPrice": 5099,
     "discount": 26,
-    "dates": ["5-15 יולי 2026", "5-15 ספטמבר 2026", "5-15 נובמבר 2026"],
+    "dates": [
+      "5-15 יולי 2026",
+      "5-15 ספטמבר 2026",
+      "5-15 נובמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "Thai Airways",
     "flightTime": "11 שעות",
     "category": "asia",
     "hotel": "מלון 5 כוכבים",
     "hotelName": "Mandarin Oriental Bangkok",
-    "included": ["טיסות", "מלון יוקרה", "ספא", "סיורים"],
+    "included": [
+      "טיסות",
+      "מלון יוקרה",
+      "ספא",
+      "סיורים"
+    ],
     "reviewsCount": 512,
-    "flightDetails": { "departure": "23:00", "arrival": "14:00+1", "class": "תיירים" },
-    "attractions": ["ארמון המלך", "ואט פו", "שוקים צפים"]
+    "flightDetails": {
+      "departure": "23:00",
+      "arrival": "14:00+1",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "ארמון המלך",
+      "ואט פו",
+      "שוקים צפים"
+    ],
+    "en": {
+      "destination": "Bangkok, Thailand",
+      "dates": [
+        "July 5-15, 2026",
+        "September 5-15, 2026",
+        "November 5-15, 2026"
+      ],
+      "airline": "Thai Airways",
+      "flightTime": "11 hours",
+      "hotel": "5-star hotel",
+      "hotelName": "Mandarin Oriental Bangkok",
+      "included": [
+        "Flights",
+        "Luxury hotel",
+        "Spa",
+        "Tours"
+      ],
+      "attractions": [
+        "Grand Palace",
+        "Wat Pho",
+        "Floating markets"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 15,
@@ -272,17 +826,58 @@
     "price": 6999,
     "originalPrice": 9499,
     "discount": 26,
-    "dates": ["10-20 ספטמבר 2026", "10-20 נובמבר 2026", "10-20 ינואר 2027"],
-    "rating": 5.0,
+    "dates": [
+      "10-20 ספטמבר 2026",
+      "10-20 נובמבר 2026",
+      "10-20 ינואר 2027"
+    ],
+    "rating": 5,
     "airline": "Emirates",
     "flightTime": "9 שעות",
     "category": "asia",
     "hotel": "בונגלו על המים",
     "hotelName": "Conrad Maldives",
-    "included": ["טיסות", "בונגלו פרטי", "הכל כלול", "ספא"],
+    "included": [
+      "טיסות",
+      "בונגלו פרטי",
+      "הכל כלול",
+      "ספא"
+    ],
     "reviewsCount": 734,
-    "flightDetails": { "departure": "03:00", "arrival": "12:00", "class": "עסקים" },
-    "attractions": ["צלילה", "ספא", "שקיעות"]
+    "flightDetails": {
+      "departure": "03:00",
+      "arrival": "12:00",
+      "class": "עסקים"
+    },
+    "attractions": [
+      "צלילה",
+      "ספא",
+      "שקיעות"
+    ],
+    "en": {
+      "destination": "Maldives",
+      "dates": [
+        "September 10-20, 2026",
+        "November 10-20, 2026",
+        "January 10-20, 2027"
+      ],
+      "airline": "Emirates",
+      "flightTime": "9 hours",
+      "hotel": "Overwater bungalow",
+      "hotelName": "Conrad Maldives",
+      "included": [
+        "Flights",
+        "Private bungalow",
+        "All-inclusive",
+        "Spa"
+      ],
+      "attractions": [
+        "Diving",
+        "Spa",
+        "Sunsets"
+      ],
+      "flightClass": "Business"
+    }
   },
   {
     "id": 16,
@@ -291,17 +886,56 @@
     "price": 2399,
     "originalPrice": 3299,
     "discount": 27,
-    "dates": ["1-8 יוני 2026", "1-8 ספטמבר 2026", "1-8 נובמבר 2026"],
+    "dates": [
+      "1-8 יוני 2026",
+      "1-8 ספטמבר 2026",
+      "1-8 נובמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "TAP Portugal",
     "flightTime": "5 שעות",
     "category": "europe",
     "hotel": "מלון בוטיק",
     "hotelName": "Four Seasons Ritz Lisbon",
-    "included": ["טיסות", "מלון מרכזי", "סיור יינות"],
+    "included": [
+      "טיסות",
+      "מלון מרכזי",
+      "סיור יינות"
+    ],
     "reviewsCount": 423,
-    "flightDetails": { "departure": "08:30", "arrival": "13:30", "class": "תיירים" },
-    "attractions": ["טירת סאו חורחה", "בה-ירם", "חשמלית 28"]
+    "flightDetails": {
+      "departure": "08:30",
+      "arrival": "13:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "טירת סאו חורחה",
+      "בה-ירם",
+      "חשמלית 28"
+    ],
+    "en": {
+      "destination": "Lisbon, Portugal",
+      "dates": [
+        "June 1-8, 2026",
+        "September 1-8, 2026",
+        "November 1-8, 2026"
+      ],
+      "airline": "TAP Portugal",
+      "flightTime": "5 hours",
+      "hotel": "Boutique hotel",
+      "hotelName": "Four Seasons Ritz Lisbon",
+      "included": [
+        "Flights",
+        "Central hotel",
+        "Wine tour"
+      ],
+      "attractions": [
+        "São Jorge Castle",
+        "Belém",
+        "Tram 28"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 17,
@@ -310,17 +944,56 @@
     "price": 2099,
     "originalPrice": 2899,
     "discount": 28,
-    "dates": ["20-27 מאי 2026", "20-27 יולי 2026", "20-27 ספטמבר 2026"],
+    "dates": [
+      "20-27 מאי 2026",
+      "20-27 יולי 2026",
+      "20-27 ספטמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "Turkish Airlines",
     "flightTime": "3.5 שעות",
     "category": "asia",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "Four Seasons Sultanahmet",
-    "included": ["טיסות", "מלון במרכז", "סיור בוספורוס"],
+    "included": [
+      "טיסות",
+      "מלון במרכז",
+      "סיור בוספורוס"
+    ],
     "reviewsCount": 468,
-    "flightDetails": { "departure": "06:00", "arrival": "09:30", "class": "תיירים" },
-    "attractions": ["האיה סופיה", "הארמון הכחול", "בזאר הגדול"]
+    "flightDetails": {
+      "departure": "06:00",
+      "arrival": "09:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "האיה סופיה",
+      "הארמון הכחול",
+      "בזאר הגדול"
+    ],
+    "en": {
+      "destination": "Istanbul, Turkey",
+      "dates": [
+        "May 20-27, 2026",
+        "July 20-27, 2026",
+        "September 20-27, 2026"
+      ],
+      "airline": "Turkish Airlines",
+      "flightTime": "3.5 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "Four Seasons Sultanahmet",
+      "included": [
+        "Flights",
+        "Central hotel",
+        "Bosphorus tour"
+      ],
+      "attractions": [
+        "Hagia Sophia",
+        "Blue Mosque",
+        "Grand Bazaar"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 18,
@@ -329,17 +1002,54 @@
     "price": 2699,
     "originalPrice": 3599,
     "discount": 25,
-    "dates": ["1-8 יוני 2026", "1-8 ספטמבר 2026", "1-8 נובמבר 2026"],
+    "dates": [
+      "1-8 יוני 2026",
+      "1-8 ספטמבר 2026",
+      "1-8 נובמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "Air France",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון בוטיק במרכז",
     "hotelName": "Le Meurice Paris",
-    "included": ["טיסות הלוך חזור", "מלון + ארוחת בוקר"],
+    "included": [
+      "טיסות הלוך חזור",
+      "מלון + ארוחת בוקר"
+    ],
     "reviewsCount": 198,
-    "flightDetails": { "departure": "12:00", "arrival": "16:30", "class": "תיירים" },
-    "attractions": ["מגדל אייפל", "לובר", "שאנז אליזה"]
+    "flightDetails": {
+      "departure": "12:00",
+      "arrival": "16:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "מגדל אייפל",
+      "לובר",
+      "שאנז אליזה"
+    ],
+    "en": {
+      "destination": "Paris, France",
+      "dates": [
+        "June 1-8, 2026",
+        "September 1-8, 2026",
+        "November 1-8, 2026"
+      ],
+      "airline": "Air France",
+      "flightTime": "4.5 hours",
+      "hotel": "Central boutique hotel",
+      "hotelName": "Le Meurice Paris",
+      "included": [
+        "Round-trip flights",
+        "Hotel + breakfast"
+      ],
+      "attractions": [
+        "Eiffel Tower",
+        "Louvre",
+        "Champs-Élysées"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 19,
@@ -348,17 +1058,58 @@
     "price": 2599,
     "originalPrice": 3499,
     "discount": 26,
-    "dates": ["10-17 נובמבר 2026", "10-17 ינואר 2027", "10-17 מרץ 2027"],
+    "dates": [
+      "10-17 נובמבר 2026",
+      "10-17 ינואר 2027",
+      "10-17 מרץ 2027"
+    ],
     "rating": 4.8,
     "airline": "אל על",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים + ספא",
     "hotelName": "Shangri-La Paris",
-    "included": ["טיסות", "מלון", "ארוחת בוקר", "העברות"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "ארוחת בוקר",
+      "העברות"
+    ],
     "reviewsCount": 214,
-    "flightDetails": { "departure": "14:00", "arrival": "18:30", "class": "תיירים" },
-    "attractions": ["ורסאי", "מונמארטר", "סן ז'רמן"]
+    "flightDetails": {
+      "departure": "14:00",
+      "arrival": "18:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "ורסאי",
+      "מונמארטר",
+      "סן ז'רמן"
+    ],
+    "en": {
+      "destination": "Paris, France",
+      "dates": [
+        "November 10-17, 2026",
+        "January 10-17, 2027",
+        "March 10-17, 2027"
+      ],
+      "airline": "El Al",
+      "flightTime": "4.5 hours",
+      "hotel": "4-star hotel + spa",
+      "hotelName": "Shangri-La Paris",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Breakfast",
+        "Transfers"
+      ],
+      "attractions": [
+        "Versailles",
+        "Montmartre",
+        "Saint-Germain"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 20,
@@ -367,17 +1118,54 @@
     "price": 2399,
     "originalPrice": 3199,
     "discount": 25,
-    "dates": ["18-25 ספטמבר 2026", "18-25 נובמבר 2026", "18-25 ינואר 2027"],
+    "dates": [
+      "18-25 ספטמבר 2026",
+      "18-25 נובמבר 2026",
+      "18-25 ינואר 2027"
+    ],
     "rating": 4.8,
     "airline": "ITA Airways",
     "flightTime": "4 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "Hotel Hassler Roma",
-    "included": ["טיסות", "מלון ליד הקולוסיאום"],
+    "included": [
+      "טיסות",
+      "מלון ליד הקולוסיאום"
+    ],
     "reviewsCount": 312,
-    "flightDetails": { "departure": "09:00", "arrival": "13:00", "class": "תיירים" },
-    "attractions": ["קולוסיאום", "ותיקן", "פונטנה די טרווי"]
+    "flightDetails": {
+      "departure": "09:00",
+      "arrival": "13:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "קולוסיאום",
+      "ותיקן",
+      "פונטנה די טרווי"
+    ],
+    "en": {
+      "destination": "Rome, Italy",
+      "dates": [
+        "September 18-25, 2026",
+        "November 18-25, 2026",
+        "January 18-25, 2027"
+      ],
+      "airline": "ITA Airways",
+      "flightTime": "4 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "Hotel Hassler Roma",
+      "included": [
+        "Flights",
+        "Hotel near the Colosseum"
+      ],
+      "attractions": [
+        "Colosseum",
+        "Vatican",
+        "Fontana di Trevi"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 21,
@@ -386,17 +1174,56 @@
     "price": 2299,
     "originalPrice": 2899,
     "discount": 21,
-    "dates": ["5-12 אוקטובר 2026", "5-12 דצמבר 2026", "5-12 פברואר 2027"],
+    "dates": [
+      "5-12 אוקטובר 2026",
+      "5-12 דצמבר 2026",
+      "5-12 פברואר 2027"
+    ],
     "rating": 4.7,
     "airline": "Wizz Air",
     "flightTime": "4 שעות",
     "category": "europe",
     "hotel": "מלון 3 כוכבים במרכז",
     "hotelName": "Hotel Artemide",
-    "included": ["טיסות", "מלון", "סיור רומאי"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "סיור רומאי"
+    ],
     "reviewsCount": 276,
-    "flightDetails": { "departure": "15:00", "arrival": "19:00", "class": "תיירים" },
-    "attractions": ["פורום רומאי", "פנתיאון", "טרווי"]
+    "flightDetails": {
+      "departure": "15:00",
+      "arrival": "19:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "פורום רומאי",
+      "פנתיאון",
+      "טרווי"
+    ],
+    "en": {
+      "destination": "Rome, Italy",
+      "dates": [
+        "October 5-12, 2026",
+        "December 5-12, 2026",
+        "February 5-12, 2027"
+      ],
+      "airline": "Wizz Air",
+      "flightTime": "4 hours",
+      "hotel": "Central 3-star hotel",
+      "hotelName": "Hotel Artemide",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Roman tour"
+      ],
+      "attractions": [
+        "Roman Forum",
+        "Pantheon",
+        "Trevi"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 22,
@@ -405,17 +1232,56 @@
     "price": 2499,
     "originalPrice": 3399,
     "discount": 27,
-    "dates": ["5-12 ספטמבר 2026", "5-12 נובמבר 2026", "5-12 ינואר 2027"],
+    "dates": [
+      "5-12 ספטמבר 2026",
+      "5-12 נובמבר 2026",
+      "5-12 ינואר 2027"
+    ],
     "rating": 4.6,
     "airline": "Vueling",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "W Barcelona",
-    "included": ["טיסות", "מלון מרכזי", "ארוחת בוקר"],
+    "included": [
+      "טיסות",
+      "מלון מרכזי",
+      "ארוחת בוקר"
+    ],
     "reviewsCount": 241,
-    "flightDetails": { "departure": "10:30", "arrival": "15:00", "class": "תיירים" },
-    "attractions": ["סגרדה פמיליה", "פארק גואל", "רמבלס"]
+    "flightDetails": {
+      "departure": "10:30",
+      "arrival": "15:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סגרדה פמיליה",
+      "פארק גואל",
+      "רמבלס"
+    ],
+    "en": {
+      "destination": "Barcelona, Spain",
+      "dates": [
+        "September 5-12, 2026",
+        "November 5-12, 2026",
+        "January 5-12, 2027"
+      ],
+      "airline": "Vueling",
+      "flightTime": "4.5 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "W Barcelona",
+      "included": [
+        "Flights",
+        "Central hotel",
+        "Breakfast"
+      ],
+      "attractions": [
+        "Sagrada Família",
+        "Park Güell",
+        "La Rambla"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 23,
@@ -424,17 +1290,56 @@
     "price": 2199,
     "originalPrice": 3099,
     "discount": 29,
-    "dates": ["25-31 אוגוסט 2026", "25-31 אוקטובר 2026", "25-31 דצמבר 2026"],
+    "dates": [
+      "25-31 אוגוסט 2026",
+      "25-31 אוקטובר 2026",
+      "25-31 דצמבר 2026"
+    ],
     "rating": 4.5,
     "airline": "Ryanair",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון בוטיק",
     "hotelName": "Cotton House Hotel",
-    "included": ["טיסות", "מלון", "העברות"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "העברות"
+    ],
     "reviewsCount": 198,
-    "flightDetails": { "departure": "06:30", "arrival": "11:00", "class": "תיירים" },
-    "attractions": ["קאזה באטלו", "גותי רבע", "חוף ברצלונטה"]
+    "flightDetails": {
+      "departure": "06:30",
+      "arrival": "11:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "קאזה באטלו",
+      "גותי רבע",
+      "חוף ברצלונטה"
+    ],
+    "en": {
+      "destination": "Barcelona, Spain",
+      "dates": [
+        "August 25-31, 2026",
+        "October 25-31, 2026",
+        "December 25-31, 2026"
+      ],
+      "airline": "Ryanair",
+      "flightTime": "4.5 hours",
+      "hotel": "Boutique hotel",
+      "hotelName": "Cotton House Hotel",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Transfers"
+      ],
+      "attractions": [
+        "Casa Batlló",
+        "Gothic Quarter",
+        "Barceloneta Beach"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 24,
@@ -443,17 +1348,54 @@
     "price": 3099,
     "originalPrice": 4199,
     "discount": 26,
-    "dates": ["10-17 אוקטובר 2026", "10-17 דצמבר 2026", "10-17 פברואר 2027"],
+    "dates": [
+      "10-17 אוקטובר 2026",
+      "10-17 דצמבר 2026",
+      "10-17 פברואר 2027"
+    ],
     "rating": 4.7,
     "airline": "easyJet",
     "flightTime": "5.5 שעות",
     "category": "europe",
     "hotel": "מלון 3 כוכבים",
     "hotelName": "Hilton London",
-    "included": ["טיסות", "מלון ליד תחבורה ציבורית"],
+    "included": [
+      "טיסות",
+      "מלון ליד תחבורה ציבורית"
+    ],
     "reviewsCount": 287,
-    "flightDetails": { "departure": "11:00", "arrival": "16:30", "class": "תיירים" },
-    "attractions": ["ביג בן", "לונדון איי", "מוזיאון בריטי"]
+    "flightDetails": {
+      "departure": "11:00",
+      "arrival": "16:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "ביג בן",
+      "לונדון איי",
+      "מוזיאון בריטי"
+    ],
+    "en": {
+      "destination": "London, England",
+      "dates": [
+        "October 10-17, 2026",
+        "December 10-17, 2026",
+        "February 10-17, 2027"
+      ],
+      "airline": "easyJet",
+      "flightTime": "5.5 hours",
+      "hotel": "3-star hotel",
+      "hotelName": "Hilton London",
+      "included": [
+        "Flights",
+        "Hotel near public transport"
+      ],
+      "attractions": [
+        "Big Ben",
+        "London Eye",
+        "British Museum"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 25,
@@ -462,17 +1404,54 @@
     "price": 2799,
     "originalPrice": 3699,
     "discount": 24,
-    "dates": ["3-10 דצמבר 2026", "3-10 פברואר 2027", "3-10 אפריל 2027"],
+    "dates": [
+      "3-10 דצמבר 2026",
+      "3-10 פברואר 2027",
+      "3-10 אפריל 2027"
+    ],
     "rating": 4.6,
     "airline": "British Airways",
     "flightTime": "5.5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים + ארוחות בוקר",
     "hotelName": "Shangri-La London",
-    "included": ["טיסות", "מלון"],
+    "included": [
+      "טיסות",
+      "מלון"
+    ],
     "reviewsCount": 221,
-    "flightDetails": { "departure": "08:00", "arrival": "13:30", "class": "תיירים" },
-    "attractions": ["שוקי חג המולד", "אוקספורד סטריט", "וסט אנד"]
+    "flightDetails": {
+      "departure": "08:00",
+      "arrival": "13:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "שוקי חג המולד",
+      "אוקספורד סטריט",
+      "וסט אנד"
+    ],
+    "en": {
+      "destination": "London, England",
+      "dates": [
+        "December 3-10, 2026",
+        "February 3-10, 2027",
+        "April 3-10, 2027"
+      ],
+      "airline": "British Airways",
+      "flightTime": "5.5 hours",
+      "hotel": "4-star hotel + breakfasts",
+      "hotelName": "Shangri-La London",
+      "included": [
+        "Flights",
+        "Hotel"
+      ],
+      "attractions": [
+        "Christmas markets",
+        "Oxford Street",
+        "West End"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 26,
@@ -481,17 +1460,56 @@
     "price": 3299,
     "originalPrice": 4699,
     "discount": 30,
-    "dates": ["12-19 מרץ 2026", "12-19 יוני 2026", "12-19 ספטמבר 2026"],
+    "dates": [
+      "12-19 מרץ 2026",
+      "12-19 יוני 2026",
+      "12-19 ספטמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "FlyDubai",
     "flightTime": "4.5 שעות",
     "category": "asia",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "Atlantis The Palm",
-    "included": ["טיסות", "מלון", "העברות"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "העברות"
+    ],
     "reviewsCount": 354,
-    "flightDetails": { "departure": "01:30", "arrival": "06:00", "class": "תיירים" },
-    "attractions": ["בורג' חליפה", "דובאי מול", "ג'ומיירה"]
+    "flightDetails": {
+      "departure": "01:30",
+      "arrival": "06:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "בורג' חליפה",
+      "דובאי מול",
+      "ג'ומיירה"
+    ],
+    "en": {
+      "destination": "Dubai, UAE",
+      "dates": [
+        "March 12-19, 2026",
+        "June 12-19, 2026",
+        "September 12-19, 2026"
+      ],
+      "airline": "FlyDubai",
+      "flightTime": "4.5 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "Atlantis The Palm",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Transfers"
+      ],
+      "attractions": [
+        "Burj Khalifa",
+        "Dubai Mall",
+        "Jumeirah"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 27,
@@ -500,17 +1518,56 @@
     "price": 3599,
     "originalPrice": 4999,
     "discount": 28,
-    "dates": ["22-29 נובמבר 2026", "22-29 ינואר 2027", "22-29 מרץ 2027"],
+    "dates": [
+      "22-29 נובמבר 2026",
+      "22-29 ינואר 2027",
+      "22-29 מרץ 2027"
+    ],
     "rating": 4.9,
     "airline": "Emirates",
     "flightTime": "4.5 שעות",
     "category": "asia",
     "hotel": "מלון יוקרה + ארוחות",
     "hotelName": "Armani Hotel Dubai",
-    "included": ["טיסות", "מלון", "ספא"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "ספא"
+    ],
     "reviewsCount": 482,
-    "flightDetails": { "departure": "03:00", "arrival": "07:30", "class": "עסקים" },
-    "attractions": ["ספארי מדבר", "גולד סוק", "מרינה"]
+    "flightDetails": {
+      "departure": "03:00",
+      "arrival": "07:30",
+      "class": "עסקים"
+    },
+    "attractions": [
+      "ספארי מדבר",
+      "גולד סוק",
+      "מרינה"
+    ],
+    "en": {
+      "destination": "Dubai, UAE",
+      "dates": [
+        "November 22-29, 2026",
+        "January 22-29, 2027",
+        "March 22-29, 2027"
+      ],
+      "airline": "Emirates",
+      "flightTime": "4.5 hours",
+      "hotel": "Luxury hotel + meals",
+      "hotelName": "Armani Hotel Dubai",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Spa"
+      ],
+      "attractions": [
+        "Desert safari",
+        "Gold Souk",
+        "Marina"
+      ],
+      "flightClass": "Business"
+    }
   },
   {
     "id": 28,
@@ -519,17 +1576,54 @@
     "price": 4599,
     "originalPrice": 6099,
     "discount": 25,
-    "dates": ["10-18 ספטמבר 2026", "10-18 נובמבר 2026", "10-18 ינואר 2027"],
+    "dates": [
+      "10-18 ספטמבר 2026",
+      "10-18 נובמבר 2026",
+      "10-18 ינואר 2027"
+    ],
     "rating": 4.6,
     "airline": "American Airlines",
     "flightTime": "12.5 שעות",
     "category": "america",
     "hotel": "מלון בטיימס סקוור",
     "hotelName": "Marriott Marquis",
-    "included": ["טיסות", "מלון 4 כוכבים"],
+    "included": [
+      "טיסות",
+      "מלון 4 כוכבים"
+    ],
     "reviewsCount": 411,
-    "flightDetails": { "departure": "07:00", "arrival": "11:30", "class": "תיירים" },
-    "attractions": ["טיימס סקוור", "5th אווניו", "ברודווי"]
+    "flightDetails": {
+      "departure": "07:00",
+      "arrival": "11:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "טיימס סקוור",
+      "5th אווניו",
+      "ברודווי"
+    ],
+    "en": {
+      "destination": "New York, USA",
+      "dates": [
+        "September 10-18, 2026",
+        "November 10-18, 2026",
+        "January 10-18, 2027"
+      ],
+      "airline": "American Airlines",
+      "flightTime": "12.5 hours",
+      "hotel": "Times Square hotel",
+      "hotelName": "Marriott Marquis",
+      "included": [
+        "Flights",
+        "4-star hotel"
+      ],
+      "attractions": [
+        "Times Square",
+        "5th Avenue",
+        "Broadway"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 29,
@@ -538,17 +1632,54 @@
     "price": 4999,
     "originalPrice": 6399,
     "discount": 22,
-    "dates": ["1-10 נובמבר 2026", "1-10 ינואר 2027", "1-10 מרץ 2027"],
+    "dates": [
+      "1-10 נובמבר 2026",
+      "1-10 ינואר 2027",
+      "1-10 מרץ 2027"
+    ],
     "rating": 4.8,
     "airline": "Delta",
     "flightTime": "13 שעות",
     "category": "america",
     "hotel": "מלון במנהטן + ארוחות בוקר",
     "hotelName": "The Peninsula New York",
-    "included": ["טיסות", "מלון"],
+    "included": [
+      "טיסות",
+      "מלון"
+    ],
     "reviewsCount": 528,
-    "flightDetails": { "departure": "09:00", "arrival": "13:00", "class": "תיירים" },
-    "attractions": ["סנטרל פארק", "מוזיאון המודרני", "וול סטריט"]
+    "flightDetails": {
+      "departure": "09:00",
+      "arrival": "13:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סנטרל פארק",
+      "מוזיאון המודרני",
+      "וול סטריט"
+    ],
+    "en": {
+      "destination": "New York, USA",
+      "dates": [
+        "November 1-10, 2026",
+        "January 1-10, 2027",
+        "March 1-10, 2027"
+      ],
+      "airline": "Delta",
+      "flightTime": "13 hours",
+      "hotel": "Manhattan hotel + breakfasts",
+      "hotelName": "The Peninsula New York",
+      "included": [
+        "Flights",
+        "Hotel"
+      ],
+      "attractions": [
+        "Central Park",
+        "Museum of Modern Art",
+        "Wall Street"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 30,
@@ -557,17 +1688,56 @@
     "price": 4099,
     "originalPrice": 5699,
     "discount": 28,
-    "dates": ["8-17 אוקטובר 2026", "8-17 דצמבר 2026", "8-17 פברואר 2027"],
+    "dates": [
+      "8-17 אוקטובר 2026",
+      "8-17 דצמבר 2026",
+      "8-17 פברואר 2027"
+    ],
     "rating": 4.6,
     "airline": "United",
     "flightTime": "14 שעות",
     "category": "america",
     "hotel": "מלון על החוף + רכב",
     "hotelName": "Faena Miami Beach",
-    "included": ["טיסות", "מלון", "השכרת רכב"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "השכרת רכב"
+    ],
     "reviewsCount": 329,
-    "flightDetails": { "departure": "08:30", "arrival": "13:30", "class": "תיירים" },
-    "attractions": ["סאות' ביץ'", "וינווד", "קי ווסט"]
+    "flightDetails": {
+      "departure": "08:30",
+      "arrival": "13:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סאות' ביץ'",
+      "וינווד",
+      "קי ווסט"
+    ],
+    "en": {
+      "destination": "Miami, USA",
+      "dates": [
+        "October 8-17, 2026",
+        "December 8-17, 2026",
+        "February 8-17, 2027"
+      ],
+      "airline": "United",
+      "flightTime": "14 hours",
+      "hotel": "Beachfront hotel + car",
+      "hotelName": "Faena Miami Beach",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Car rental"
+      ],
+      "attractions": [
+        "South Beach",
+        "Wynwood",
+        "Key West"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 31,
@@ -576,17 +1746,56 @@
     "price": 4199,
     "originalPrice": 5399,
     "discount": 22,
-    "dates": ["12-20 נובמבר 2026", "12-20 ינואר 2027", "12-20 מרץ 2027"],
+    "dates": [
+      "12-20 נובמבר 2026",
+      "12-20 ינואר 2027",
+      "12-20 מרץ 2027"
+    ],
     "rating": 4.9,
     "airline": "Aeromexico",
     "flightTime": "15 שעות",
     "category": "america",
     "hotel": "אול אינקלוסיב + פעילויות",
     "hotelName": "Grand Fiesta Americana",
-    "included": ["טיסות", "מלון", "פעילויות מים"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "פעילויות מים"
+    ],
     "reviewsCount": 375,
-    "flightDetails": { "departure": "10:00", "arrival": "16:00", "class": "תיירים" },
-    "attractions": ["צ'יצ'ן איצה", "איסלה מוחרס", "סנוטים"]
+    "flightDetails": {
+      "departure": "10:00",
+      "arrival": "16:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "צ'יצ'ן איצה",
+      "איסלה מוחרס",
+      "סנוטים"
+    ],
+    "en": {
+      "destination": "Cancún, Mexico",
+      "dates": [
+        "November 12-20, 2026",
+        "January 12-20, 2027",
+        "March 12-20, 2027"
+      ],
+      "airline": "Aeromexico",
+      "flightTime": "15 hours",
+      "hotel": "All-inclusive + activities",
+      "hotelName": "Grand Fiesta Americana",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Water activities"
+      ],
+      "attractions": [
+        "Chichén Itzá",
+        "Isla Mujeres",
+        "Cenotes"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 32,
@@ -595,17 +1804,56 @@
     "price": 3499,
     "originalPrice": 4699,
     "discount": 26,
-    "dates": ["1-8 אוקטובר 2026", "1-8 דצמבר 2026", "1-8 פברואר 2027"],
+    "dates": [
+      "1-8 אוקטובר 2026",
+      "1-8 דצמבר 2026",
+      "1-8 פברואר 2027"
+    ],
     "rating": 4.8,
     "airline": "Ryanair",
     "flightTime": "4 שעות",
     "category": "europe",
     "hotel": "מלון עם נוף לקלדרה",
     "hotelName": "Mystique Santorini",
-    "included": ["טיסות", "מלון רומנטי", "ארוחת בוקר"],
+    "included": [
+      "טיסות",
+      "מלון רומנטי",
+      "ארוחת בוקר"
+    ],
     "reviewsCount": 366,
-    "flightDetails": { "departure": "13:00", "arrival": "17:00", "class": "תיירים" },
-    "attractions": ["שקיעה באויה", "יקבים", "חוף רד ביץ'"]
+    "flightDetails": {
+      "departure": "13:00",
+      "arrival": "17:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "שקיעה באויה",
+      "יקבים",
+      "חוף רד ביץ'"
+    ],
+    "en": {
+      "destination": "Santorini, Greece",
+      "dates": [
+        "October 1-8, 2026",
+        "December 1-8, 2026",
+        "February 1-8, 2027"
+      ],
+      "airline": "Ryanair",
+      "flightTime": "4 hours",
+      "hotel": "Hotel with caldera view",
+      "hotelName": "Mystique Santorini",
+      "included": [
+        "Flights",
+        "Romantic hotel",
+        "Breakfast"
+      ],
+      "attractions": [
+        "Sunset in Oia",
+        "Wineries",
+        "Red Beach"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 33,
@@ -614,17 +1862,54 @@
     "price": 2199,
     "originalPrice": 3299,
     "discount": 33,
-    "dates": ["12-19 ינואר 2026", "12-19 יוני 2026", "12-19 נובמבר 2026"],
+    "dates": [
+      "12-19 ינואר 2026",
+      "12-19 יוני 2026",
+      "12-19 נובמבר 2026"
+    ],
     "rating": 4.6,
     "airline": "Transavia",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 3 כוכבים",
     "hotelName": "Hotel de Crillon",
-    "included": ["טיסות", "מלון"],
+    "included": [
+      "טיסות",
+      "מלון"
+    ],
     "reviewsCount": 154,
-    "flightDetails": { "departure": "07:00", "arrival": "11:30", "class": "תיירים" },
-    "attractions": ["מגדל אייפל", "לובר", "שאנז אליזה"]
+    "flightDetails": {
+      "departure": "07:00",
+      "arrival": "11:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "מגדל אייפל",
+      "לובר",
+      "שאנז אליזה"
+    ],
+    "en": {
+      "destination": "Paris, France",
+      "dates": [
+        "January 12-19, 2026",
+        "June 12-19, 2026",
+        "November 12-19, 2026"
+      ],
+      "airline": "Transavia",
+      "flightTime": "4.5 hours",
+      "hotel": "3-star hotel",
+      "hotelName": "Hotel de Crillon",
+      "included": [
+        "Flights",
+        "Hotel"
+      ],
+      "attractions": [
+        "Eiffel Tower",
+        "Louvre",
+        "Champs-Élysées"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 34,
@@ -633,17 +1918,56 @@
     "price": 2599,
     "originalPrice": 3399,
     "discount": 24,
-    "dates": ["10-17 מרץ 2026", "10-17 יולי 2026", "10-17 נובמבר 2026"],
+    "dates": [
+      "10-17 מרץ 2026",
+      "10-17 יולי 2026",
+      "10-17 נובמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "Ryanair",
     "flightTime": "4 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "Palazzo Naiadi",
-    "included": ["טיסות", "מלון", "ארוחת בוקר"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "ארוחת בוקר"
+    ],
     "reviewsCount": 301,
-    "flightDetails": { "departure": "11:00", "arrival": "15:00", "class": "תיירים" },
-    "attractions": ["קולוסיאום", "פנתיאון", "פיאצה נבונה"]
+    "flightDetails": {
+      "departure": "11:00",
+      "arrival": "15:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "קולוסיאום",
+      "פנתיאון",
+      "פיאצה נבונה"
+    ],
+    "en": {
+      "destination": "Rome, Italy",
+      "dates": [
+        "March 10-17, 2026",
+        "July 10-17, 2026",
+        "November 10-17, 2026"
+      ],
+      "airline": "Ryanair",
+      "flightTime": "4 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "Palazzo Naiadi",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Breakfast"
+      ],
+      "attractions": [
+        "Colosseum",
+        "Pantheon",
+        "Piazza Navona"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 35,
@@ -652,17 +1976,56 @@
     "price": 2899,
     "originalPrice": 3899,
     "discount": 26,
-    "dates": ["1-8 אוגוסט 2026", "1-8 אוקטובר 2026", "1-8 דצמבר 2026"],
+    "dates": [
+      "1-8 אוגוסט 2026",
+      "1-8 אוקטובר 2026",
+      "1-8 דצמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "Iberia",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון ליד החוף",
     "hotelName": "Majestic Hotel & Spa",
-    "included": ["טיסות", "מלון", "ארוחת בוקר"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "ארוחת בוקר"
+    ],
     "reviewsCount": 412,
-    "flightDetails": { "departure": "14:00", "arrival": "18:30", "class": "תיירים" },
-    "attractions": ["סגרדה פמיליה", "בארסלונטה", "רבע גותי"]
+    "flightDetails": {
+      "departure": "14:00",
+      "arrival": "18:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סגרדה פמיליה",
+      "בארסלונטה",
+      "רבע גותי"
+    ],
+    "en": {
+      "destination": "Barcelona, Spain",
+      "dates": [
+        "August 1-8, 2026",
+        "October 1-8, 2026",
+        "December 1-8, 2026"
+      ],
+      "airline": "Iberia",
+      "flightTime": "4.5 hours",
+      "hotel": "Hotel near the beach",
+      "hotelName": "Majestic Hotel & Spa",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Breakfast"
+      ],
+      "attractions": [
+        "Sagrada Família",
+        "Barceloneta",
+        "Gothic Quarter"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 36,
@@ -671,17 +2034,54 @@
     "price": 2499,
     "originalPrice": 3599,
     "discount": 30,
-    "dates": ["15-22 פברואר 2026", "15-22 יוני 2026", "15-22 אוקטובר 2026"],
+    "dates": [
+      "15-22 פברואר 2026",
+      "15-22 יוני 2026",
+      "15-22 אוקטובר 2026"
+    ],
     "rating": 4.5,
     "airline": "Wizz Air",
     "flightTime": "5.5 שעות",
     "category": "europe",
     "hotel": "מלון 3 כוכבים",
     "hotelName": "Park Plaza Westminster",
-    "included": ["טיסות", "מלון"],
+    "included": [
+      "טיסות",
+      "מלון"
+    ],
     "reviewsCount": 189,
-    "flightDetails": { "departure": "09:30", "arrival": "15:00", "class": "תיירים" },
-    "attractions": ["ביג בן", "ארמון בקינגהאם", "לונדון איי"]
+    "flightDetails": {
+      "departure": "09:30",
+      "arrival": "15:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "ביג בן",
+      "ארמון בקינגהאם",
+      "לונדון איי"
+    ],
+    "en": {
+      "destination": "London, England",
+      "dates": [
+        "February 15-22, 2026",
+        "June 15-22, 2026",
+        "October 15-22, 2026"
+      ],
+      "airline": "Wizz Air",
+      "flightTime": "5.5 hours",
+      "hotel": "3-star hotel",
+      "hotelName": "Park Plaza Westminster",
+      "included": [
+        "Flights",
+        "Hotel"
+      ],
+      "attractions": [
+        "Big Ben",
+        "Buckingham Palace",
+        "London Eye"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 37,
@@ -690,17 +2090,58 @@
     "price": 3899,
     "originalPrice": 5299,
     "discount": 26,
-    "dates": ["20-27 אפריל 2026", "20-27 יולי 2026", "20-27 אוקטובר 2026"],
+    "dates": [
+      "20-27 אפריל 2026",
+      "20-27 יולי 2026",
+      "20-27 אוקטובר 2026"
+    ],
     "rating": 4.9,
     "airline": "Emirates",
     "flightTime": "4.5 שעות",
     "category": "asia",
     "hotel": "מלון 5 כוכבים",
     "hotelName": "Jumeirah Beach Hotel",
-    "included": ["טיסות", "מלון", "ספא", "העברות"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "ספא",
+      "העברות"
+    ],
     "reviewsCount": 603,
-    "flightDetails": { "departure": "02:30", "arrival": "07:00", "class": "עסקים" },
-    "attractions": ["בורג' חליפה", "מסגד זאיד", "פארק מים"]
+    "flightDetails": {
+      "departure": "02:30",
+      "arrival": "07:00",
+      "class": "עסקים"
+    },
+    "attractions": [
+      "בורג' חליפה",
+      "מסגד זאיד",
+      "פארק מים"
+    ],
+    "en": {
+      "destination": "Dubai, UAE",
+      "dates": [
+        "April 20-27, 2026",
+        "July 20-27, 2026",
+        "October 20-27, 2026"
+      ],
+      "airline": "Emirates",
+      "flightTime": "4.5 hours",
+      "hotel": "5-star hotel",
+      "hotelName": "Jumeirah Beach Hotel",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Spa",
+        "Transfers"
+      ],
+      "attractions": [
+        "Burj Khalifa",
+        "Sheikh Zayed Mosque",
+        "Water park"
+      ],
+      "flightClass": "Business"
+    }
   },
   {
     "id": 38,
@@ -709,17 +2150,54 @@
     "price": 4399,
     "originalPrice": 5999,
     "discount": 27,
-    "dates": ["10-18 פברואר 2026", "10-18 יוני 2026", "10-18 אוקטובר 2026"],
+    "dates": [
+      "10-18 פברואר 2026",
+      "10-18 יוני 2026",
+      "10-18 אוקטובר 2026"
+    ],
     "rating": 4.6,
     "airline": "United",
     "flightTime": "13 שעות",
     "category": "america",
     "hotel": "מלון 4 כוכבים",
     "hotelName": "Lotte New York Palace",
-    "included": ["טיסות", "מלון"],
+    "included": [
+      "טיסות",
+      "מלון"
+    ],
     "reviewsCount": 344,
-    "flightDetails": { "departure": "06:00", "arrival": "10:00", "class": "תיירים" },
-    "attractions": ["סנטרל פארק", "רוקפלר סנטר", "חג המולד"]
+    "flightDetails": {
+      "departure": "06:00",
+      "arrival": "10:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סנטרל פארק",
+      "רוקפלר סנטר",
+      "חג המולד"
+    ],
+    "en": {
+      "destination": "New York, USA",
+      "dates": [
+        "February 10-18, 2026",
+        "June 10-18, 2026",
+        "October 10-18, 2026"
+      ],
+      "airline": "United",
+      "flightTime": "13 hours",
+      "hotel": "4-star hotel",
+      "hotelName": "Lotte New York Palace",
+      "included": [
+        "Flights",
+        "Hotel"
+      ],
+      "attractions": [
+        "Central Park",
+        "Rockefeller Center",
+        "Christmas"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 39,
@@ -728,17 +2206,56 @@
     "price": 4699,
     "originalPrice": 6299,
     "discount": 25,
-    "dates": ["5-15 ינואר 2026", "5-15 מאי 2026", "5-15 ספטמבר 2026"],
+    "dates": [
+      "5-15 ינואר 2026",
+      "5-15 מאי 2026",
+      "5-15 ספטמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "American Airlines",
     "flightTime": "14 שעות",
     "category": "america",
     "hotel": "מלון על החוף",
     "hotelName": "1 Hotel South Beach",
-    "included": ["טיסות", "מלון", "השכרת רכב"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "השכרת רכב"
+    ],
     "reviewsCount": 492,
-    "flightDetails": { "departure": "11:00", "arrival": "16:00", "class": "תיירים" },
-    "attractions": ["סאות' ביץ'", "אוונגליידס", "ליטל הוואנה"]
+    "flightDetails": {
+      "departure": "11:00",
+      "arrival": "16:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "סאות' ביץ'",
+      "אוונגליידס",
+      "ליטל הוואנה"
+    ],
+    "en": {
+      "destination": "Miami, USA",
+      "dates": [
+        "January 5-15, 2026",
+        "May 5-15, 2026",
+        "September 5-15, 2026"
+      ],
+      "airline": "American Airlines",
+      "flightTime": "14 hours",
+      "hotel": "Beachfront hotel",
+      "hotelName": "1 Hotel South Beach",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Car rental"
+      ],
+      "attractions": [
+        "South Beach",
+        "Everglades",
+        "Little Havana"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 40,
@@ -747,17 +2264,56 @@
     "price": 5199,
     "originalPrice": 6999,
     "discount": 26,
-    "dates": ["5-15 מאי 2026", "5-15 אוגוסט 2026", "5-15 נובמבר 2026"],
+    "dates": [
+      "5-15 מאי 2026",
+      "5-15 אוגוסט 2026",
+      "5-15 נובמבר 2026"
+    ],
     "rating": 4.9,
     "airline": "ANA",
     "flightTime": "12 שעות",
     "category": "asia",
     "hotel": "מלון מרכזי",
     "hotelName": "Aman Tokyo",
-    "included": ["טיסות", "מלון", "JR Pass"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "JR Pass"
+    ],
     "reviewsCount": 467,
-    "flightDetails": { "departure": "23:00", "arrival": "15:00+1", "class": "תיירים" },
-    "attractions": ["שיבויה", "אקיהברה", "אסאקוסה"]
+    "flightDetails": {
+      "departure": "23:00",
+      "arrival": "15:00+1",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "שיבויה",
+      "אקיהברה",
+      "אסאקוסה"
+    ],
+    "en": {
+      "destination": "Tokyo, Japan",
+      "dates": [
+        "May 5-15, 2026",
+        "August 5-15, 2026",
+        "November 5-15, 2026"
+      ],
+      "airline": "ANA",
+      "flightTime": "12 hours",
+      "hotel": "Central hotel",
+      "hotelName": "Aman Tokyo",
+      "included": [
+        "Flights",
+        "Hotel",
+        "JR Pass"
+      ],
+      "attractions": [
+        "Shibuya",
+        "Akihabara",
+        "Asakusa"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 41,
@@ -766,17 +2322,56 @@
     "price": 3999,
     "originalPrice": 5599,
     "discount": 29,
-    "dates": ["1-15 פברואר 2026", "1-15 יולי 2026", "1-15 דצמבר 2026"],
+    "dates": [
+      "1-15 פברואר 2026",
+      "1-15 יולי 2026",
+      "1-15 דצמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "Qatar Airways",
     "flightTime": "14 שעות",
     "category": "asia",
     "hotel": "ריזורט",
     "hotelName": "Bulgari Resort Bali",
-    "included": ["טיסות", "מלון", "ארוחות"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "ארוחות"
+    ],
     "reviewsCount": 288,
-    "flightDetails": { "departure": "20:00", "arrival": "14:00+1", "class": "תיירים" },
-    "attractions": ["אובוד", "אולוואטו", "טרסות אורז"]
+    "flightDetails": {
+      "departure": "20:00",
+      "arrival": "14:00+1",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "אובוד",
+      "אולוואטו",
+      "טרסות אורז"
+    ],
+    "en": {
+      "destination": "Bali, Indonesia",
+      "dates": [
+        "February 1-15, 2026",
+        "July 1-15, 2026",
+        "December 1-15, 2026"
+      ],
+      "airline": "Qatar Airways",
+      "flightTime": "14 hours",
+      "hotel": "Resort",
+      "hotelName": "Bulgari Resort Bali",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Meals"
+      ],
+      "attractions": [
+        "Ubud",
+        "Uluwatu",
+        "Rice terraces"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 42,
@@ -785,17 +2380,54 @@
     "price": 2899,
     "originalPrice": 4199,
     "discount": 31,
-    "dates": ["10-17 מרץ 2026", "10-17 יולי 2026", "10-17 נובמבר 2026"],
+    "dates": [
+      "10-17 מרץ 2026",
+      "10-17 יולי 2026",
+      "10-17 נובמבר 2026"
+    ],
     "rating": 4.6,
     "airline": "Aegean",
     "flightTime": "4 שעות",
     "category": "europe",
     "hotel": "מלון בוטיק",
     "hotelName": "Grace Santorini",
-    "included": ["טיסות", "מלון"],
+    "included": [
+      "טיסות",
+      "מלון"
+    ],
     "reviewsCount": 201,
-    "flightDetails": { "departure": "08:00", "arrival": "12:00", "class": "תיירים" },
-    "attractions": ["אויה", "פירה", "חוף קאמארי"]
+    "flightDetails": {
+      "departure": "08:00",
+      "arrival": "12:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "אויה",
+      "פירה",
+      "חוף קאמארי"
+    ],
+    "en": {
+      "destination": "Santorini, Greece",
+      "dates": [
+        "March 10-17, 2026",
+        "July 10-17, 2026",
+        "November 10-17, 2026"
+      ],
+      "airline": "Aegean",
+      "flightTime": "4 hours",
+      "hotel": "Boutique hotel",
+      "hotelName": "Grace Santorini",
+      "included": [
+        "Flights",
+        "Hotel"
+      ],
+      "attractions": [
+        "Oia",
+        "Fira",
+        "Kamari Beach"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 43,
@@ -804,17 +2436,54 @@
     "price": 1799,
     "originalPrice": 2599,
     "discount": 31,
-    "dates": ["5-12 פברואר 2026", "5-12 יוני 2026", "5-12 אוקטובר 2026"],
+    "dates": [
+      "5-12 פברואר 2026",
+      "5-12 יוני 2026",
+      "5-12 אוקטובר 2026"
+    ],
     "rating": 4.7,
     "airline": "Smartwings",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 3 כוכבים",
     "hotelName": "Hotel Paris Prague",
-    "included": ["טיסות", "מלון"],
+    "included": [
+      "טיסות",
+      "מלון"
+    ],
     "reviewsCount": 233,
-    "flightDetails": { "departure": "10:00", "arrival": "14:30", "class": "תיירים" },
-    "attractions": ["גשר קארל", "טירה", "שעון"]
+    "flightDetails": {
+      "departure": "10:00",
+      "arrival": "14:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "גשר קארל",
+      "טירה",
+      "שעון"
+    ],
+    "en": {
+      "destination": "Prague, Czechia",
+      "dates": [
+        "February 5-12, 2026",
+        "June 5-12, 2026",
+        "October 5-12, 2026"
+      ],
+      "airline": "Smartwings",
+      "flightTime": "4.5 hours",
+      "hotel": "3-star hotel",
+      "hotelName": "Hotel Paris Prague",
+      "included": [
+        "Flights",
+        "Hotel"
+      ],
+      "attractions": [
+        "Charles Bridge",
+        "Castle",
+        "Clock"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 44,
@@ -823,17 +2492,56 @@
     "price": 1899,
     "originalPrice": 2699,
     "discount": 30,
-    "dates": ["1-8 אפריל 2026", "1-8 יוני 2026", "1-8 ספטמבר 2026"],
+    "dates": [
+      "1-8 אפריל 2026",
+      "1-8 יוני 2026",
+      "1-8 ספטמבר 2026"
+    ],
     "rating": 4.8,
     "airline": "Pegasus",
     "flightTime": "3.5 שעות",
     "category": "asia",
     "hotel": "מלון מרכזי",
     "hotelName": "Ciragan Palace Kempinski",
-    "included": ["טיסות", "מלון", "סיור"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "סיור"
+    ],
     "reviewsCount": 341,
-    "flightDetails": { "departure": "05:00", "arrival": "08:30", "class": "תיירים" },
-    "attractions": ["האיה סופיה", "הארמון הכחול", "בזאר"]
+    "flightDetails": {
+      "departure": "05:00",
+      "arrival": "08:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "האיה סופיה",
+      "הארמון הכחול",
+      "בזאר"
+    ],
+    "en": {
+      "destination": "Istanbul, Turkey",
+      "dates": [
+        "April 1-8, 2026",
+        "June 1-8, 2026",
+        "September 1-8, 2026"
+      ],
+      "airline": "Pegasus",
+      "flightTime": "3.5 hours",
+      "hotel": "Central hotel",
+      "hotelName": "Ciragan Palace Kempinski",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Tour"
+      ],
+      "attractions": [
+        "Hagia Sophia",
+        "Blue Mosque",
+        "Bazaar"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 45,
@@ -842,17 +2550,56 @@
     "price": 2199,
     "originalPrice": 3199,
     "discount": 31,
-    "dates": ["10-17 נובמבר 2026", "10-17 ינואר 2027", "10-17 מרץ 2027"],
+    "dates": [
+      "10-17 נובמבר 2026",
+      "10-17 ינואר 2027",
+      "10-17 מרץ 2027"
+    ],
     "rating": 4.7,
     "airline": "TAP Portugal",
     "flightTime": "5 שעות",
     "category": "europe",
     "hotel": "מלון בוטיק",
     "hotelName": "Pestana Palace Lisboa",
-    "included": ["טיסות", "מלון", "סיור קולינרי"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "סיור קולינרי"
+    ],
     "reviewsCount": 295,
-    "flightDetails": { "departure": "09:00", "arrival": "14:00", "class": "תיירים" },
-    "attractions": ["בלם", "אלפמה", "חשמלית"]
+    "flightDetails": {
+      "departure": "09:00",
+      "arrival": "14:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "בלם",
+      "אלפמה",
+      "חשמלית"
+    ],
+    "en": {
+      "destination": "Lisbon, Portugal",
+      "dates": [
+        "November 10-17, 2026",
+        "January 10-17, 2027",
+        "March 10-17, 2027"
+      ],
+      "airline": "TAP Portugal",
+      "flightTime": "5 hours",
+      "hotel": "Boutique hotel",
+      "hotelName": "Pestana Palace Lisboa",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Culinary tour"
+      ],
+      "attractions": [
+        "Belém",
+        "Alfama",
+        "Tram"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 50,
@@ -861,17 +2608,54 @@
     "price": 2199,
     "originalPrice": 3129,
     "discount": 30,
-    "dates": ["5-10 מאי 2026", "5-10 יולי 2026", "5-10 ספטמבר 2026"],
+    "dates": [
+      "5-10 מאי 2026",
+      "5-10 יולי 2026",
+      "5-10 ספטמבר 2026"
+    ],
     "rating": 4.6,
     "airline": "Lufthansa",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים במרכז",
     "hotelName": "Hilton Berlin",
-    "included": ["טיסות הלוך חזור", "מלון + ארוחת בוקר"],
+    "included": [
+      "טיסות הלוך חזור",
+      "מלון + ארוחת בוקר"
+    ],
     "reviewsCount": 214,
-    "flightDetails": { "departure": "07:00", "arrival": "11:30", "class": "תיירים" },
-    "attractions": ["שער ברנדנבורג", "אי המוזיאונים", "אלכסנדרפלאץ"]
+    "flightDetails": {
+      "departure": "07:00",
+      "arrival": "11:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "שער ברנדנבורג",
+      "אי המוזיאונים",
+      "אלכסנדרפלאץ"
+    ],
+    "en": {
+      "destination": "Berlin, Germany",
+      "dates": [
+        "May 5-10, 2026",
+        "July 5-10, 2026",
+        "September 5-10, 2026"
+      ],
+      "airline": "Lufthansa",
+      "flightTime": "4.5 hours",
+      "hotel": "Central 4-star hotel",
+      "hotelName": "Hilton Berlin",
+      "included": [
+        "Round-trip flights",
+        "Hotel + breakfast"
+      ],
+      "attractions": [
+        "Brandenburg Gate",
+        "Museum Island",
+        "Alexanderplatz"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 51,
@@ -880,17 +2664,56 @@
     "price": 1999,
     "originalPrice": 2749,
     "discount": 27,
-    "dates": ["18-23 יוני 2026", "18-23 אוגוסט 2026", "18-23 אוקטובר 2026"],
+    "dates": [
+      "18-23 יוני 2026",
+      "18-23 אוגוסט 2026",
+      "18-23 אוקטובר 2026"
+    ],
     "rating": 4.5,
     "airline": "easyJet",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 3 כוכבים",
     "hotelName": "MEININGER Berlin",
-    "included": ["טיסות", "מלון", "תחבורה ציבורית חופשית"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "תחבורה ציבורית חופשית"
+    ],
     "reviewsCount": 176,
-    "flightDetails": { "departure": "12:30", "arrival": "17:00", "class": "תיירים" },
-    "attractions": ["חומת ברלין", "צ'קפוינט צ'ארלי", "פוטסדאמר פלאץ"]
+    "flightDetails": {
+      "departure": "12:30",
+      "arrival": "17:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "חומת ברלין",
+      "צ'קפוינט צ'ארלי",
+      "פוטסדאמר פלאץ"
+    ],
+    "en": {
+      "destination": "Berlin, Germany",
+      "dates": [
+        "June 18-23, 2026",
+        "August 18-23, 2026",
+        "October 18-23, 2026"
+      ],
+      "airline": "easyJet",
+      "flightTime": "4.5 hours",
+      "hotel": "3-star hotel",
+      "hotelName": "MEININGER Berlin",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Free public transport"
+      ],
+      "attractions": [
+        "Berlin Wall",
+        "Checkpoint Charlie",
+        "Potsdamer Platz"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 52,
@@ -899,17 +2722,56 @@
     "price": 2399,
     "originalPrice": 3299,
     "discount": 27,
-    "dates": ["10-15 אוגוסט 2026", "10-15 אוקטובר 2026", "10-15 דצמבר 2026"],
+    "dates": [
+      "10-15 אוגוסט 2026",
+      "10-15 אוקטובר 2026",
+      "10-15 דצמבר 2026"
+    ],
     "rating": 4.7,
     "airline": "Eurowings",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון בוטיק",
     "hotelName": "Hotel Zoo Berlin",
-    "included": ["טיסות", "מלון מרכזי", "ארוחת בוקר"],
+    "included": [
+      "טיסות",
+      "מלון מרכזי",
+      "ארוחת בוקר"
+    ],
     "reviewsCount": 263,
-    "flightDetails": { "departure": "06:15", "arrival": "10:45", "class": "תיירים" },
-    "attractions": ["קתדרלת ברלין", "טירגארטן", "Hackescher Markt"]
+    "flightDetails": {
+      "departure": "06:15",
+      "arrival": "10:45",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "קתדרלת ברלין",
+      "טירגארטן",
+      "Hackescher Markt"
+    ],
+    "en": {
+      "destination": "Berlin, Germany",
+      "dates": [
+        "August 10-15, 2026",
+        "October 10-15, 2026",
+        "December 10-15, 2026"
+      ],
+      "airline": "Eurowings",
+      "flightTime": "4.5 hours",
+      "hotel": "Boutique hotel",
+      "hotelName": "Hotel Zoo Berlin",
+      "included": [
+        "Flights",
+        "Central hotel",
+        "Breakfast"
+      ],
+      "attractions": [
+        "Berlin Cathedral",
+        "Tiergarten",
+        "Hackescher Markt"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 53,
@@ -918,17 +2780,58 @@
     "price": 2599,
     "originalPrice": 3499,
     "discount": 26,
-    "dates": ["20-26 ספטמבר 2026", "20-26 נובמבר 2026", "20-26 ינואר 2027"],
+    "dates": [
+      "20-26 ספטמבר 2026",
+      "20-26 נובמבר 2026",
+      "20-26 ינואר 2027"
+    ],
     "rating": 4.8,
     "airline": "אל על",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון 4 כוכבים + ספא",
     "hotelName": "InterContinental Berlin",
-    "included": ["טיסות", "מלון", "ספא", "ארוחת בוקר"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "ספא",
+      "ארוחת בוקר"
+    ],
     "reviewsCount": 301,
-    "flightDetails": { "departure": "09:30", "arrival": "14:00", "class": "תיירים" },
-    "attractions": ["מגדל הטלוויזיה", "Kurfürstendamm", "גן החיות של ברלין"]
+    "flightDetails": {
+      "departure": "09:30",
+      "arrival": "14:00",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "מגדל הטלוויזיה",
+      "Kurfürstendamm",
+      "גן החיות של ברלין"
+    ],
+    "en": {
+      "destination": "Berlin, Germany",
+      "dates": [
+        "September 20-26, 2026",
+        "November 20-26, 2026",
+        "January 20-26, 2027"
+      ],
+      "airline": "El Al",
+      "flightTime": "4.5 hours",
+      "hotel": "4-star hotel + spa",
+      "hotelName": "InterContinental Berlin",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Spa",
+        "Breakfast"
+      ],
+      "attractions": [
+        "TV Tower",
+        "Kurfürstendamm",
+        "Berlin Zoo"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 54,
@@ -937,17 +2840,56 @@
     "price": 2099,
     "originalPrice": 3019,
     "discount": 30,
-    "dates": ["5-10 דצמבר 2026", "5-10 פברואר 2027", "5-10 אפריל 2027"],
+    "dates": [
+      "5-10 דצמבר 2026",
+      "5-10 פברואר 2027",
+      "5-10 אפריל 2027"
+    ],
     "rating": 4.4,
     "airline": "Ryanair",
     "flightTime": "4.5 שעות",
     "category": "europe",
     "hotel": "מלון ליד שווקי חג המולד",
     "hotelName": "Mercure Berlin Mitte",
-    "included": ["טיסות", "מלון", "סיור חורפי מודרך"],
+    "included": [
+      "טיסות",
+      "מלון",
+      "סיור חורפי מודרך"
+    ],
     "reviewsCount": 189,
-    "flightDetails": { "departure": "15:00", "arrival": "19:30", "class": "תיירים" },
-    "attractions": ["שווקי חג המולד", "Gendarmenmarkt", "סיור אורות חורף"]
+    "flightDetails": {
+      "departure": "15:00",
+      "arrival": "19:30",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "שווקי חג המולד",
+      "Gendarmenmarkt",
+      "סיור אורות חורף"
+    ],
+    "en": {
+      "destination": "Berlin, Germany",
+      "dates": [
+        "December 5-10, 2026",
+        "February 5-10, 2027",
+        "April 5-10, 2027"
+      ],
+      "airline": "Ryanair",
+      "flightTime": "4.5 hours",
+      "hotel": "Hotel near the Christmas markets",
+      "hotelName": "Mercure Berlin Mitte",
+      "included": [
+        "Flights",
+        "Hotel",
+        "Guided winter tour"
+      ],
+      "attractions": [
+        "Christmas markets",
+        "Gendarmenmarkt",
+        "Winter lights tour"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 55,
@@ -956,7 +2898,11 @@
     "price": 2799,
     "originalPrice": 3699,
     "discount": 24,
-    "dates": ["14-20 יוני 2026", "14-20 ספטמבר 2026", "14-20 דצמבר 2026"],
+    "dates": [
+      "14-20 יוני 2026",
+      "14-20 ספטמבר 2026",
+      "14-20 דצמבר 2026"
+    ],
     "rating": 4.9,
     "airline": "אל על",
     "flightTime": "4.5 שעות",
@@ -964,10 +2910,47 @@
     "isKosherFriendly": true,
     "hotel": "מלון כשר ליד בית חב\"ד",
     "hotelName": "Hôtel Le Marais Kosher Stay",
-    "included": ["טיסה ביום ראשון וחזרה ביום שישי לפני שבת", "ארוחות כשרות מלאות", "מלון במרחק הליכה מבית חב\"ד", "ערכת שבת בחדר"],
+    "included": [
+      "טיסה ביום ראשון וחזרה ביום שישי לפני שבת",
+      "ארוחות כשרות מלאות",
+      "מלון במרחק הליכה מבית חב\"ד",
+      "ערכת שבת בחדר"
+    ],
     "reviewsCount": 173,
-    "flightDetails": { "departure": "09:20", "arrival": "13:50", "class": "תיירים" },
-    "attractions": ["מגדל אייפל", "המארה", "מוזיאון הלובר"]
+    "flightDetails": {
+      "departure": "09:20",
+      "arrival": "13:50",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "מגדל אייפל",
+      "המארה",
+      "מוזיאון הלובר"
+    ],
+    "en": {
+      "destination": "Paris, France",
+      "dates": [
+        "June 14-20, 2026",
+        "September 14-20, 2026",
+        "December 14-20, 2026"
+      ],
+      "airline": "El Al",
+      "flightTime": "4.5 hours",
+      "hotel": "Kosher hotel near Chabad House",
+      "hotelName": "Hôtel Le Marais Kosher Stay",
+      "included": [
+        "Sunday departure, Friday return before Shabbat",
+        "Full kosher meals",
+        "Hotel within walking distance of Chabad House",
+        "Shabbat kit in the room"
+      ],
+      "attractions": [
+        "Eiffel Tower",
+        "Le Marais",
+        "Louvre Museum"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 56,
@@ -976,7 +2959,11 @@
     "price": 2599,
     "originalPrice": 3499,
     "discount": 26,
-    "dates": ["7-13 ספטמבר 2026", "7-13 נובמבר 2026", "7-13 ינואר 2027"],
+    "dates": [
+      "7-13 ספטמבר 2026",
+      "7-13 נובמבר 2026",
+      "7-13 ינואר 2027"
+    ],
     "rating": 4.8,
     "airline": "ITA Airways",
     "flightTime": "4 שעות",
@@ -984,10 +2971,47 @@
     "isKosherFriendly": true,
     "hotel": "מלון 4 כוכבים ליד בית חב\"ד",
     "hotelName": "Roma Centro Kosher Hotel",
-    "included": ["טיסות באמצע השבוע בלבד", "ארוחות כשרות ארוזות לטיסה", "ארוחות כשרות במלון", "סיור ברובע היהודי"],
+    "included": [
+      "טיסות באמצע השבוע בלבד",
+      "ארוחות כשרות ארוזות לטיסה",
+      "ארוחות כשרות במלון",
+      "סיור ברובע היהודי"
+    ],
     "reviewsCount": 149,
-    "flightDetails": { "departure": "11:10", "arrival": "15:10", "class": "תיירים" },
-    "attractions": ["בית הכנסת הגדול ברומא", "הגטו היהודי", "קולוסיאום"]
+    "flightDetails": {
+      "departure": "11:10",
+      "arrival": "15:10",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "בית הכנסת הגדול ברומא",
+      "הגטו היהודי",
+      "קולוסיאום"
+    ],
+    "en": {
+      "destination": "Rome, Italy",
+      "dates": [
+        "September 7-13, 2026",
+        "November 7-13, 2026",
+        "January 7-13, 2027"
+      ],
+      "airline": "ITA Airways",
+      "flightTime": "4 hours",
+      "hotel": "4-star hotel near Chabad House",
+      "hotelName": "Roma Centro Kosher Hotel",
+      "included": [
+        "Midweek flights only",
+        "Packed kosher meals for the flight",
+        "Kosher meals at the hotel",
+        "Jewish Quarter tour"
+      ],
+      "attractions": [
+        "Great Synagogue of Rome",
+        "Jewish Ghetto",
+        "Colosseum"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 57,
@@ -996,7 +3020,11 @@
     "price": 3199,
     "originalPrice": 4299,
     "discount": 26,
-    "dates": ["21-27 יוני 2026", "21-27 אוגוסט 2026", "21-27 אוקטובר 2026"],
+    "dates": [
+      "21-27 יוני 2026",
+      "21-27 אוגוסט 2026",
+      "21-27 אוקטובר 2026"
+    ],
     "rating": 4.8,
     "airline": "British Airways",
     "flightTime": "5.5 שעות",
@@ -1004,10 +3032,47 @@
     "isKosherFriendly": true,
     "hotel": "מלון במרחק הליכה מבית חב\"ד",
     "hotelName": "Kensington Kosher Suites",
-    "included": ["יציאה ביום ראשון וחזרה ביום שישי בצהריים", "ארוחות בוקר וערב כשרות", "פלטת שבת ומיחם בחדר", "גישה לבית כנסת קרוב"],
+    "included": [
+      "יציאה ביום ראשון וחזרה ביום שישי בצהריים",
+      "ארוחות בוקר וערב כשרות",
+      "פלטת שבת ומיחם בחדר",
+      "גישה לבית כנסת קרוב"
+    ],
     "reviewsCount": 162,
-    "flightDetails": { "departure": "10:05", "arrival": "15:35", "class": "תיירים" },
-    "attractions": ["גולדרס גרין", "ביג בן", "ארמון בקינגהאם"]
+    "flightDetails": {
+      "departure": "10:05",
+      "arrival": "15:35",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "גולדרס גרין",
+      "ביג בן",
+      "ארמון בקינגהאם"
+    ],
+    "en": {
+      "destination": "London, England",
+      "dates": [
+        "June 21-27, 2026",
+        "August 21-27, 2026",
+        "October 21-27, 2026"
+      ],
+      "airline": "British Airways",
+      "flightTime": "5.5 hours",
+      "hotel": "Hotel within walking distance of Chabad House",
+      "hotelName": "Kensington Kosher Suites",
+      "included": [
+        "Sunday departure, Friday midday return",
+        "Kosher breakfasts and dinners",
+        "Shabbat hot plate and urn in the room",
+        "Access to a nearby synagogue"
+      ],
+      "attractions": [
+        "Golders Green",
+        "Big Ben",
+        "Buckingham Palace"
+      ],
+      "flightClass": "Economy"
+    }
   },
   {
     "id": 58,
@@ -1016,7 +3081,11 @@
     "price": 3799,
     "originalPrice": 5199,
     "discount": 27,
-    "dates": ["9-15 נובמבר 2026", "9-15 ינואר 2027", "9-15 מרץ 2027"],
+    "dates": [
+      "9-15 נובמבר 2026",
+      "9-15 ינואר 2027",
+      "9-15 מרץ 2027"
+    ],
     "rating": 4.9,
     "airline": "Emirates",
     "flightTime": "4.5 שעות",
@@ -1024,10 +3093,47 @@
     "isKosherFriendly": true,
     "hotel": "מלון 5 כוכבים ליד בית חב\"ד",
     "hotelName": "Dubai Marina Kosher Premium",
-    "included": ["טיסות בימים שני עד חמישי בלבד", "ארוחות גלאט כשר", "הסעות לבית חב\"ד", "סיור קהילה יהודית"],
+    "included": [
+      "טיסות בימים שני עד חמישי בלבד",
+      "ארוחות גלאט כשר",
+      "הסעות לבית חב\"ד",
+      "סיור קהילה יהודית"
+    ],
     "reviewsCount": 198,
-    "flightDetails": { "departure": "08:40", "arrival": "13:10", "class": "עסקים" },
-    "attractions": ["בית חב\"ד דובאי", "בורג' חליפה", "דובאי מול"]
+    "flightDetails": {
+      "departure": "08:40",
+      "arrival": "13:10",
+      "class": "עסקים"
+    },
+    "attractions": [
+      "בית חב\"ד דובאי",
+      "בורג' חליפה",
+      "דובאי מול"
+    ],
+    "en": {
+      "destination": "Dubai, UAE",
+      "dates": [
+        "November 9-15, 2026",
+        "January 9-15, 2027",
+        "March 9-15, 2027"
+      ],
+      "airline": "Emirates",
+      "flightTime": "4.5 hours",
+      "hotel": "5-star hotel near Chabad House",
+      "hotelName": "Dubai Marina Kosher Premium",
+      "included": [
+        "Flights Monday to Thursday only",
+        "Glatt kosher meals",
+        "Shuttles to Chabad House",
+        "Jewish community tour"
+      ],
+      "attractions": [
+        "Chabad Dubai",
+        "Burj Khalifa",
+        "Dubai Mall"
+      ],
+      "flightClass": "Business"
+    }
   },
   {
     "id": 59,
@@ -1036,7 +3142,11 @@
     "price": 5099,
     "originalPrice": 6699,
     "discount": 24,
-    "dates": ["6-13 יולי 2026", "6-13 ספטמבר 2026", "6-13 נובמבר 2026"],
+    "dates": [
+      "6-13 יולי 2026",
+      "6-13 ספטמבר 2026",
+      "6-13 נובמבר 2026"
+    ],
     "rating": 4.9,
     "airline": "United",
     "flightTime": "13 שעות",
@@ -1044,9 +3154,46 @@
     "isKosherFriendly": true,
     "hotel": "מלון במנהטן ליד בית חב\"ד",
     "hotelName": "Manhattan Kosher Grand",
-    "included": ["טיסה יוצאת ביום שני וחוזרת ביום שני", "ארוחות כשרות בכל ימי השהות", "חבילת שבת מלאה במלון", "סיור ברובע היהודי בברוקלין"],
+    "included": [
+      "טיסה יוצאת ביום שני וחוזרת ביום שני",
+      "ארוחות כשרות בכל ימי השהות",
+      "חבילת שבת מלאה במלון",
+      "סיור ברובע היהודי בברוקלין"
+    ],
     "reviewsCount": 211,
-    "flightDetails": { "departure": "07:25", "arrival": "11:35", "class": "תיירים" },
-    "attractions": ["קראון הייטס", "טיימס סקוור", "סנטרל פארק"]
+    "flightDetails": {
+      "departure": "07:25",
+      "arrival": "11:35",
+      "class": "תיירים"
+    },
+    "attractions": [
+      "קראון הייטס",
+      "טיימס סקוור",
+      "סנטרל פארק"
+    ],
+    "en": {
+      "destination": "New York, USA",
+      "dates": [
+        "July 6-13, 2026",
+        "September 6-13, 2026",
+        "November 6-13, 2026"
+      ],
+      "airline": "United",
+      "flightTime": "13 hours",
+      "hotel": "Manhattan hotel near Chabad House",
+      "hotelName": "Manhattan Kosher Grand",
+      "included": [
+        "Departs Monday, returns Monday",
+        "Kosher meals throughout the stay",
+        "Full Shabbat package at the hotel",
+        "Brooklyn Jewish neighborhood tour"
+      ],
+      "attractions": [
+        "Crown Heights",
+        "Times Square",
+        "Central Park"
+      ],
+      "flightClass": "Economy"
+    }
   }
 ]

@@ -8,7 +8,18 @@
       "❤️ גילויי חיבה בציבור לא מקובלים",
       "🍺 אלכוהול רק במקומות מורשים",
       "🚕 מומלץ להשתמש במוניות ממשלתיות"
-    ]
+    ],
+    "en": {
+      "destination": "Dubai",
+      "country": "United Arab Emirates",
+      "info": [
+        "💰 Currency: dirham",
+        "👗 Modest dress code in public places",
+        "❤️ Public displays of affection are frowned upon",
+        "🍺 Alcohol only in licensed venues",
+        "🚕 Use government-licensed taxis"
+      ]
+    }
   },
   {
     "destination": "פריז",
@@ -19,7 +30,18 @@
       "⚠️ יש כייסים במיוחד במטרו ובאזורי תיירות",
       "☕ מסעדות סוגרות מוקדם יחסית בצהריים",
       "🥖 נהוג לשבת לאכול, פחות אוכל 'על הדרך'"
-    ]
+    ],
+    "en": {
+      "destination": "Paris",
+      "country": "France",
+      "info": [
+        "💰 Currency: euro",
+        "🚇 Excellent public transport, no car needed",
+        "⚠️ Watch out for pickpockets, especially on the metro and in tourist areas",
+        "☕ Restaurants close relatively early at lunchtime",
+        "🥖 People sit down to eat, eating on the go is less common"
+      ]
+    }
   },
   {
     "destination": "רומא",
@@ -30,7 +52,18 @@
       "💧 יש ברזיות מים חינמיות בעיר",
       "🍝 במסעדות מוסיפים Coperto (תשלום ישיבה)",
       "👗 בכנסיות חובה לבוש צנוע"
-    ]
+    ],
+    "en": {
+      "destination": "Rome",
+      "country": "Italy",
+      "info": [
+        "💰 Currency: euro",
+        "⛲ Watch for pickpockets near major sites",
+        "💧 Free drinking fountains around the city",
+        "🍝 Restaurants add a Coperto (cover charge)",
+        "👗 Modest dress is required in churches"
+      ]
+    }
   },
   {
     "destination": "ברצלונה",
@@ -41,7 +74,18 @@
       "🍽 ארוחת ערב מתחילה מאוחר, גם ב-21:00",
       "💤 חנויות קטנות נסגרות בצהריים לסיאסטה",
       "🏖 לשמור על ציוד בחוף"
-    ]
+    ],
+    "en": {
+      "destination": "Barcelona",
+      "country": "Spain",
+      "info": [
+        "💰 Currency: euro",
+        "⚠️ One of the cities with the most pickpockets in Europe",
+        "🍽 Dinner starts late, often at 21:00",
+        "💤 Small shops close at midday for siesta",
+        "🏖 Keep an eye on your belongings at the beach"
+      ]
+    }
   },
   {
     "destination": "אמסטרדם",
@@ -52,7 +96,18 @@
       "💳 הרבה מקומות מקבלים רק אשראי מקומי",
       "🌿 קנאביס חוקי רק במקומות מורשים",
       "🚋 תחבורה ציבורית נוחה מאוד"
-    ]
+    ],
+    "en": {
+      "destination": "Amsterdam",
+      "country": "Netherlands",
+      "info": [
+        "💰 Currency: euro",
+        "🚲 Bikes rule the city, be careful at crossings",
+        "💳 Many places accept only local cards",
+        "🌿 Cannabis is legal only in licensed venues",
+        "🚋 Very convenient public transport"
+      ]
+    }
   },
   {
     "destination": "לונדון",
@@ -63,7 +118,18 @@
       "☔ מזג האוויר משתנה מהר, לקחת מטריה",
       "⚡ שקעים שונים, צריך מתאם",
       "🕐 פאבים נסגרים יחסית מוקדם"
-    ]
+    ],
+    "en": {
+      "destination": "London",
+      "country": "England",
+      "info": [
+        "💰 Currency: pound sterling",
+        "🚇 Pay for transport with a card or Oyster",
+        "☔ The weather changes fast, bring an umbrella",
+        "⚡ Different sockets, you'll need an adapter",
+        "🕐 Pubs close relatively early"
+      ]
+    }
   },
   {
     "destination": "באלי",
@@ -74,7 +140,18 @@
       "💵 הרבה עסקים עובדים במזומן",
       "🛕 לכבד מקדשים וללבוש סארונג",
       "🦟 מומלץ תכשיר נגד יתושים"
-    ]
+    ],
+    "en": {
+      "destination": "Bali",
+      "country": "Indonesia",
+      "info": [
+        "💰 Currency: Indonesian rupiah",
+        "🛵 Chaotic traffic, be very careful on the roads",
+        "💵 Many businesses are cash-only",
+        "🛕 Respect temples and wear a sarong",
+        "🦟 Mosquito repellent is recommended"
+      ]
+    }
   },
   {
     "destination": "טוקיו",
@@ -85,7 +162,18 @@
       "🚫 לא אוכלים תוך כדי הליכה",
       "🚆 רכבות מדויקות בטירוף",
       "💳 לא בכל מקום מקבלים אשראי"
-    ]
+    ],
+    "en": {
+      "destination": "Tokyo",
+      "country": "Japan",
+      "info": [
+        "💰 Currency: yen",
+        "🤫 Quiet and politeness are very important",
+        "🚫 Don't eat while walking",
+        "🚆 Trains are incredibly punctual",
+        "💳 Not every place accepts cards"
+      ]
+    }
   },
   {
     "destination": "ניו יורק",
@@ -96,7 +184,18 @@
       "🚇 המטרו פועל 24/7",
       "⚠️ יש אזורים שפחות בטוחים בלילה",
       "🧥 מזג אוויר קיצוני בעונות"
-    ]
+    ],
+    "en": {
+      "destination": "New York",
+      "country": "USA",
+      "info": [
+        "💰 Currency: US dollar",
+        "💵 Tipping in restaurants is expected",
+        "🚇 The subway runs 24/7",
+        "⚠️ Some areas are less safe at night",
+        "🧥 Extreme seasonal weather"
+      ]
+    }
   },
   {
     "destination": "מיאמי",
@@ -107,7 +206,18 @@
       "🚗 עדיף רכב או Uber",
       "🏖 לשמור על ציוד בחופים",
       "🎉 חיי לילה חזקים"
-    ]
+    ],
+    "en": {
+      "destination": "Miami",
+      "country": "USA",
+      "info": [
+        "💰 Currency: US dollar",
+        "☀️ Very hot and humid",
+        "🚗 A car or Uber is best",
+        "🏖 Keep an eye on your belongings at the beach",
+        "🎉 Vibrant nightlife"
+      ]
+    }
   },
   {
     "destination": "קנקון",
@@ -118,7 +228,18 @@
       "⚠️ לא לצאת לאזורים מבודדים בלילה",
       "☀️ שמש חזקה מאוד",
       "💧 לשתות מים מבקבוקים בלבד"
-    ]
+    ],
+    "en": {
+      "destination": "Cancún",
+      "country": "Mexico",
+      "info": [
+        "💰 Currency: Mexican peso",
+        "🏨 Most attractions are in the Hotel Zone",
+        "⚠️ Avoid isolated areas at night",
+        "☀️ Very strong sun",
+        "💧 Drink bottled water only"
+      ]
+    }
   },
   {
     "destination": "סנטוריני",
@@ -129,7 +250,18 @@
       "🚗 תחבורה ציבורית מוגבלת",
       "📸 עומס תיירים בעונה",
       "🌅 להזמין מסעדות מראש לשקיעה"
-    ]
+    ],
+    "en": {
+      "destination": "Santorini",
+      "country": "Greece",
+      "info": [
+        "💰 Currency: euro",
+        "🧗 Lots of stairs and slopes",
+        "🚗 Limited public transport",
+        "📸 Crowded in high season",
+        "🌅 Book sunset restaurants in advance"
+      ]
+    }
   },
   {
     "destination": "פראג",
@@ -140,7 +272,18 @@
       "🍺 בירה זולה מאוד",
       "🚶 עיר מצוינת להליכה",
       "❄️ קר מאוד בחורף"
-    ]
+    ],
+    "en": {
+      "destination": "Prague",
+      "country": "Czechia",
+      "info": [
+        "💰 Currency: Czech koruna",
+        "💵 Beware of touristy exchange offices",
+        "🍺 Beer is very cheap",
+        "🚶 A great city for walking",
+        "❄️ Very cold in winter"
+      ]
+    }
   },
   {
     "destination": "בנגקוק",
@@ -151,7 +294,18 @@
       "🥵 חום ולחות קיצוניים",
       "🙏 לכבד מקדשים והמלך",
       "🍜 אוכל רחוב מצוין אך לבחור דוכנים עמוסים"
-    ]
+    ],
+    "en": {
+      "destination": "Bangkok",
+      "country": "Thailand",
+      "info": [
+        "💰 Currency: baht",
+        "🚕 Use Grab or metered taxis",
+        "🥵 Extreme heat and humidity",
+        "🙏 Respect temples and the King",
+        "🍜 Great street food, but choose busy stalls"
+      ]
+    }
   },
   {
     "destination": "ליסבון",
@@ -162,7 +316,18 @@
       "🚋 טראם תיירותי מאוד עמוס",
       "🍮 חובה לטעום Pastel de Nata",
       "🌬 רוחות חזקות ליד הים"
-    ]
+    ],
+    "en": {
+      "destination": "Lisbon",
+      "country": "Portugal",
+      "info": [
+        "💰 Currency: euro",
+        "🧗 A very hilly city",
+        "🚋 The tourist tram is very crowded",
+        "🍮 You must try a Pastel de Nata",
+        "🌬 Strong winds by the sea"
+      ]
+    }
   },
   {
     "destination": "האיים המלדיביים",
@@ -173,7 +338,18 @@
       "💵 ריזורטים יקרים מאוד",
       "☀️ שמש טרופית חזקה",
       "🛥 מעבר בין איים רק בסירה או מטוס"
-    ]
+    ],
+    "en": {
+      "destination": "Maldives",
+      "country": "Maldives",
+      "info": [
+        "💰 Currency: Maldivian rufiyaa",
+        "👙 Swimwear is fine at resorts, less so in local villages",
+        "💵 Resorts are very expensive",
+        "☀️ Strong tropical sun",
+        "🛥 Island transfers only by boat or seaplane"
+      ]
+    }
   },
   {
     "destination": "ליסבון",
@@ -184,18 +360,40 @@
       "🚋 טראם 28 תיירותי מאוד. עדיף ללכת ברגל",
       "🍮 חובה לטעום Pastel de Nata",
       "🌬 רוחות חזקות ליד האוקיינוס"
-    ]
+    ],
+    "en": {
+      "destination": "Lisbon",
+      "country": "Portugal",
+      "info": [
+        "💰 Currency: euro. Credit cards are widely accepted",
+        "🧗 A city of hills and stairs. Wear comfortable shoes",
+        "🚋 Tram 28 is very touristy. Walking is often better",
+        "🍮 You must try a Pastel de Nata",
+        "🌬 Strong winds by the ocean"
+      ]
+    }
   },
   {
     "destination": "ברלין",
     "country": "גרמניה",
     "info": [
       "💰 מטבע: יורו. כרטיסי אשראי מקובלים בכל מקום",
-      "🛂 נדרשת ויזת שנגן לאזרחי ישראל. יש לבקש לפחות 3 שבועות מראש",
+      "🛂 אזרחי ישראל פטורים מויזה לשהייה של עד 90 יום. מומלץ לבדוק לפני הטיסה אם נדרש אישור ETIAS",
       "🚇 תחבורה ציבורית מצוינת Berlin Welcome Card מומלץ",
       "🔌 שקע Type F, 230V אין צורך במתאם מישראל",
       "🛑 חנויות סגורות בימי ראשון"
-    ]
+    ],
+    "en": {
+      "destination": "Berlin",
+      "country": "Germany",
+      "info": [
+        "💰 Currency: euro. Credit cards are accepted everywhere",
+        "🛂 Israeli citizens don't need a visa for stays of up to 90 days. Check before you fly whether an ETIAS travel authorization is required",
+        "🚇 Excellent public transport, the Berlin Welcome Card is recommended",
+        "🔌 Type F sockets, 230V. No adapter needed from Israel",
+        "🛑 Shops are closed on Sundays"
+      ]
+    }
   },
   {
     "destination": "איסטנבול",
@@ -206,6 +404,17 @@
       "🕌 לבוש צנוע במסגדים",
       "🚕 נהגי מוניות לפעמים 'יצירתיים' במחיר",
       "🛍 מיקוח מקובל בשווקים"
-    ]
+    ],
+    "en": {
+      "destination": "Istanbul",
+      "country": "Turkey",
+      "info": [
+        "💰 Currency: Turkish lira",
+        "💵 Better to exchange money in the city",
+        "🕌 Modest dress in mosques",
+        "🚕 Taxi drivers can get 'creative' with fares",
+        "🛍 Bargaining is common in markets"
+      ]
+    }
   }
 ]

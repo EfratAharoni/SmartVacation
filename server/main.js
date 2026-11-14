@@ -12,6 +12,11 @@ import * as dealController from "./controllers/Deal.js";
 import * as destinationInfoController from "./controllers/DestinationInfo.js";
 import * as orderController from "./controllers/Order.js";
 import * as aiController from "./controllers/AI.js";
+import * as contactController from "./controllers/Contact.js";
+import * as reviewController from "./controllers/Review.js";
+import { getRates } from "./controllers/Rates.js";
+import { uploadImage, uploadImageMiddleware, handleUploadErrors, UPLOAD_DIR } from "./controllers/Upload.js";
+import { t, langMiddleware } from "./utils/i18n.js";
 import authenticateToken from "./middleware/auth.js";
 import adminOnly from "./middleware/adminOnly.js";
 
@@ -40,7 +45,7 @@ const corsOptions = {
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept-Language"],
 };
 
 app.use(helmet());
@@ -54,7 +59,8 @@ const generalLimiter = rateLimit({
   max: 200,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: "יותר מדי בקשות, נסה שוב בעוד 15 דקות" },
+  skip: () => process.env.NODE_ENV === "test",
+  message: (req) => ({ message: t(req, "tooManyRequests") }),
 });
 
 const authLimiter = rateLimit({
@@ -62,7 +68,8 @@ const authLimiter = rateLimit({
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: "יותר מדי ניסיונות התחברות, נסה שוב בעוד 15 דקות" },
+  skip: () => process.env.NODE_ENV === "test",
+  message: (req) => ({ message: t(req, "tooManyLogins") }),
 });
 
 const aiLimiter = rateLimit({
@@ -70,7 +77,8 @@ const aiLimiter = rateLimit({
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: "יותר מדי בקשות AI, נסה שוב בעוד דקה" },
+  skip: () => process.env.NODE_ENV === "test",
+  message: (req) => ({ message: t(req, "tooManyAi") }),
 });
 
 const passwordLimiter = rateLimit({
@@ -78,14 +86,30 @@ const passwordLimiter = rateLimit({
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: "יותר מדי ניסיונות שינוי סיסמה, נסה שוב בעוד 15 דקות" },
+  skip: () => process.env.NODE_ENV === "test",
+  message: (req) => ({ message: t(req, "tooManyPassword") }),
 });
 
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === "test",
+  message: (req) => ({ message: t(req, "tooManyContact") }),
+});
+
+app.use(langMiddleware);
 app.use(generalLimiter);
 
 // Users Routes
 app.get("/api/users", authenticateToken, adminOnly, userController.getUsers);
 app.get("/api/users/me", authenticateToken, userController.getMe);
+app.get("/api/users/me/lists", authenticateToken, userController.getMyLists);
+app.put("/api/users/me/lists", authenticateToken, userController.updateMyLists);
+app.put("/api/users/me/language", authenticateToken, userController.updateMyLanguage);
+app.post("/api/users/forgot-password", authLimiter, userController.forgotPassword);
+app.post("/api/users/reset-password", passwordLimiter, userController.resetPassword);
 app.post("/api/users/login", authLimiter, userController.login);
 app.post("/api/users/add", authLimiter, userController.createUser);
 app.post("/api/users/addMany", authenticateToken, adminOnly, userController.addManyUsers);
@@ -121,9 +145,36 @@ app.delete("/api/deals/:id", authenticateToken, adminOnly, dealController.remove
 // Order Routes
 app.post("/api/orders", authenticateToken, orderController.createOrder);
 app.get("/api/orders/my", authenticateToken, orderController.getUserOrders);
+app.get("/api/orders", authenticateToken, adminOnly, orderController.getAllOrders);
+app.put("/api/orders/:id/cancel", authenticateToken, orderController.cancelOrder);
+
+// Contact Routes
+app.post("/api/contact", contactLimiter, contactController.createContactMessage);
+app.get("/api/contact", authenticateToken, adminOnly, contactController.getContactMessages);
+app.put("/api/contact/:id/handled", authenticateToken, adminOnly, contactController.toggleHandled);
+
+// Review Routes
+app.get("/api/reviews/:type/:key", reviewController.getReviews);
+app.post("/api/reviews/:type/:key", authenticateToken, reviewController.createReview);
+app.get("/api/reviews", authenticateToken, adminOnly, reviewController.getAllReviews);
+app.delete("/api/reviews/:id", authenticateToken, adminOnly, reviewController.deleteReview);
+
+// Image uploads (admin) + serving locally stored uploads
+app.post("/api/uploads", authenticateToken, adminOnly, uploadImageMiddleware, handleUploadErrors, uploadImage);
+app.use(
+  "/api/uploads",
+  (req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin"); // allow the client origin to show the images
+    next();
+  },
+  express.static(UPLOAD_DIR, { maxAge: "7d", fallthrough: false })
+);
 
 // AI Routes — requires login + rate limit
 app.post("/api/ai/search", authenticateToken, aiLimiter, aiController.aiSearch);
+
+// Exchange rates for display currencies
+app.get("/api/rates", getRates);
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
@@ -138,4 +189,7 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// Tests import the app without starting the server / connecting to the real DB
+if (process.env.NODE_ENV !== "test") startServer();
+
+export default app;

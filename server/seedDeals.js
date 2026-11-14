@@ -5,6 +5,7 @@ import { readFileSync } from "fs";
 import mongoose from "mongoose";
 import connectDB from "./DB/db.js";
 import Deal from "./models/Deal.js";
+import { withDepartures } from "./utils/dates.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +19,7 @@ const seedDeals = async () => {
     );
 
     // Remove the numeric "id" field before inserting (MongoDB uses _id)
-    const dealsToInsert = dealsData.map(({ ...rest }) => rest);
+    const dealsToInsert = dealsData.map(({ ...rest }) => withDepartures(rest));
 
     // Delete existing deals and re-seed fresh
     await Deal.deleteMany({});

@@ -17,4 +17,4 @@ export const deleteAttractionById = (id) => Attraction.findByIdAndDelete(id);
 
 // עדכון פרטי אטרקציה
 export const updateAttractionById = (id, updateData) => 
-    Attraction.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    Attraction.findByIdAndUpdate(id, updateData, { returnDocument: "after", runValidators: true });

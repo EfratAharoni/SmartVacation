@@ -1,5 +1,7 @@
 import Groq from "groq-sdk";
 import Deal from "../models/Deal.js";
+import { getLang } from "../utils/i18n.js";
+import { rollDealForward } from "../utils/dates.js";
 
 const MODEL = "llama-3.1-8b-instant";
 
@@ -32,7 +34,7 @@ function getGroq() {
 async function parseWithGroq(query) {
   const currentYear = new Date().getFullYear();
   const prompt = `You are a travel search assistant for an Israeli travel site.
-The user wrote in Hebrew: "${query}"
+The user wrote (in Hebrew or English): "${query}"
 
 Available destinations: ${DESTINATIONS.join(", ")}
 
@@ -44,7 +46,7 @@ Extract and return ONLY a valid JSON object with these exact fields:
 - endDate: YYYY-MM-DD or null (calculate from startDate if duration given; 7 days after startDate if only month mentioned; null if no date at all).
 - budget: max total budget in ILS as integer, or null
 - guests: number of travelers as integer (זוג/couple=2, משפחה/family=4, לבד/solo=1), or null
-- isKosher: true ONLY if the word כשר/כשרה/כשרות appears, false otherwise
+- isKosher: true ONLY if the word כשר/כשרה/כשרות/kosher appears, false otherwise
 - vibe: one of "beach","adventure","romantic","city","cheap" — only if clearly implied, otherwise null
 
 IMPORTANT: Use JSON null (not the string "null") for missing values.
@@ -78,28 +80,31 @@ function localParse(text) {
     budget: null, guests: null, isKosher: false, vibe: null,
   };
 
-  if (/כשר|כשרה|כשרות/.test(text)) { result.isKosher = true; result.vibe = "kosher"; }
+  if (/כשר|כשרה|כשרות|kosher/i.test(text)) { result.isKosher = true; result.vibe = "kosher"; }
   if (!result.vibe) {
-    if (/בטן.{0,3}גב|חוף|ים|שמש|טרופי/.test(text)) result.vibe = "beach";
-    else if (/אקסטרים|הרפתק|ספורט/.test(text))      result.vibe = "adventure";
-    else if (/זול|זולה|תקציב|מוזל/.test(text))       result.vibe = "cheap";
-    else if (/רומנטי|רומנטית|זוגי/.test(text))       result.vibe = "romantic";
-    else if (/סיטי|עיר|תרבות/.test(text))            result.vibe = "city";
+    if (/בטן.{0,3}גב|חוף|ים|שמש|טרופי|beach|tropical|sun/i.test(text)) result.vibe = "beach";
+    else if (/אקסטרים|הרפתק|ספורט|adventure|extreme/i.test(text))      result.vibe = "adventure";
+    else if (/זול|זולה|תקציב|מוזל|cheap|budget/i.test(text))           result.vibe = "cheap";
+    else if (/רומנטי|רומנטית|זוגי|romantic|honeymoon/i.test(text))      result.vibe = "romantic";
+    else if (/סיטי|עיר|תרבות|city|culture|museum/i.test(text))         result.vibe = "city";
   }
 
-  if (/זוג|שניים|שניינו/.test(text))   result.guests = 2;
-  else if (/לבד|סולו|יחיד/.test(text)) result.guests = 1;
-  else if (/משפחה/.test(text))         result.guests = 4;
-  else { const m = text.match(/(\d+)\s*(נוסעים|אנשים)/); if (m) result.guests = parseInt(m[1], 10); }
+  if (/זוג|שניים|שניינו|couple|two of us/i.test(text))   result.guests = 2;
+  else if (/לבד|סולו|יחיד|solo|alone/i.test(text)) result.guests = 1;
+  else if (/משפחה|family/i.test(text))         result.guests = 4;
+  else { const m = text.match(/(\d+)\s*(נוסעים|אנשים|people|travell?ers|guests|adults)/i); if (m) result.guests = parseInt(m[1], 10); }
 
-  const bm = text.match(/(\d[\d,]+)\s*(₪|שקל|שקלים|ש"ח)/);
+  const bm = text.match(/(\d[\d,]+)\s*(₪|שקל|שקלים|ש"ח|ils|nis|shekels?)/i) || text.match(/₪\s*(\d[\d,]+)/);
   if (bm) result.budget = parseInt(bm[1].replace(/,/g, ""), 10);
 
   const MONTHS = { ינואר:0, פברואר:1, מרץ:2, אפריל:3, מאי:4, יוני:5,
-                   יולי:6, אוגוסט:7, ספטמבר:8, אוקטובר:9, נובמבר:10, דצמבר:11 };
+                   יולי:6, אוגוסט:7, ספטמבר:8, אוקטובר:9, נובמבר:10, דצמבר:11,
+                   january:0, february:1, march:2, april:3, may:4, june:5,
+                   july:6, august:7, september:8, october:9, november:10, december:11 };
   const year = new Date().getFullYear();
+  const lowerText = text.toLowerCase();
   for (const [name, idx] of Object.entries(MONTHS)) {
-    if (text.includes(name)) {
+    if (lowerText.includes(name)) {
       result.startDate = new Date(year, idx, 1).toISOString().slice(0, 10);
       result.endDate   = new Date(year, idx + 1, 0).toISOString().slice(0, 10);
       break;
@@ -159,11 +164,12 @@ async function queryDeals(filters) {
     query.isKosherFriendly = true;
   }
 
-  return Deal.find(query).limit(10).lean();
+  const deals = await Deal.find(query).limit(10).lean();
+  return deals.map((d) => rollDealForward(d)); // never suggest past dates
 }
 
 // ── Step 3: Rank deals with Groq + add Hebrew explanations ───────────────────
-async function rankWithGroq(query, deals) {
+async function rankWithGroq(query, deals, lang = "he") {
   const slim = deals.map(d => ({
     id: d._id.toString(),
     destination: d.destination,
@@ -176,10 +182,10 @@ async function rankWithGroq(query, deals) {
     isKosher: d.isKosherFriendly,
   }));
 
-  const prompt = `A user searched for a vacation with this request (in Hebrew): "${query}"
+  const prompt = `A user searched for a vacation with this request: "${query}"
 
 Here are ${slim.length} available deals. Rank them from most to least relevant based on the user's request.
-For each deal, provide a short one-sentence explanation in Hebrew (max 15 words) explaining why it matches.
+For each deal, provide a short one-sentence explanation in ${lang === "en" ? "English" : "Hebrew"} (max 15 words) explaining why it matches.
 
 Deals:
 ${JSON.stringify(slim, null, 0)}
@@ -260,7 +266,7 @@ export const aiSearch = async (req, res) => {
   // Step 3: Rank + explain
   let rankedDeals;
   try {
-    rankedDeals = await rankWithGroq(query, deals);
+    rankedDeals = await rankWithGroq(query, deals, getLang(req));
   } catch (err) {
     console.warn("Groq ranking failed, returning unranked:", err.message);
     rankedDeals = deals.map(deal => ({ deal, score: null, explanation: null }));

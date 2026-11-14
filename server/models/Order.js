@@ -12,6 +12,7 @@ const itemSchema = new mongoose.Schema({
   location: String,
   bookingOptions: mongoose.Schema.Types.Mixed,
   bookingQty: mongoose.Schema.Types.Mixed,
+  en: mongoose.Schema.Types.Mixed, // English display names
 });
 
 const orderSchema = new mongoose.Schema(
@@ -33,7 +34,8 @@ const orderSchema = new mongoose.Schema(
     passengers: [{ firstName: String, lastName: String }],
     paymentMethod: String,
     totalAmount: Number,
-    status: { type: String, default: "completed" },
+    status: { type: String, enum: ["completed", "cancelled"], default: "completed" },
+    cancelledAt: Date,
   },
   { timestamps: true }
 );

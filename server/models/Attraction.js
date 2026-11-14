@@ -11,7 +11,9 @@ const attractionSchema = new mongoose.Schema({
     rating: { type: Number, default: 0 },
     image: { type: String },
     description: { type: String },
-    highlights: [{ type: String }] 
+    highlights: [{ type: String }],
+    // English display text (Hebrew fields stay canonical for search/filtering)
+    en: { type: mongoose.Schema.Types.Mixed, default: {} }
 }, { timestamps: true });
 
 const Attraction = mongoose.model("Attraction", attractionSchema);

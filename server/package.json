@@ -6,13 +6,17 @@
   "scripts": {
     "start": "node main.js",
     "dev": "nodemon main.js",
+    "translate": "node addTranslations.js",
+    "translate:db": "node addTranslations.js --db",
+    "migrate": "node migrate.js",
+    "make-admin": "node makeAdmin.js",
     "seed": "node seedAttractions.js && node seedDeals.js && node seedDestinationInfo.js",
     "seed:attractions": "node seedAttractions.js",
     "seed:deals": "node seedDeals.js",
     "seed:destinations": "node seedDestinationInfo.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests --exit"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +25,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.86.1",
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.5.1",
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^5.2.1",
@@ -28,13 +33,16 @@
     "groq-sdk": "^1.1.2",
     "helmet": "^8.2.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.1.3"
+    "mongoose": "^9.1.3",
+    "multer": "^2.0.2",
+    "nodemailer": "^6.9.16"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "chai": "^6.2.2",
     "eslint": "^10.2.0",
     "mocha": "^11.7.5",
+    "mongodb-memory-server": "^10.1.4",
     "nodemon": "^3.1.10",
     "supertest": "^7.2.2"
   }

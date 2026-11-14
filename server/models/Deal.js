@@ -7,6 +7,11 @@ const dealSchema = new mongoose.Schema({
     originalPrice: { type: Number, required: true },
     discount: { type: Number, default: 0 },
     dates: { type: [String], required: true },
+    // real date ranges derived from `dates` (see utils/dates.js) – used for sorting/filtering
+    departures: {
+        type: [{ _id: false, label: String, start: Date, end: Date }],
+        default: [],
+    },
     rating: { type: Number, min: 1, max: 5 },
     airline: { type: String, required: true },
     flightTime: { type: String },
@@ -27,6 +32,8 @@ const dealSchema = new mongoose.Schema({
     weather: { type: String },
     electricityInfo: { type: String },
     travelTips: { type: [String], default: [] },
+    // English display text (Hebrew fields stay canonical for search/filtering)
+    en: { type: mongoose.Schema.Types.Mixed, default: {} },
     emergencyContacts: {
         police: { type: String },
         ambulance: { type: String },
