@@ -756,7 +756,8 @@
         "sports": "Sports"
       },
       "upload": "Upload image",
-      "uploading": "Uploading..."
+      "uploading": "Uploading...",
+      "imagePathHint": "Path to an image in client/public/images, e.g. /images/paris.jpg, or a full link (https://...)"
     },
     "reviewItem": "Item",
     "deleted": "Deleted"

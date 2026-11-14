@@ -756,7 +756,8 @@
         "sports": "ספורט"
       },
       "upload": "העלאת תמונה",
-      "uploading": "מעלה..."
+      "uploading": "מעלה...",
+      "imagePathHint": "נתיב לתמונה מתיקיית client/public/images, למשל /images/paris.jpg, או קישור מלא (https://...)"
     },
     "reviewItem": "פריט",
     "deleted": "נמחק בהצלחה"

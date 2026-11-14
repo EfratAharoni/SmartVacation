@@ -6,10 +6,12 @@ import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { onLoggedIn } from "../utils/userSync";
 import { toast } from "../components/Toast";
+import useServerFeatures from "../utils/useServerFeatures";
 
 const Login = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { emailEnabled } = useServerFeatures(); // "forgot password" needs an email server
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -182,9 +184,11 @@ const Login = () => {
                 <input type="checkbox" />
                 <span>{t("login.rememberMe")}</span>
               </label>
-              <Link to="/forgot-password" className="forgot-password">
-                {t("login.forgot")}
-              </Link>
+              {emailEnabled && (
+                <Link to="/forgot-password" className="forgot-password">
+                  {t("login.forgot")}
+                </Link>
+              )}
             </div>
 
             {/* Submit Button */}

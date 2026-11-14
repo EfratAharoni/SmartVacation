@@ -6,12 +6,14 @@ import { apiJson } from "../utils/api";
 import useLocalize from "../utils/useLocalize";
 import { useUserLists } from "../context/UserListsContext";
 import { usePreferences } from "../context/PreferencesContext";
+import useServerFeatures from "../utils/useServerFeatures";
 
 export default function Checkout() {
   const navigate = useNavigate();
   const { t, tc, formatNumber } = useLocalize();
   const { price, isConverted } = usePreferences();
   const { cart, clearCart } = useUserLists();
+  const { emailEnabled } = useServerFeatures(); // confirmation emails need an email server
   // after the order is placed the cart is emptied – keep a snapshot for the confirmation screen
   const [orderSnapshot, setOrderSnapshot] = useState(null);
   const cartItems = orderSnapshot || cart;
@@ -103,7 +105,7 @@ export default function Checkout() {
           },
           passengers: form.passengers,
           paymentMethod,
-          wantsEmail: form.agree,
+          wantsEmail: emailEnabled && form.agree,
         },
       });
     return data.order;
@@ -457,12 +459,14 @@ export default function Checkout() {
                       </div>
                     </div>
                   )}
-                  <div className="form-group checkbox-group">
-                    <label>
-                      <input type="checkbox" name="agree" checked={form.agree} onChange={handleFormChange} />
-                      {t("checkout.emailConfirmation")}
-                    </label>
-                  </div>
+                  {emailEnabled && (
+                    <div className="form-group checkbox-group">
+                      <label>
+                        <input type="checkbox" name="agree" checked={form.agree} onChange={handleFormChange} />
+                        {t("checkout.emailConfirmation")}
+                      </label>
+                    </div>
+                  )}
                   {formError && <div className="form-error">{formError}</div>}
                   <div className="step-actions two-buttons">
                     <button type="button" className="secondary-step-btn" onClick={() => setStep(1)}>{t("common.back")}</button>
@@ -480,7 +484,7 @@ export default function Checkout() {
                     <CheckCircle2 className="confirmation-check-icon" />
                   </div>
                   <h2>{t("checkout.successTitle")}</h2>
-                  {form.agree && <p>{t("checkout.successText")}</p>}
+                  {emailEnabled && form.agree && <p>{t("checkout.successText")}</p>}
                   <div className="confirmation-details">
                     <h4>{t("checkout.orderSummary")}</h4>
                     {orderId && <div className="confirmation-detail-row"><span>{t("checkout.orderNumber")}</span><strong>#{orderId}</strong></div>}

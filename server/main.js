@@ -176,6 +176,15 @@ app.post("/api/ai/search", authenticateToken, aiLimiter, aiController.aiSearch);
 // Exchange rates for display currencies
 app.get("/api/rates", getRates);
 
+// Which optional features are configured on this server (the client hides the rest).
+// "Nice to have" features turn on automatically once their env vars are set.
+app.get("/api/config", (req, res) => {
+  res.json({
+    emailEnabled: Boolean(process.env.SMTP_HOST), // password reset + order confirmation emails
+    uploadsEnabled: Boolean(process.env.CLOUDINARY_URL), // admin image upload (persistent storage)
+  });
+});
+
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 const startServer = async () => {

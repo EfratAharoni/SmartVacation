@@ -204,6 +204,8 @@ export const updateMyLanguage = async (req, res) => {
 // ── Forgot / reset password ─────────────────────────────────────────────────
 export const forgotPassword = async (req, res) => {
     try {
+        // feature is off until an email server is configured (SMTP_HOST)
+        if (!process.env.SMTP_HOST) return res.status(404).json({ message: t(req, "notFound") });
         const { email } = req.body || {};
         if (!email || !EMAIL_RE.test(email))
             return res.status(400).json({ message: t(req, "emailInvalid") });

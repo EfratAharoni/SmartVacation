@@ -87,11 +87,24 @@ describe("Smart Vacation API", function () {
       expect(get.body.cart).to.have.length(1);
     });
 
+    it("keeps forgot-password off until email is configured", async () => {
+      delete process.env.SMTP_HOST;
+      const cfg = await request(app).get("/api/config");
+      expect(cfg.body).to.deep.equal({ emailEnabled: false, uploadsEnabled: false });
+      const res = await request(app).post("/api/users/forgot-password").send({ email: "a@test.com" });
+      expect(res.status).to.equal(404);
+    });
+
     it("does not reveal whether an email exists on forgot-password", async () => {
-      const known = await request(app).post("/api/users/forgot-password").send({ email: "a@test.com" });
-      const unknown = await request(app).post("/api/users/forgot-password").send({ email: "nobody@test.com" });
-      expect(known.status).to.equal(200);
-      expect(unknown.body.message).to.equal(known.body.message);
+      process.env.SMTP_HOST = "smtp.test.invalid"; // emails are never sent in tests
+      try {
+        const known = await request(app).post("/api/users/forgot-password").send({ email: "a@test.com" });
+        const unknown = await request(app).post("/api/users/forgot-password").send({ email: "nobody@test.com" });
+        expect(known.status).to.equal(200);
+        expect(unknown.body.message).to.equal(known.body.message);
+      } finally {
+        delete process.env.SMTP_HOST;
+      }
     });
 
     it("rejects an invalid reset token", async () => {

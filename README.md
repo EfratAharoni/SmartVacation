@@ -153,6 +153,20 @@ Deals can be filtered by "vibe" categories:
 
 ---
 
+## Nice to have (built, switched off until configured)
+These features are implemented but hidden; each turns on automatically when its setting
+is added to the **server** environment on Render (no code change needed). `GET /api/config`
+shows what is currently enabled.
+
+| Feature | What to set | Notes |
+|---|---|---|
+| Forgot / reset password, order-confirmation email | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `MAIL_FROM`, `CLIENT_URL` | e.g. Gmail: `smtp.gmail.com`, port `587`, an App Password |
+| Admin image upload | `CLOUDINARY_URL` | Free Cloudinary account; without it, enter image paths/links manually |
+| Direct links to inner pages (e.g. `/deals`, reset-password links) | Render → client service → Redirects/Rewrites: `/*` → `/index.html` (Rewrite) | Without it, refreshing an inner page returns 404 |
+| Admin panel access in production | `cd server && npm run make-admin -- <email>` | Run once against the production DB |
+
+---
+
 ## API Endpoints
 
 ### Users

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { X, Upload } from "lucide-react";
 import { apiFetch } from "../utils/api";
+import useServerFeatures from "../utils/useServerFeatures";
 import { translateDealDate } from "../utils/destinations";
 
 /**
@@ -129,6 +130,7 @@ export default function AdminItemForm({ type, item, onClose, onSave, t }) {
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const { uploadsEnabled } = useServerFeatures(); // upload needs Cloudinary (CLOUDINARY_URL)
 
   /** Upload an image file to the server; the returned URL goes into the image field */
   const uploadImage = async (e) => {
@@ -274,13 +276,15 @@ export default function AdminItemForm({ type, item, onClose, onSave, t }) {
               {form.image && form.image !== "/images/" && (
                 <img src={form.image} alt="" className="af-preview" onError={(e) => (e.currentTarget.style.opacity = 0.2)} />
               )}
-              <label className={`admin-btn ghost af-upload ${uploading ? "is-loading" : ""}`}>
-                <Upload size={16} aria-hidden="true" />
-                {uploading ? t("admin.form.uploading") : t("admin.form.upload")}
-                <input type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/gif" onChange={uploadImage} hidden disabled={uploading} />
-              </label>
+              {uploadsEnabled && (
+                <label className={`admin-btn ghost af-upload ${uploading ? "is-loading" : ""}`}>
+                  <Upload size={16} aria-hidden="true" />
+                  {uploading ? t("admin.form.uploading") : t("admin.form.upload")}
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/gif" onChange={uploadImage} hidden disabled={uploading} />
+                </label>
+              )}
             </div>
-            <small className="af-hint">{t("admin.form.imageHint")}</small>
+            <small className="af-hint">{uploadsEnabled ? t("admin.form.imageHint") : t("admin.form.imagePathHint")}</small>
           </fieldset>
 
           {/* ── Prices ── */}

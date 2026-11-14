@@ -36,6 +36,10 @@ const uploadToCloudinary = (buffer) =>
  */
 export const uploadImage = async (req, res) => {
   try {
+    // feature is off until Cloudinary is configured (local disk is wiped on every deploy);
+    // in tests the local-disk fallback is still exercised
+    if (!useCloudinary() && process.env.NODE_ENV !== "test")
+      return res.status(404).json({ message: t(req, "notFound") });
     if (!req.file) return res.status(400).json({ message: t(req, "uploadInvalid") });
 
     if (useCloudinary()) {
