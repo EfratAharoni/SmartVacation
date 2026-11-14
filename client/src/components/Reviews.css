@@ -1,0 +1,143 @@
+.reviews-block {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  text-align: start;
+}
+.reviews-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.reviews-head h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #1f2937;
+}
+.reviews-avg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4b5563;
+  font-weight: 600;
+}
+.reviews-star {
+  color: #d1d5db;
+}
+.reviews-star.filled {
+  color: #f59e0b;
+  fill: #f59e0b;
+}
+.reviews-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+.reviews-stars-input {
+  display: flex;
+  gap: 2px;
+}
+.reviews-star-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  line-height: 0;
+}
+.reviews-star-btn:hover {
+  border: none;
+}
+.reviews-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  resize: vertical;
+  background: #fff;
+  color: #111827;
+}
+.reviews-submit {
+  align-self: flex-start;
+  background: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.reviews-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.reviews-status {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.reviews-status.success {
+  color: #15803d;
+}
+.reviews-status.error {
+  color: #b91c1c;
+}
+.reviews-login,
+.reviews-empty {
+  color: #6b7280;
+  margin: 8px 0 12px;
+}
+.reviews-login a {
+  color: #4c51bf;
+  font-weight: 600;
+}
+.reviews-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.review-item {
+  background: #fff;
+  border: 1px solid #eef0f4;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.review-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: #111827;
+}
+.review-stars {
+  color: #f59e0b;
+  letter-spacing: 1px;
+}
+.review-stars-empty {
+  color: #d1d5db;
+}
+.review-date {
+  margin-inline-start: auto;
+  color: #9ca3af;
+  font-size: 0.82rem;
+}
+.review-text {
+  margin: 6px 0 0;
+  color: #374151;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}

@@ -85,7 +85,7 @@
     background: #ffffff;
     box-shadow: 0 14px 34px rgba(15, 23, 42, 0.22);
     animation: fadeInUp 1s ease 0.4s backwards;
-    direction: rtl;
+    direction: var(--dir, rtl);
 }
 
 .search-cell {
@@ -102,7 +102,7 @@
     color: #1f2937;
     font-size: 0.98rem;
     font-weight: 600;
-    text-align: right;
+    text-align:  start;
     transition: background 0.25s ease, color 0.25s ease;
     flex: 1;
     position: relative;
@@ -113,7 +113,7 @@
 }
 
 .search-cell + .search-cell {
-    border-right: 1px solid #e5e7eb;
+    border-inline-start: 1px solid #e5e7eb;
 }
 
 .destination-cell,
@@ -129,7 +129,7 @@
     font-size: 0.98rem;
     font-weight: 600;
     outline: none;
-    text-align: right;
+    text-align:  start;
 }
 
 .search-input::placeholder {
@@ -144,14 +144,14 @@
     font-size: 0.98rem;
     font-weight: 600;
     width: 100%;
-    text-align: right;
+    text-align:  start;
     padding: 0;
 }
 
 .search-popover {
     position: absolute;
     top: calc(100% + 8px);
-    right: 0;
+    inset-inline-start: 0;
     width: min(360px, 88vw);
     background: #fff;
     border: 1px solid #e5e7eb;
@@ -168,7 +168,7 @@
     background: #fff;
     color: #1f2937;
     padding: 0.78rem 0.95rem;
-    text-align: right;
+    text-align:  start;
     font-size: 0.94rem;
     cursor: pointer;
 }
@@ -300,7 +300,7 @@
     min-height: 58px;
     min-width: 132px;
     padding: 0 1.25rem;
-    margin-right: 0.25rem;
+    margin-inline-start: 0.25rem;
     flex: 0 0 auto;
 }
 
@@ -630,13 +630,13 @@
         padding: 0 0.9rem;
         border-radius: 0;
         border-bottom: 1px solid #e5e7eb;
-        border-right: none;
+        border-inline-start: none;
         background: transparent;
         width: 100%;
     }
 
     .search-cell + .search-cell {
-        border-right: none;
+        border-inline-start: none;
     }
 
     .search-input,
@@ -648,8 +648,8 @@
     .search-submit-btn {
         flex: 1 1 auto;
         min-width: 0;
-        margin-right: 0.25rem;
-        margin-left: 1rem;
+        margin-inline-start: 0.25rem;
+        margin-inline-end: 1rem;
         margin-top: 0.3rem;
         border-radius: 10px;
         min-height: 44px;
@@ -779,7 +779,7 @@
     display: flex;
     min-height: 500px; /* גובה מינימלי לכל הסקציה */
     width: 100%;
-    direction: rtl;
+    direction: var(--dir, rtl);
 }
 
 .side {
@@ -952,8 +952,8 @@
 }
 
 .split-form input {
-    direction: rtl;
-    text-align: right;
+    direction: var(--dir, rtl);
+    text-align:  start;
 }
 
 /* Desktop only: reverse link order for RTL aesthetic on home page */
@@ -1076,7 +1076,7 @@
     padding: 0 1.15rem 0 0.95rem;
     height: 44px;
     flex-shrink: 0;
-    margin-right: 0.3rem;
+    margin-inline-start: 0.3rem;
     letter-spacing: 0.01em;
     transition: transform 0.2s ease;
     white-space: nowrap;
@@ -1125,7 +1125,7 @@
     height: 40px;
     font-size: 0.83rem;
     font-weight: 600;
-    margin-right: 0.15rem;
+    margin-inline-start: 0.15rem;
     transition: background 0.2s;
     white-space: nowrap;
 }
@@ -1149,11 +1149,11 @@
     font-size: 0.97rem;
     font-weight: 500;
     outline: none;
-    text-align: right;
+    text-align:  start;
     min-width: 0;
     padding: 0;
     min-height: 52px;
-    direction: rtl;
+    direction: var(--dir, rtl);
 }
 
 .ai-mode-input::placeholder {
@@ -1230,7 +1230,7 @@
     padding: 0.38rem 0.9rem 0.38rem 0.55rem;
     margin-top: 0.45rem;
     animation: fadeInUp 0.3s ease;
-    direction: rtl;
+    direction: var(--dir, rtl);
 }
 
 .ai-badge-icon {
@@ -1250,7 +1250,7 @@
     justify-content: center;
     cursor: pointer;
     padding: 0;
-    margin-right: 0.15rem;
+    margin-inline-start: 0.15rem;
     transition: background 0.2s;
     flex-shrink: 0;
 }
@@ -1267,7 +1267,7 @@
         height: 44px;
         padding: 0 0.8rem;
         margin-top: 0.3rem;
-        margin-right: 0;
+        margin-inline-start: 0;
     }
 
     .ai-pill-btn span {

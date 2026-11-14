@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Register.css";
-import { API_BASE_URL } from "../utils/api";
+import { apiFetch } from "../utils/api";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { onLoggedIn } from "../utils/userSync";
+import { toast } from "../components/Toast";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -39,23 +44,24 @@ const Register = () => {
 
     // Full name validation
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "נא להזין שם מלא";
+      newErrors.fullName = t("register.err.nameRequired");
     } else if (formData.fullName.trim().length < 2) {
-      newErrors.fullName = "שם מלא חייב להכיל לפחות 2 תווים";
+      newErrors.fullName = t("register.err.nameShort");
     }
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = "נא להזין כתובת אימייל";
+      newErrors.email = t("register.err.emailRequired");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "כתובת אימייל לא תקינה";
+      newErrors.email = t("register.err.emailInvalid");
     }
 
     // Phone validation
     if (!formData.phone) {
-      newErrors.phone = "נא להזין מספר טלפון";
-    } else if (!/^0\d{1,2}-?\d{7}$/.test(formData.phone.replace(/\s/g, ""))) {
-      newErrors.phone = "מספר טלפון לא תקין";
+      newErrors.phone = t("register.err.phoneRequired");
+    } else if (!/^(0\d{1,2}-?\d{7}|\+?[\d\-()]{7,20})$/.test(formData.phone.replace(/\s/g, ""))) {
+      // Israeli format, or an international number
+      newErrors.phone = t("register.err.phoneInvalid");
     }
 
     setErrors(newErrors);
@@ -67,23 +73,23 @@ const Register = () => {
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = "נא להזין סיסמה";
+      newErrors.password = t("register.err.passwordRequired");
     } else if (formData.password.length < 8) {
-      newErrors.password = "הסיסמה חייבת להכיל לפחות 8 תווים";
+      newErrors.password = t("register.err.passwordShort");
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = "הסיסמה חייבת להכיל אותיות גדולות, קטנות ומספרים";
+      newErrors.password = t("register.err.passwordComplexity");
     }
 
     // Confirm password validation
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "נא לאמת את הסיסמה";
+      newErrors.confirmPassword = t("register.err.confirmRequired");
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "הסיסמאות אינן תואמות";
+      newErrors.confirmPassword = t("register.err.mismatch");
     }
 
     // Terms validation
     if (!agreedToTerms) {
-      newErrors.terms = "יש לאשר את תנאי השימוש";
+      newErrors.terms = t("register.err.terms");
     }
 
     setErrors(newErrors);
@@ -110,17 +116,14 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users/add`, {
+      const response = await apiFetch("/users/add", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+        body: {
           fullName: formData.fullName.trim(),
           email: formData.email.trim(),
           phone: formData.phone.trim(),
           password: formData.password,
-        }),
+        },
       });
 
       const data = await response.json();
@@ -128,7 +131,7 @@ const Register = () => {
       if (!response.ok) {
         setErrors((prev) => ({
           ...prev,
-          email: data.message || "לא ניתן להשלים הרשמה",
+          email: data.message || t("register.failed"),
         }));
         return;
       }
@@ -138,12 +141,13 @@ const Register = () => {
       localStorage.setItem("userEmail", data.user?.email || formData.email);
       localStorage.setItem("authToken", data.token || "");
       window.dispatchEvent(new Event("userDataUpdated"));
+      await onLoggedIn(data.user);
 
       navigate("/");
-    } catch (error) {
+    } catch {
       setErrors((prev) => ({
         ...prev,
-        email: "שגיאת תקשורת עם השרת. נסה שוב.",
+        email: t("common.networkError"),
       }));
     } finally {
       setIsLoading(false);
@@ -155,12 +159,12 @@ const Register = () => {
   };
 
   const handleGoogleRegister = () => {
-    alert("הרשמה עם Google");
+    toast.info(t("login.socialSoon", { provider: "Google" }));
     // כאן תוסיף את הלוגיקה להרשמה עם Google
   };
 
   const handleFacebookRegister = () => {
-    alert("הרשמה עם Facebook");
+    toast.info(t("login.socialSoon", { provider: "Facebook" }));
     // כאן תוסיף את הלוגיקה להרשמה עם Facebook
   };
 
@@ -175,22 +179,23 @@ const Register = () => {
     if (/\d/.test(password)) strength++;
     if (/[^a-zA-Z\d]/.test(password)) strength++;
 
-    if (strength <= 2) return { strength: 33, text: "חלשה", color: "#ff4444" };
+    if (strength <= 2) return { strength: 33, text: t("register.weak"), color: "#ff4444" };
     if (strength <= 3)
-      return { strength: 66, text: "בינונית", color: "#ffa500" };
-    return { strength: 100, text: "חזקה", color: "#44ff44" };
+      return { strength: 66, text: t("register.medium"), color: "#ffa500" };
+    return { strength: 100, text: t("register.strong"), color: "#44ff44" };
   };
 
   const passwordStrength = getPasswordStrength();
 
   return (
     <div className="register-page">
+      <LanguageSwitcher className="floating" />
       <div className="register-container">
         {/* Right Side - Form */}
         <div className="register-form-section">
           <div className="register-header">
-            <h1>הרשמה</h1>
-            <p>מלא את הפרטים ליצירת חשבון חדש</p>
+            <h1>{t("register.title")}</h1>
+            <p>{t("register.subtitle")}</p>
           </div>
 
           {/* Progress Bar */}
@@ -199,14 +204,14 @@ const Register = () => {
               className={`progress-step ${currentStep >= 1 ? "active" : ""}`}
             >
               <div className="step-circle">1</div>
-              <span>פרטים אישיים</span>
+              <span>{t("register.personal")}</span>
             </div>
             <div className="progress-line"></div>
             <div
               className={`progress-step ${currentStep >= 2 ? "active" : ""}`}
             >
               <div className="step-circle">2</div>
-              <span>אבטחה</span>
+              <span>{t("register.security")}</span>
             </div>
           </div>
 
@@ -216,7 +221,7 @@ const Register = () => {
               <div className="form-step" key="step1">
                 {/* Full Name Field */}
                 <div className="form-group">
-                  <label htmlFor="fullName">שם מלא</label>
+                  <label htmlFor="fullName">{t("common.fullName")}</label>
                   <div className="input-wrapper">
                     {formData.fullName === "" && (
                       <span className="input-icon">👤</span>
@@ -227,7 +232,7 @@ const Register = () => {
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
-                      placeholder="הכנס את שמך המלא"
+                      placeholder={t("register.fullNamePlaceholder")}
                       className={`${errors.fullName ? "error" : ""} ${
                         formData.fullName === "" ? "has-icon" : ""
                       }`.trim()}
@@ -240,7 +245,7 @@ const Register = () => {
 
                 {/* Email Field */}
                 <div className="form-group">
-                  <label htmlFor="email">אימייל</label>
+                  <label htmlFor="email">{t("common.email")}</label>
                   <div className="input-wrapper">
                     {formData.email === "" && (
                       <span className="input-icon">📧</span>
@@ -251,7 +256,7 @@ const Register = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="הכנס את כתובת האימייל שלך"
+                      placeholder={t("register.emailPlaceholder")}
                       className={`${errors.email ? "error" : ""} ${
                         formData.email === "" ? "has-icon" : ""
                       }`.trim()}
@@ -264,7 +269,7 @@ const Register = () => {
 
                 {/* Phone Field */}
                 <div className="form-group">
-                  <label htmlFor="phone">טלפון</label>
+                  <label htmlFor="phone">{t("common.phone")}</label>
                   <div className="input-wrapper">
                     {formData.phone === "" && (
                       <span className="input-icon">📱</span>
@@ -275,7 +280,7 @@ const Register = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="הכנס את מספר הטלפון שלך"
+                      placeholder={t("register.phonePlaceholder")}
                       className={`${errors.phone ? "error" : ""} ${
                         formData.phone === "" ? "has-icon" : ""
                       }`.trim()}
@@ -291,12 +296,12 @@ const Register = () => {
                   className="next-btn"
                   onClick={handleNextStep}
                 >
-                  המשך לשלב הבא
+                  {t("register.next")}
                 </button>
 
                 {/* Divider */}
                 <div className="divider">
-                  <span>או הירשם עם</span>
+                  <span>{t("register.orRegisterWith")}</span>
                 </div>
 
                 {/* Social Register */}
@@ -329,7 +334,7 @@ const Register = () => {
               <div className="form-step" key="step2">
                 {/* Password Field */}
                 <div className="form-group">
-                  <label htmlFor="password">סיסמה</label>
+                  <label htmlFor="password">{t("common.password")}</label>
                   <div className="input-wrapper">
                     {formData.password === "" && (
                       <span className="input-icon">🔒</span>
@@ -340,7 +345,7 @@ const Register = () => {
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
-                      placeholder="הזן סיסמה חזקה"
+                      placeholder={t("register.passwordPlaceholder")}
                       className={`${errors.password ? "error" : ""} ${
                         formData.password === "" ? "has-icon" : ""
                       }`.trim()}
@@ -376,7 +381,7 @@ const Register = () => {
 
                 {/* Confirm Password Field */}
                 <div className="form-group">
-                  <label htmlFor="confirmPassword">אימות סיסמה</label>
+                  <label htmlFor="confirmPassword">{t("register.confirmPassword")}</label>
                   <div className="input-wrapper">
                     {formData.confirmPassword === "" && (
                       <span className="input-icon">🔒</span>
@@ -387,7 +392,7 @@ const Register = () => {
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      placeholder="הזן סיסמה שנית"
+                      placeholder={t("register.confirmPlaceholder")}
                       className={`${errors.confirmPassword ? "error" : ""} ${
                         formData.confirmPassword === "" ? "has-icon" : ""
                       }`.trim()}
@@ -418,8 +423,8 @@ const Register = () => {
                       onChange={(e) => setAgreedToTerms(e.target.checked)}
                     />
                     <span>
-                      אני מסכים ל<a href="#">תנאי השימוש</a> ול
-                      <a href="#">מדיניות הפרטיות</a>
+                      {t("register.agreePrefix")}<a href="#">{t("register.terms")}</a>{t("register.and")}
+                      <a href="#">{t("register.privacy")}</a>
                     </span>
                   </label>
                   {errors.terms && (
@@ -433,7 +438,7 @@ const Register = () => {
                     className="back-btn"
                     onClick={handlePrevStep}
                   >
-                    חזור
+                    {t("register.back")}
                   </button>
                   <button
                     type="submit"
@@ -443,10 +448,10 @@ const Register = () => {
                     {isLoading ? (
                       <>
                         <span className="spinner"></span>
-                        נרשם...
+                        {t("register.registering")}
                       </>
                     ) : (
-                      "הירשם"
+                      t("register.register")
                     )}
                   </button>
                 </div>
@@ -456,7 +461,7 @@ const Register = () => {
             {/* Login Link */}
             <div className="login-link">
               <p>
-                כבר יש לך חשבון? <Link to="/login">התחבר עכשיו</Link>
+                {t("register.haveAccount")} <Link to="/login">{t("register.loginNow")}</Link>
               </p>
             </div>
 
@@ -467,7 +472,7 @@ const Register = () => {
               type="button"
             >
               <span className="guest-icon">👤</span>
-              לא רוצה להירשם? המשך כאורח
+              {t("register.guest")}
             </button>
           </form>
           {/* <div className="guest-link">
@@ -487,29 +492,29 @@ const Register = () => {
         <div className="register-visual-section">
           <div className="visual-content">
             {/* <div className="logo">Smart Vacation ✈️</div> */}
-            <h2>הצטרף אלינו היום</h2>
-            <p>צור חשבון חינם והתחל לתכנן את החופשה הבאה שלך בקלות ובמהירות</p>
+            <h2>{t("register.visualTitle")}</h2>
+            <p>{t("register.visualText")}</p>
 
             <div className="benefits-list">
               <div className="benefit-item">
                 <div className="benefit-number">1</div>
                 <div className="benefit-content">
-                  <h4>צור חשבון</h4>
-                  <p>הרשמה פשוטה ומהירה</p>
+                  <h4>{t("register.b1Title")}</h4>
+                  <p>{t("register.b1Text")}</p>
                 </div>
               </div>
               <div className="benefit-item">
                 <div className="benefit-number">2</div>
                 <div className="benefit-content">
-                  <h4>בחר יעד</h4>
-                  <p>מאות יעדים ברחבי העולם</p>
+                  <h4>{t("register.b2Title")}</h4>
+                  <p>{t("register.b2Text")}</p>
                 </div>
               </div>
               <div className="benefit-item">
                 <div className="benefit-number">3</div>
                 <div className="benefit-content">
-                  <h4>תכנן חופשה</h4>
-                  <p>תכנון אוטומטי ומותאם אישית</p>
+                  <h4>{t("register.b3Title")}</h4>
+                  <p>{t("register.b3Text")}</p>
                 </div>
               </div>
             </div>
@@ -517,15 +522,15 @@ const Register = () => {
             <div className="stats">
               <div className="stat-item">
                 <h3>10,000+</h3>
-                <p>משתמשים פעילים</p>
+                <p>{t("register.activeUsers")}</p>
               </div>
               <div className="stat-item">
                 <h3>150+</h3>
-                <p>יעדים ברחבי העולם</p>
+                <p>{t("register.destinations")}</p>
               </div>
               <div className="stat-item">
                 <h3>4.9⭐</h3>
-                <p>דירוג ממוצע</p>
+                <p>{t("register.avgRating")}</p>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Users, HeartHandshake, Trophy, ShieldCheck } from "lucide-react";
 import "./About.css";
+import { useTranslation } from "react-i18next";
 
 
 const useInView = (threshold = 0.2) => {
@@ -39,9 +40,21 @@ const AnimatedNumber = ({ value, inView }) => {
   return <span>{display}</span>;
 };
 
-const HERO_SUBTITLE = "מחלום קטן לפלטפורמה מובילה לתכנון חופשות";
+const REVIEW_IMAGES = [
+  "https://randomuser.me/api/portraits/women/44.jpg",
+  "https://randomuser.me/api/portraits/men/32.jpg",
+  "https://randomuser.me/api/portraits/women/65.jpg",
+  "https://randomuser.me/api/portraits/men/11.jpg",
+  "https://randomuser.me/api/portraits/women/22.jpg",
+  "https://randomuser.me/api/portraits/men/54.jpg",
+  "https://randomuser.me/api/portraits/women/12.jpg",
+];
+const VALUE_ICONS = [Users, HeartHandshake, Trophy, ShieldCheck];
+const STAT_NUMBERS = ["10,000+", "150+", "5", "4.9"];
 
 const About = () => {
+  const { t, i18n } = useTranslation();
+  const HERO_SUBTITLE = t("about.heroSubtitle");
   const [index, setIndex] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [valuesRef, valuesInView] = useInView(0.15);
@@ -49,16 +62,22 @@ const About = () => {
 
   useEffect(() => {
     let i = 0;
+    let timerRef = null;
+    setTypedText("");
+    // restart the typing effect whenever the language changes
     const delay = setTimeout(() => {
       const timer = setInterval(() => {
         setTypedText(HERO_SUBTITLE.slice(0, i + 1));
         i++;
         if (i >= HERO_SUBTITLE.length) clearInterval(timer);
       }, 55);
-      return () => clearInterval(timer);
+      timerRef = timer;
     }, 600);
-    return () => clearTimeout(delay);
-  }, []);
+    return () => {
+      clearTimeout(delay);
+      if (timerRef) clearInterval(timerRef);
+    };
+  }, [HERO_SUBTITLE]);
 
   const nextSlide = () => setIndex((prev) => (prev + 1) % reviews.length);
 
@@ -67,29 +86,11 @@ const About = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const values = [
-    { icon: Users,         title: "מקצועיות", description: "אנחנו מביאים ניסיון של שנים בתחום התיירות והנופש" },
-    { icon: HeartHandshake, title: "אכפתיות", description: "החופשה שלכם חשובה לנו כאילו הייתה החופשה שלנו" },
-    { icon: Trophy,         title: "מצוינות",  description: "אנחנו שואפים למצוינות בכל שירות ובכל פרט" },
-    { icon: ShieldCheck,    title: "אמינות",   description: "שקיפות מלאה ללא הפתעות או עלויות נסתרות" },
-  ];
+  const values = (t("about.values", { returnObjects: true }) || []).map((v, i) => ({ ...v, icon: VALUE_ICONS[i] }));
 
-  const stats = [
-    { number: "10,000+", label: "משתמשים מרוצים" },
-    { number: "150+",    label: "יעדים ברחבי העולם" },
-    { number: "5",       label: "שנות ניסיון" },
-    { number: "4.9",     label: "דירוג ממוצע" },
-  ];
+  const stats = (t("about.stats", { returnObjects: true }) || []).map((label, i) => ({ number: STAT_NUMBERS[i], label }));
 
-  const reviews = [
-    { name: "נועה כהן",    image: "https://randomuser.me/api/portraits/women/44.jpg", text: "בנינו חופשה לפריז תוך דקות. הכל היה פשוט, זול וברור.",         location: "פריז, צרפת",             date: "ינואר 2026"  },
-    { name: "יובל לוי",    image: "https://randomuser.me/api/portraits/men/32.jpg",   text: "חסכנו מאות שקלים על חבילת נופש לברצלונה.",                   location: "ברצלונה, ספרד",          date: "דצמבר 2025" },
-    { name: "מיכל אברהם",  image: "https://randomuser.me/api/portraits/women/65.jpg", text: "החופשה בדובאי הייתה מושלמת מהטיסה ועד המלון.",               location: "דובאי, איחוד האמירויות", date: "נובמבר 2025" },
-    { name: "דניאל פרץ",   image: "https://randomuser.me/api/portraits/men/11.jpg",   text: "האתר הכי נוח שמצאתי להזמנת חופשות.",                        location: "רומא, איטליה",           date: "אוקטובר 2025"},
-    { name: "שירה בן דוד", image: "https://randomuser.me/api/portraits/women/22.jpg", text: "השוואת המחירים חסכה לנו המון כסף.",                          location: "לונדון, בריטניה",        date: "ספטמבר 2025" },
-    { name: "איתי מזרחי",  image: "https://randomuser.me/api/portraits/men/54.jpg",   text: "מצאנו טיסות ומלון מושלמים תוך כמה דקות.",                   location: "ברלין, גרמניה",          date: "אוגוסט 2025"  },
-    { name: "לירון אוחנה", image: "https://randomuser.me/api/portraits/women/12.jpg", text: "אין ספק שזה האתר הכי נוח להזמנת חופשות.",                   location: "אתונה, יוון",            date: "יולי 2025"    },
-  ];
+  const reviews = (t("about.reviews", { returnObjects: true }) || []).map((r, i) => ({ ...r, image: REVIEW_IMAGES[i] }));
 
   return (
     <div className="about-page">
@@ -97,7 +98,7 @@ const About = () => {
       {/* Hero Section */}
       <section className="about-hero">
 <div className="hero-content">
-          <h1>הסיפור שלנו</h1>
+          <h1>{t("about.heroTitle")}</h1>
           <p className="hero-subtitle">
             {typedText}
             <span className="typing-cursor" aria-hidden="true">|</span>
@@ -109,21 +110,10 @@ const About = () => {
       <section className="story-section">
         <div className="story-container">
           <div className="story-content">
-            <h2>מי אנחנו</h2>
-            <p>
-              הרעיון שלנו התחיל מתוך אהבה אמיתית לטיולים ורצון לשנות את הדרך שבה
-              אנשים מתכננים את החופשות שלהם. התחלנו כצוות קטן של חובבי טיולים
-              שהבינו שתכנון חופשה לא צריך להיות מסובך, יקר או מלחיץ.
-            </p>
-            <p>
-              היום, אנחנו גאים לשרת אלפי לקוחות מרוצים מדי שנה, ומציעים מגוון
-              רחב של יעדים, חבילות נופש ואטרקציות ברחבי העולם. המשימה שלנו
-              פשוטה: לעזור לכם ליצור זיכרונות בלתי נשכחים תוך חיסכון בזמן ובכסף.
-            </p>
-            <p>
-              אנחנו משלבים טכנולוגיה מתקדמת עם שירות אישי, כדי להבטיח שכל חופשה
-              תהיה בדיוק מה שחלמתם עליה - ואפילו יותר.
-            </p>
+            <h2>{t("about.whoWeAre")}</h2>
+            <p>{t("about.p1")}</p>
+            <p>{t("about.p2")}</p>
+            <p>{t("about.p3")}</p>
           </div>
           <div className="story-image">
             <img
@@ -138,7 +128,7 @@ const About = () => {
       {/* Values Section */}
       <section className="values-section">
         <div ref={valuesRef} className="values-container">
-          <h2 className={`section-title reveal ${valuesInView ? "visible" : ""}`}>הערכים שלנו</h2>
+          <h2 className={`section-title reveal ${valuesInView ? "visible" : ""}`}>{t("about.ourValues")}</h2>
           <div className="values-grid">
             {values.map((value, i) => {
               const Icon = value.icon;
@@ -163,14 +153,14 @@ const About = () => {
       {/* Testimonials */}
       <section className="pro-testimonials">
         <div className="pro-container">
-          <h2 className="section-title">לקוחות משתפים</h2>
+          <h2 className="section-title">{t("about.testimonials")}</h2>
           <div className="pro-slider-wrapper">
             <button className="nav-btn left" onClick={() => setIndex((index - 1 + reviews.length) % reviews.length)}>‹</button>
             <div className="pro-slider">
               {Array.from({ length: 3 }).map((_, i) => {
                 const r = reviews[(index + i) % reviews.length];
                 return (
-                  <div key={i} className="pro-card">
+                  <div key={`${i18n.language}-${i}`} className="pro-card">
                     <div className="pro-header">
                       <img src={r.image} alt={r.name} />
                       <strong>{r.name}</strong>
@@ -193,7 +183,7 @@ const About = () => {
       {/* Stats Section */}
       <section className="stats-section">
         <div ref={statsRef} className="stats-container">
-          <h2 className="section-title">המספרים מדברים בעד עצמם</h2>
+          <h2 className="section-title">{t("about.numbers")}</h2>
           <div className="stats-grid">
             {stats.map((stat, i) => (
               <div

@@ -1,0 +1,45 @@
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  direction: ltr; /* icon always on the left of the code, in both languages */
+  letter-spacing: 0.03em;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.lang-switcher-icon {
+  color: #6366f1;
+  flex-shrink: 0;
+}
+
+.lang-switcher:hover {
+  background: #eef2ff;
+  border-color: #e0e7ff;
+  color: #4338ca;
+}
+
+.lang-switcher:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* Floating variant for pages without the header (login / register) */
+.lang-switcher.floating {
+  position: fixed;
+  top: 16px;
+  inset-inline-end: 16px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}

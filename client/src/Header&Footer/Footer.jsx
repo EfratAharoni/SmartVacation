@@ -1,23 +1,25 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./Footer.css";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <footer>
       <div className="footer-content">
         <div className="footer-links">
-          <a onClick={() => navigate("/")}>עמוד הבית</a>
-          <a onClick={() => navigate("/about")}>אודות</a>
-          <a onClick={() => navigate("/deals")}>חבילות</a>
-          <a onClick={() => navigate("/attractions")}>אטרקציות</a>
-          <a onClick={() => navigate("/contact")}>צור קשר</a>
-          <a href="#">תנאי שימוש</a>
-          <a href="#">פרטיות</a>
+          <a onClick={() => navigate("/")}>{t("footer.home")}</a>
+          <a onClick={() => navigate("/about")}>{t("footer.about")}</a>
+          <a onClick={() => navigate("/deals")}>{t("footer.deals")}</a>
+          <a onClick={() => navigate("/attractions")}>{t("footer.attractions")}</a>
+          <a onClick={() => navigate("/contact")}>{t("footer.contact")}</a>
+          <a href="#">{t("footer.terms")}</a>
+          <a href="#">{t("footer.privacy")}</a>
         </div>
-        <p>&copy;  כל הזכויות שמורות. 2026 Smart Vacation Planner.</p>
+        <p>{t("footer.rights")}</p>
       </div>
     </footer>
   );

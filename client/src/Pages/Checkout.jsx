@@ -2,19 +2,27 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, LockKeyhole, User, Users, CreditCard, Plane } from "lucide-react";
 import "./Checkout.css";
-
-const API_BASE = import.meta.env.VITE_API_URL || "/api";
+import { apiJson } from "../utils/api";
+import useLocalize from "../utils/useLocalize";
+import { useUserLists } from "../context/UserListsContext";
+import { usePreferences } from "../context/PreferencesContext";
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
+  const { t, tc, formatNumber } = useLocalize();
+  const { price, isConverted } = usePreferences();
+  const { cart, clearCart } = useUserLists();
+  // after the order is placed the cart is emptied – keep a snapshot for the confirmation screen
+  const [orderSnapshot, setOrderSnapshot] = useState(null);
+  const cartItems = orderSnapshot || cart;
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    country: "ישראל",
+    country: "Israel",
     passengers: [],
     payment: "",
     cardNumber: "",
@@ -23,14 +31,6 @@ export default function Checkout() {
     agree: false,
   });
   const [formError, setFormError] = useState("");
-
-  useEffect(() => {
-    const userName = localStorage.getItem("userName");
-    if (!userName) return;
-    const userKey = userName.replace(/\s/g, "_");
-    const cart = JSON.parse(localStorage.getItem(`cart_${userKey}`) || "[]");
-    setCartItems(cart);
-  }, []);
 
   const totalPassengers = useMemo(() => {
     if (cartItems.length === 0) return 1;
@@ -69,16 +69,17 @@ export default function Checkout() {
     () => cartItems.reduce((sum, item) => sum + (item.totalPrice || item.price || 0), 0),
     [cartItems]
   );
-  const [orderId] = useState(() => `SV-${Date.now().toString().slice(-6)}`);
+  // Real order number comes back from the server after the order is saved
+  const [orderId, setOrderId] = useState("");
+
+  const itemDisplayName = (item) => tc(item, "name") || tc(item, "destination") || item.title;
 
   const saveOrderToBackend = async (paymentMethod) => {
-    const token = localStorage.getItem("authToken");
-    if (!token) return;
-
     const items = cartItems.map((item) => ({
       type: item.type,
-      itemId: item.id || item._id,
+      itemId: item._id || item.id,
       name: item.name || item.destination || item.title,
+      en: item.en ? { name: item.en.name || item.en.destination, destination: item.en.destination, location: item.en.location } : undefined,
       image: item.image,
       price: item.price,
       totalPrice: item.totalPrice || item.price,
@@ -89,15 +90,9 @@ export default function Checkout() {
       bookingQty: item.bookingQty,
     }));
 
-    try {
-      await fetch(`${API_BASE}/orders`, {
+    const data = await apiJson("/orders", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          orderId,
+        body: {
           items,
           customerInfo: {
             firstName: form.firstName,
@@ -108,11 +103,26 @@ export default function Checkout() {
           },
           passengers: form.passengers,
           paymentMethod,
-          totalAmount: totalPrice,
-        }),
+          wantsEmail: form.agree,
+        },
       });
-    } catch {
-      // Order saved locally even if backend fails
+    return data.order;
+  };
+
+  const completeOrder = async () => {
+    if (!validatePaymentStep()) return;
+    setIsSubmitting(true);
+    try {
+      const order = await saveOrderToBackend(form.payment);
+      setOrderId(order?.orderId ? order.orderId.slice(0, 8).toUpperCase() : "");
+      setOrderSnapshot(cart);
+      clearCart();
+      setStep(3);
+    } catch (err) {
+      // keep the cart so the user can retry
+      setFormError(err.message || t("checkout.err.orderFailed"));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -155,29 +165,29 @@ export default function Checkout() {
     const phoneRegex = /^[\d+\-\s()]{7,15}$/;
 
     if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.country) {
-      setFormError("אנא מלא/י את כל פרטי המזמין");
+      setFormError(t("checkout.err.fillOrderer"));
       return false;
     }
     if (!englishOrHebrew.test(form.firstName) || !englishOrHebrew.test(form.lastName)) {
-      setFormError("שם המזמין/ה יכול להכיל אותיות בעברית או באנגלית בלבד");
+      setFormError(t("checkout.err.ordererName"));
       return false;
     }
     if (!emailRegex.test(form.email)) {
-      setFormError("כתובת האימייל אינה תקינה");
+      setFormError(t("checkout.err.email"));
       return false;
     }
     if (!phoneRegex.test(form.phone)) {
-      setFormError("מספר הטלפון אינו תקין (ספרות בלבד, 7–15 תווים)");
+      setFormError(t("checkout.err.phone"));
       return false;
     }
     if (form.passengers.some((p) => !p.firstName || !p.lastName)) {
-      setFormError("אנא מלא/י שם פרטי ושם משפחה לכל הנוסעים");
+      setFormError(t("checkout.err.passengerNames"));
       return false;
     }
     for (let i = 0; i < form.passengers.length; i++) {
       const p = form.passengers[i];
       if (!englishOnly.test(p.firstName) || !englishOnly.test(p.lastName)) {
-        setFormError(`פרטי נוסע ${i + 1} חייבים להיות באנגלית בלבד (כפי שמופיע בדרכון)`);
+        setFormError(t("checkout.err.passengerEnglish", { n: i + 1 }));
         return false;
       }
     }
@@ -187,38 +197,38 @@ export default function Checkout() {
 
   const validatePaymentStep = () => {
     if (!form.payment) {
-      setFormError("אנא בחר/י אמצעי תשלום");
+      setFormError(t("checkout.err.payment"));
       return false;
     }
     if (form.payment === "credit") {
       const cardDigits = form.cardNumber.replace(/\s/g, "");
       if (!cardDigits) {
-        setFormError("אנא מלא/י את פרטי כרטיס האשראי");
+        setFormError(t("checkout.err.cardDetails"));
         return false;
       }
       if (!/^\d{16}$/.test(cardDigits)) {
-        setFormError("מספר כרטיס האשראי חייב להכיל 16 ספרות בלבד");
+        setFormError(t("checkout.err.cardDigits"));
         return false;
       }
       if (!/^\d{3}$/.test(form.cardCvv)) {
-        setFormError("CVV חייב להכיל 3 ספרות בלבד");
+        setFormError(t("checkout.err.cvv"));
         return false;
       }
       const expMatch = form.cardExp.match(/^(\d{2})\/(\d{2})$/);
       if (!expMatch) {
-        setFormError("תוקף הכרטיס חייב להיות בפורמט MM/YY");
+        setFormError(t("checkout.err.expFormat"));
         return false;
       }
       const month = parseInt(expMatch[1], 10);
       const year = 2000 + parseInt(expMatch[2], 10);
       if (month < 1 || month > 12) {
-        setFormError("חודש תוקף הכרטיס אינו תקין");
+        setFormError(t("checkout.err.expMonth"));
         return false;
       }
       const now = new Date();
       const expDate = new Date(year, month, 0); // יום אחרון של חודש התוקף
       if (expDate < now) {
-        setFormError("כרטיס האשראי פג תוקף – אנא השתמש/י בכרטיס בתוקף");
+        setFormError(t("checkout.err.expired"));
         return false;
       }
     }
@@ -237,15 +247,15 @@ export default function Checkout() {
             {/* ── Step Bar - full width ── */}
             <div className="checkout-top-steps">
               <div className={`checkout-step ${step === 1 ? "active" : step > 1 ? "done" : ""}`}>
-                <span>{step > 1 ? "✓" : "1"}</span> פרטי המזמין/ה
+                <span>{step > 1 ? "✓" : "1"}</span> {t("checkout.step1")}
               </div>
               <div className="checkout-step-divider" />
               <div className={`checkout-step ${step === 2 ? "active" : step > 2 ? "done" : ""}`}>
-                <span>{step > 2 ? "✓" : "2"}</span> פרטי התשלום
+                <span>{step > 2 ? "✓" : "2"}</span> {t("checkout.step2")}
               </div>
               <div className="checkout-step-divider" />
               <div className={`checkout-step ${step === 3 ? "active" : ""}`}>
-                <span>3</span> אישור הזמנה
+                <span>3</span> {t("checkout.step3")}
               </div>
             </div>
 
@@ -254,40 +264,43 @@ export default function Checkout() {
             <aside className="checkout-summary-col">
               <h3 className="summary-title">
                 <Plane size={16} style={{ verticalAlign: "middle" }} />
-                פרטי החופשה שלך
+                {t("checkout.yourVacation")}
               </h3>
               <div className="summary-card-row">
-                <span>פריטים בהזמנה</span>
+                <span>{t("checkout.itemsInOrder")}</span>
                 <strong>{cartItems.length}</strong>
               </div>
               {cartItems.slice(0, 4).map((item, index) => (
-                <div key={`${item.id}-${index}`} className="summary-item-name">
-                  {item.name || item.destination || item.title || `פריט ${index + 1}`}
+                <div key={`${item._id || item.id}-${index}`} className="summary-item-name">
+                  {itemDisplayName(item) || t("checkout.item", { n: index + 1 })}
                 </div>
               ))}
               <div className="summary-divider" />
               <div className="summary-card-row total-row">
-                <span>סה"כ לתשלום</span>
-                <strong>₪{totalPrice.toLocaleString()}</strong>
+                <span>{t("checkout.total")}</span>
+                <strong>{price(totalPrice)}</strong>
               </div>
+              {isConverted && (
+                <p className="checkout-currency-note">{t("checkout.chargedInIls", { amount: `₪${formatNumber(totalPrice)}` })}</p>
+              )}
               <div className="checkout-package-box">
-                <h4>פרטי חבילת הנופש</h4>
-                <div className="package-detail-row"><span>מספר הזמנה</span><strong>{orderId}</strong></div>
-                <div className="package-detail-row"><span>שם המזמין</span><strong>{form.firstName || "—"} {form.lastName || ""}</strong></div>
-                <div className="package-detail-row"><span>אימייל</span><strong>{form.email || "—"}</strong></div>
-                <div className="package-detail-row"><span>טלפון</span><strong>{form.phone || "—"}</strong></div>
-                <div className="package-detail-row"><span>מספר נוסעים</span><strong>{totalPassengers}</strong></div>
-                <div className="package-detail-row"><span>מלון</span><strong>{cartItems[0]?.hotel || cartItems[0]?.name || "ייקבע לאחר אישור"}</strong></div>
-                <div className="package-detail-row"><span>טיסת הלוך</span><strong>{cartItems[0]?.departureTime || "09:45"}</strong></div>
-                <div className="package-detail-row"><span>טיסת חזור</span><strong>{cartItems[0]?.returnTime || "22:55"}</strong></div>
-                <div className="package-detail-row"><span>תאריכים</span><strong>{cartItems[0]?.dates || "לפי בחירתך"}</strong></div>
+                <h4>{t("checkout.packageDetails")}</h4>
+                <div className="package-detail-row"><span>{t("checkout.orderNumber")}</span><strong>{orderId || t("checkout.pending")}</strong></div>
+                <div className="package-detail-row"><span>{t("checkout.ordererName")}</span><strong>{form.firstName || "—"} {form.lastName || ""}</strong></div>
+                <div className="package-detail-row"><span>{t("common.email")}</span><strong>{form.email || "—"}</strong></div>
+                <div className="package-detail-row"><span>{t("common.phone")}</span><strong>{form.phone || "—"}</strong></div>
+                <div className="package-detail-row"><span>{t("checkout.passengersCount")}</span><strong>{totalPassengers}</strong></div>
+                <div className="package-detail-row"><span>{t("checkout.hotel")}</span><strong>{tc(cartItems[0], "hotel") || tc(cartItems[0], "name") || t("checkout.pending")}</strong></div>
+                <div className="package-detail-row"><span>{t("checkout.outbound")}</span><strong>{cartItems[0]?.flightDetails?.departure || "09:45"}</strong></div>
+                <div className="package-detail-row"><span>{t("checkout.return")}</span><strong>{cartItems[0]?.flightDetails?.arrival || "22:55"}</strong></div>
+                <div className="package-detail-row"><span>{t("checkout.dates")}</span><strong>{tc(cartItems[0], "dates") || t("checkout.yourChoice")}</strong></div>
                 <div className="package-detail-row">
-                  <span>אמצעי תשלום</span>
+                  <span>{t("checkout.paymentMethod")}</span>
                   <strong>
-                    {form.payment === "credit" ? "כרטיס אשראי"
+                    {form.payment === "credit" ? t("common.creditCard")
                       : form.payment === "paypal" ? "PayPal"
                       : form.payment === "bit" ? "Bit"
-                      : "טרם נבחר"}
+                      : t("checkout.notSelected")}
                   </strong>
                 </div>
               </div>
@@ -305,36 +318,36 @@ export default function Checkout() {
                   <div className="step1-half">
                     <div className="step1-half-content">
                       <button className="back-to-cart-btn" onClick={() => navigate("/cart")}>
-                        ← חזרה לעגלה
+                        <span className="flip-in-ltr" aria-hidden="true">←</span> {t("common.backToCart")}
                       </button>
                       <div className="checkout-title-wrap">
                         <p className="checkout-kicker">Secure Checkout</p>
-                        <h2>פרטי המזמין/ה</h2>
-                        <p className="checkout-subtitle">פרטי יצירת קשר.</p>
+                        <h2>{t("checkout.step1")}</h2>
+                        <p className="checkout-subtitle">{t("checkout.contactDetails")}</p>
                       </div>
                       <div className="checkout-section-label">
                         <User size={15} />
-                        פרטי המזמין/ה
+                        {t("checkout.step1")}
                       </div>
                       <div className="form-row">
                         <div className="form-group">
-                          <label>שם פרטי (באנגלית)</label>
+                          <label>{t("checkout.firstNameEn")}</label>
                           <input type="text" name="firstName" value={form.firstName} onChange={handleFormChange} placeholder="First Name" />
                         </div>
                         <div className="form-group">
-                          <label>שם משפחה (באנגלית)</label>
+                          <label>{t("checkout.lastNameEn")}</label>
                           <input type="text" name="lastName" value={form.lastName} onChange={handleFormChange} placeholder="Last Name" />
                         </div>
                       </div>
                       <div className="form-group">
-                        <label>אימייל</label>
+                        <label>{t("common.email")}</label>
                         <input type="email" name="email" value={form.email} onChange={handleFormChange} placeholder="Email Address" />
                       </div>
                       <div className="form-row">
                         <div className="form-group">
-                          <label>מדינה</label>
+                          <label>{t("checkout.country")}</label>
                           <select name="country" value={form.country} onChange={handleFormChange}>
-                            <option value="ישראל">ישראל</option>
+                            <option value="Israel">{t("checkout.israel")}</option>
                             <option value="USA">USA</option>
                             <option value="UK">UK</option>
                             <option value="France">France</option>
@@ -344,7 +357,7 @@ export default function Checkout() {
                           </select>
                         </div>
                         <div className="form-group">
-                          <label>טלפון</label>
+                          <label>{t("common.phone")}</label>
                           <input type="tel" name="phone" value={form.phone} onChange={handleFormChange} placeholder="Phone Number" />
                         </div>
                       </div>
@@ -359,15 +372,15 @@ export default function Checkout() {
                     <div className="step1-half-content">
                     <div className="checkout-title-wrap">
                       <p className="checkout-kicker">&nbsp;</p>
-                      <h2>פרטי הנוסעים</h2>
-                      <p className="checkout-subtitle">שם כפי שמופיע בדרכון.</p>
+                      <h2>{t("checkout.passengers")}</h2>
+                      <p className="checkout-subtitle">{t("checkout.asInPassport")}</p>
                     </div>
                     <div className="checkout-section-label">
                       <Users size={15} />
-                      פרטי הנוסעים ({totalPassengers} נוסעים)
+                      {t("checkout.passengersLabel", { count: totalPassengers })}
                     </div>
                     <p className="checkout-passengers-note">
-                      יש למלא שם מלא באנגלית כפי שמופיע בדרכון עבור כל נוסע.
+                      {t("checkout.passengersNote")}
                     </p>
                     <div className="step1-passengers-list">
                       {form.passengers.map((p, idx) => (
@@ -375,16 +388,16 @@ export default function Checkout() {
                           <div className="passenger-card-header">
                             <span className="passenger-number-badge">{idx + 1}</span>
                             <span className="passenger-card-title">
-                              {idx === 0 ? "נוסע/ת ראשי/ת" : `נוסע/ת ${idx + 1}`}
+                              {idx === 0 ? t("checkout.mainPassenger") : t("checkout.passengerN", { n: idx + 1 })}
                             </span>
                           </div>
                           <div className="form-row passenger-name-row">
                             <div className="form-group">
-                              <label>שם פרטי</label>
+                              <label>{t("checkout.firstName")}</label>
                               <input type="text" value={p.firstName} onChange={(e) => handleFormChange(e, idx, "firstName")} placeholder="First Name" />
                             </div>
                             <div className="form-group">
-                              <label>שם משפחה</label>
+                              <label>{t("checkout.lastName")}</label>
                               <input type="text" value={p.lastName} onChange={(e) => handleFormChange(e, idx, "lastName")} placeholder="Last Name" />
                             </div>
                           </div>
@@ -395,7 +408,7 @@ export default function Checkout() {
                     {formError && <div className="form-error">{formError}</div>}
                     <div className="step-actions" style={{ marginTop: "auto", paddingTop: "1rem" }}>
                       <button type="button" className="pay-btn" onClick={() => { if (!validateCustomerStep()) return; setStep(2); }}>
-                        המשך לתשלום <ArrowLeft className="pay-btn-icon" />
+                        {t("checkout.continueToPayment")} <ArrowLeft className="pay-btn-icon flip-in-ltr" />
                       </button>
                     </div>
                   </div>{/* /step1-half passengers */}
@@ -406,16 +419,16 @@ export default function Checkout() {
               {/* ── שלב 2 ── */}
               {step === 2 && (
                 <div className="checkout-form">
-                  <button className="back-to-cart-btn" onClick={() => navigate("/cart")}>← חזרה לעגלה</button>
+                  <button className="back-to-cart-btn" onClick={() => navigate("/cart")}><span className="flip-in-ltr" aria-hidden="true">←</span> {t("common.backToCart")}</button>
                   <div className="checkout-title-wrap">
                     <p className="checkout-kicker">Secure Payment</p>
-                    <h2>פרטי התשלום</h2>
-                    <p className="checkout-subtitle">בחרו אמצעי תשלום והשלימו הזמנה.</p>
+                    <h2>{t("checkout.step2")}</h2>
+                    <p className="checkout-subtitle">{t("checkout.choosePayment")}</p>
                   </div>
-                  <div className="checkout-section-label"><CreditCard size={15} />אמצעי תשלום</div>
+                  <div className="checkout-section-label"><CreditCard size={15} />{t("checkout.paymentMethod")}</div>
                   <div className="payment-methods-grid">
                     {[
-                      { value: "credit", label: "כרטיס אשראי", icon: "💳" },
+                      { value: "credit", label: t("common.creditCard"), icon: "💳" },
                       { value: "paypal", label: "PayPal", icon: "🅿️" },
                       { value: "bit", label: "Bit", icon: "📱" },
                     ].map((method) => (
@@ -429,12 +442,12 @@ export default function Checkout() {
                   {form.payment === "credit" && (
                     <div className="credit-fields">
                       <div className="form-group">
-                        <label>מספר כרטיס</label>
+                        <label>{t("checkout.cardNumber")}</label>
                         <input type="text" name="cardNumber" value={form.cardNumber} onChange={handleFormChange} maxLength={19} placeholder="1234 5678 9012 3456" />
                       </div>
                       <div className="form-row">
                         <div className="form-group">
-                          <label>תוקף</label>
+                          <label>{t("checkout.expiry")}</label>
                           <input type="text" name="cardExp" value={form.cardExp} onChange={handleFormChange} maxLength={5} placeholder="MM/YY" />
                         </div>
                         <div className="form-group">
@@ -447,14 +460,14 @@ export default function Checkout() {
                   <div className="form-group checkbox-group">
                     <label>
                       <input type="checkbox" name="agree" checked={form.agree} onChange={handleFormChange} />
-                      אני רוצה לקבל אישור הזמנה במייל
+                      {t("checkout.emailConfirmation")}
                     </label>
                   </div>
                   {formError && <div className="form-error">{formError}</div>}
                   <div className="step-actions two-buttons">
-                    <button type="button" className="secondary-step-btn" onClick={() => setStep(1)}>חזרה</button>
-                    <button type="button" className="pay-btn" onClick={async () => { if (!validatePaymentStep()) return; await saveOrderToBackend(form.payment); const userName = localStorage.getItem("userName"); if (userName) { const userKey = userName.replace(/\s/g, "_"); localStorage.setItem(`cart_${userKey}`, "[]"); window.dispatchEvent(new Event("userDataUpdated")); } setStep(3); }}>
-                      <LockKeyhole className="pay-btn-icon" />סיום הזמנה
+                    <button type="button" className="secondary-step-btn" onClick={() => setStep(1)}>{t("common.back")}</button>
+                    <button type="button" className="pay-btn" onClick={completeOrder} disabled={isSubmitting || cartItems.length === 0}>
+                      <LockKeyhole className="pay-btn-icon" />{isSubmitting ? t("checkout.processing") : t("checkout.finish")}
                     </button>
                   </div>
                 </div>
@@ -466,27 +479,28 @@ export default function Checkout() {
                   <div className="confirmation-check-circle">
                     <CheckCircle2 className="confirmation-check-icon" />
                   </div>
-                  <h2>הזמנה אושרה בהצלחה!</h2>
-                  <p>האישור נשלח למייל שלך עם כל הפרטים.</p>
+                  <h2>{t("checkout.successTitle")}</h2>
+                  {form.agree && <p>{t("checkout.successText")}</p>}
                   <div className="confirmation-details">
-                    <h4>סיכום ההזמנה</h4>
-                    <div className="confirmation-detail-row"><span>שם המזמין</span><strong>{form.firstName} {form.lastName}</strong></div>
-                    <div className="confirmation-detail-row"><span>אימייל</span><strong>{form.email}</strong></div>
-                    <div className="confirmation-detail-row"><span>טלפון</span><strong>{form.phone}</strong></div>
-                    <div className="confirmation-detail-row"><span>מספר נוסעים</span><strong>{totalPassengers}</strong></div>
-                    <div className="confirmation-detail-row total-confirm-row"><span>סה"כ שולם</span><strong>₪{totalPrice.toLocaleString()}</strong></div>
+                    <h4>{t("checkout.orderSummary")}</h4>
+                    {orderId && <div className="confirmation-detail-row"><span>{t("checkout.orderNumber")}</span><strong>#{orderId}</strong></div>}
+                    <div className="confirmation-detail-row"><span>{t("checkout.ordererName")}</span><strong>{form.firstName} {form.lastName}</strong></div>
+                    <div className="confirmation-detail-row"><span>{t("common.email")}</span><strong>{form.email}</strong></div>
+                    <div className="confirmation-detail-row"><span>{t("common.phone")}</span><strong>{form.phone}</strong></div>
+                    <div className="confirmation-detail-row"><span>{t("checkout.passengersCount")}</span><strong>{totalPassengers}</strong></div>
+                    <div className="confirmation-detail-row total-confirm-row"><span>{t("checkout.paid")}</span><strong>₪{formatNumber(totalPrice)}</strong></div>
                   </div>
                   <div className="checkout-help-box confirmation-help-box">
-                    <h4>כדאי לסגור לפני הטיסה:</h4>
+                    <h4>{t("checkout.beforeFlight")}</h4>
                     <ul>
-                      <li>ביטוח נסיעות</li>
-                      <li>סים לחו"ל</li>
-                      <li>לבדוק שהדרכון בתוקף לפחות 6 חודשים</li>
+                      <li>{t("checkout.tip1")}</li>
+                      <li>{t("checkout.tip2")}</li>
+                      <li>{t("checkout.tip3")}</li>
                     </ul>
                   </div>
                   <div className="step-actions two-buttons">
-                    <button type="button" className="secondary-step-btn" onClick={() => navigate("/")}>דף הבית</button>
-                    <button type="button" className="pay-btn" onClick={() => navigate("/cart")}>חזרה לעגלה</button>
+                    <button type="button" className="secondary-step-btn" onClick={() => navigate("/")}>{t("common.homePage")}</button>
+                    <button type="button" className="pay-btn" onClick={() => navigate("/profile")}>{t("checkout.myOrders")}</button>
                   </div>
                 </div>
               )}

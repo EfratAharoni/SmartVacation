@@ -12,8 +12,8 @@
     background: #f5f5f5;
     min-height: 100vh;
     overflow-x: hidden;
-    direction: rtl;
-    text-align: right;
+    direction: var(--dir, rtl);
+    text-align:  start;
 }
 
 /* Contact Hero Section */
@@ -305,8 +305,8 @@
     font-family: inherit;
     transition: all 0.3s ease;
     background: #f8f9fa;
-    direction: rtl;
-    text-align: right;
+    direction: var(--dir, rtl);
+    text-align:  start;
     color: #333;
 }
 
@@ -506,16 +506,16 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(20, 78, 165, 0.1);
-    direction: rtl;
-    text-align: right;
+    direction: var(--dir, rtl);
+    text-align:  start;
 }
 
 .faq-card::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    inset-inline-end: 0;
+    inset-inline-start: 0;
     height: 3px;
     background: linear-gradient(90deg, #27b4d3 0%, #144ea5 100%);
     transform: scaleX(0);
@@ -556,15 +556,15 @@
     color: #1a202c;
     font-weight: 600;
     line-height: 1.5;
-    text-align: right;
+    text-align:  start;
 }
 
 .faq-answer {
     color: #4a5568;
     line-height: 1.8;
-    padding-right: 0;
+    padding-inline-start: 0;
     font-size: 0.95rem;
-    text-align: right;
+    text-align:  start;
 }
 
 /* Mobile Menu */
@@ -607,7 +607,7 @@
 
     .nav-center {
         position: fixed;
-        right: -100%;
+        inset-inline-start: -100%;
         top: 85px;
         flex-direction: column;
         background: white;
@@ -619,7 +619,7 @@
     }
 
     .nav-center.active {
-        right: 0;
+        inset-inline-start: 0;
     }
 
     .nav-links {
@@ -715,13 +715,13 @@
     }
 
     .faq-answer {
-        padding-right: 0;
+        padding-inline-start: 0;
     }
 
     .faq-question h3 {
         font-size: 1rem;
         flex: 1;
-        text-align: right;
+        text-align:  start;
     }
 
     .info-card {
@@ -944,7 +944,7 @@
     color: #333;
     font-size: 0.95rem;
     font-weight: 600;
-    text-align: right;
+    text-align:  start;
     line-height: 1.5;
     border: 1px solid #ffe0b2;
 }

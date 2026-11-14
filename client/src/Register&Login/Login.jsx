@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
-import { API_BASE_URL } from "../utils/api";
+import { apiFetch } from "../utils/api";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { onLoggedIn } from "../utils/userSync";
+import { toast } from "../components/Toast";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -33,16 +38,16 @@ const Login = () => {
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = "נא להזין כתובת אימייל";
+      newErrors.email = t("login.err.emailRequired");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "כתובת אימייל לא תקינה";
+      newErrors.email = t("login.err.emailInvalid");
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = "נא להזין סיסמה";
+      newErrors.password = t("login.err.passwordRequired");
     } else if (formData.password.length < 6) {
-      newErrors.password = "הסיסמה חייבת להכיל לפחות 6 תווים";
+      newErrors.password = t("login.err.passwordShort");
     }
 
     setErrors(newErrors);
@@ -59,22 +64,19 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users/login`, {
+      const response = await apiFetch("/users/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+        body: {
           email: formData.email.trim(),
           password: formData.password,
-        }),
+        },
       });
 
       const data = await response.json();
 
       if (!response.ok || !data.user) {
         setErrors({
-          password: data.message || "אימייל או סיסמה שגויים",
+          password: data.message || t("login.err.wrong"),
         });
         return;
       }
@@ -84,11 +86,12 @@ const Login = () => {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("authToken", data.token || "");
       window.dispatchEvent(new Event("userDataUpdated"));
+      await onLoggedIn(data.user);
 
       navigate("/");
-    } catch (error) {
+    } catch {
       setErrors({
-        password: "שגיאת תקשורת עם השרת. נסה שוב.",
+        password: t("common.networkError"),
       });
     } finally {
       setIsLoading(false);
@@ -100,30 +103,31 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    alert("התחברות עם Google");
+    toast.info(t("login.socialSoon", { provider: "Google" }));
     // כאן תוסיף את הלוגיקה להתחברות עם Google
   };
 
   const handleFacebookLogin = () => {
-    alert("התחברות עם Facebook");
+    toast.info(t("login.socialSoon", { provider: "Facebook" }));
     // כאן תוסיף את הלוגיקה להתחברות עם Facebook
   };
 
   return (
     <div className="login-page">
+      <LanguageSwitcher className="floating" />
       <div className="login-container">
         {/* Left Side - Form */}
         <div className="login-form-section">
 
           <div className="login-header">
-            <h1>ברוכים הבאים</h1>
-            <p>התחבר לחשבון שלך והמשך לתכנן את החופשה המושלמת</p>
+            <h1>{t("login.welcome")}</h1>
+            <p>{t("login.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="login-form">
             {/* Email Field */}
             <div className="form-group">
-              <label htmlFor="email">אימייל</label>
+              <label htmlFor="email">{t("common.email")}</label>
               <div className="input-wrapper">
                 {formData.email === "" && (
                   <span className="input-icon">📧</span>
@@ -134,7 +138,7 @@ const Login = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="     הכנס את כתובת האימייל שלך"
+                  placeholder={`     ${t("login.emailPlaceholder")}`}
                   className={errors.email ? "error" : ""}
                 />
               </div>
@@ -145,7 +149,7 @@ const Login = () => {
 
             {/* Password Field */}
             <div className="form-group">
-              <label htmlFor="password">סיסמה</label>
+              <label htmlFor="password">{t("common.password")}</label>
               <div className="input-wrapper">
                 {formData.password === "" && (
                   <span className="input-icon">🔒</span>
@@ -156,7 +160,7 @@ const Login = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="     הכנס את הסיסמה שלך"
+                  placeholder={`     ${t("login.passwordPlaceholder")}`}
                   className={errors.password ? "error" : ""}
                 />
                 <button
@@ -176,11 +180,11 @@ const Login = () => {
             <div className="form-options">
               <label className="checkbox-label">
                 <input type="checkbox" />
-                <span>זכור אותי</span>
+                <span>{t("login.rememberMe")}</span>
               </label>
-              <a href="#" className="forgot-password">
-                שכחת סיסמה?{" "}
-              </a>
+              <Link to="/forgot-password" className="forgot-password">
+                {t("login.forgot")}
+              </Link>
             </div>
 
             {/* Submit Button */}
@@ -192,16 +196,16 @@ const Login = () => {
               {isLoading ? (
                 <>
                   <span className="spinner"></span>
-                  מתחבר...
+                  {t("login.loggingIn")}
                 </>
               ) : (
-                "התחבר"
+                t("login.login")
               )}
             </button>
 
             {/* Divider */}
             <div className="divider">
-              <span>או המשך עם</span>
+              <span>{t("common.orContinueWith")}</span>
             </div>
 
             {/* Social Login */}
@@ -227,7 +231,7 @@ const Login = () => {
             {/* Register Link */}
             <div className="register-link">
               <p>
-                אין לך חשבון? <Link to="/register">הירשם עכשיו</Link>
+                {t("login.noAccount")} <Link to="/register">{t("login.registerNow")}</Link>
               </p>
             </div>
 
@@ -238,7 +242,7 @@ const Login = () => {
               type="button"
             >
               <span className="guest-icon">👤</span>
-              לא רוצה להתחבר? המשך כאורח
+              {t("login.guest")}
             </button>
           </form>
         </div>
@@ -247,23 +251,20 @@ const Login = () => {
         <div className="login-visual-section">
           <div className="visual-content">
             {/* <div className="logo">Smart Vacation ✈️</div> */}
-            <h2>התחל את המסע שלך</h2>
-            <p>
-              גלה יעדים מדהימים, תכנן את החופשה המושלמת ושמור את כל הטיולים שלך
-              במקום אחד
-            </p>
+            <h2>{t("login.visualTitle")}</h2>
+            <p>{t("login.visualText")}</p>
             <div className="features-list">
               <div className="feature-item">
                 <span className="feature-icon">✓</span>
-                <span>תכנון חכם ואוטומטי</span>
+                <span>{t("login.feature1")}</span>
               </div>
               <div className="feature-item">
                 <span className="feature-icon">✓</span>
-                <span>מאות יעדים ברחבי העולם</span>
+                <span>{t("login.feature2")}</span>
               </div>
               <div className="feature-item">
                 <span className="feature-icon">✓</span>
-                <span>התאמה אישית מלאה</span>
+                <span>{t("login.feature3")}</span>
               </div>
             </div>
           </div>

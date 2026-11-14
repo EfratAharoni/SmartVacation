@@ -1,0 +1,50 @@
+.prefs-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  direction: ltr;
+}
+.prefs-currency select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #334155;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 7px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.prefs-currency select:hover,
+.prefs-theme:hover {
+  background: #eef2ff;
+  border-color: #e0e7ff;
+}
+.prefs-currency select:focus-visible,
+.prefs-theme:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+.prefs-theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #6366f1;
+  cursor: pointer;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

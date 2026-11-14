@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Heart,
@@ -11,92 +11,30 @@ import {
   Trash2,
 } from "lucide-react";
 import "./Favorites.css";
+import useLocalize from "../utils/useLocalize";
+import { useUserLists, itemKey } from "../context/UserListsContext";
+import { usePreferences } from "../context/PreferencesContext";
+import { toast } from "../components/Toast";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 const Favorites = () => {
   const navigate = useNavigate();
-  const [favoriteItems, setFavoriteItems] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [filter, setFilter] = useState("all"); // all, attractions, deals
+  const [filter, setFilter] = useState("all"); // all, attraction, deal
+  const [confirmClear, setConfirmClear] = useState(false);
+  const { t, tc } = useLocalize();
+  const { price } = usePreferences();
+  const { isLoggedIn, favorites: favoriteItems, removeFavorite, clearFavorites, addToCart: addItemToCart } = useUserLists();
 
-  const getItemDisplayName = (item) => {
-    return item?.name || item?.destination || item?.title || item?.location || "פריט ללא שם";
-  };
+  const getItemDisplayName = (item) =>
+    tc(item, "name") || tc(item, "destination") || item?.title || tc(item, "location") || t("common.unnamed");
 
-  const getItemDisplayLocation = (item) => {
-    return item?.location || item?.destination || "";
-  };
-
-  useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-
-    if (loggedIn) {
-      loadFavorites();
-    }
-  }, []);
-
-  const loadFavorites = () => {
-    const userName = localStorage.getItem("userName");
-    const userKey = userName.replace(/\s/g, "_");
-
-    // Load all favorites (both attractions and deals) - both stored in same key with type field
-    const allFavs = JSON.parse(
-      localStorage.getItem(`favorites_${userKey}`) || "[]",
-    );
-    // Also load old format if it exists
-    const oldDealFavs = JSON.parse(
-      localStorage.getItem(`favorites_deals_${userKey}`) || "[]",
-    );
-
-    setFavoriteItems([...allFavs, ...oldDealFavs]);
-  };
-
-  const removeFromFavorites = (itemId, itemType) => {
-    const userName = localStorage.getItem("userName");
-    const userKey = userName.replace(/\s/g, "_");
-
-    const updated = favoriteItems.filter(
-      (item) => !(item.id === itemId && item.type === itemType),
-    );
-
-    setFavoriteItems(updated);
-
-    // Save back to same key - newly formatted items
-    const newFavs = updated.filter((i) => i.type);
-    localStorage.setItem(`favorites_${userKey}`, JSON.stringify(newFavs));
-
-    window.dispatchEvent(new Event("userDataUpdated"));
-  };
+  const getItemDisplayLocation = (item) => tc(item, "location") || tc(item, "destination") || "";
 
   const addToCart = (item) => {
-    const userName = localStorage.getItem("userName");
-    const userKey = userName.replace(/\s/g, "_");
-
-    const cart = JSON.parse(localStorage.getItem(`cart_${userKey}`) || "[]");
-    const alreadyIn = cart.some(
-      (cartItem) => cartItem.id === item.id && cartItem.type === item.type,
-    );
-
-    if (alreadyIn) {
-      alert(`${getItemDisplayName(item)} כבר נמצא בעגלה שלך!`);
-      return;
-    }
-
-    const updated = [...cart, { ...item, addedAt: new Date().toISOString() }];
-    localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
-    window.dispatchEvent(new Event("userDataUpdated"));
-    alert(`${getItemDisplayName(item)} נוסף לעגלה! 🛒`);
-  };
-
-  const clearAllFavorites = () => {
-    if (window.confirm("האם אתה בטוח שברצונך למחוק את כל המועדפים?")) {
-      const userName = localStorage.getItem("userName");
-      const userKey = userName.replace(/\s/g, "_");
-
-      setFavoriteItems([]);
-      localStorage.setItem(`favorites_${userKey}`, JSON.stringify([]));
-      window.dispatchEvent(new Event("userDataUpdated"));
-    }
+    const name = getItemDisplayName(item);
+    const result = addItemToCart(item);
+    if (result === "exists") toast.info(t("common.alreadyInCart", { name }));
+    else if (result === "added") toast.success(t("common.addedToCart", { name }));
   };
 
   const getFilteredItems = () => {
@@ -113,13 +51,13 @@ const Favorites = () => {
           <div className="empty-icon">
             <Heart className="empty-icon-svg" />
           </div>
-          <h2>עליך להתחבר כדי לצפות במועדפים</h2>
-          <p>התחבר כדי לראות את הדילים והאטרקציות שאהבת</p>
+          <h2>{t("favorites.loginTitle")}</h2>
+          <p>{t("favorites.loginText")}</p>
           <button
             className="btn btn-primary"
             onClick={() => navigate("/login")}
           >
-            התחבר עכשיו
+            {t("common.loginNow")}
           </button>
         </div>
       </div>
@@ -133,20 +71,20 @@ const Favorites = () => {
           <div className="empty-icon">
             <Heart className="empty-icon-svg" />
           </div>
-          <h2>עדיין אין לך מועדפים</h2>
-          <p>התחל לחפש דילים ואטרקציות ושמור את האהובים עליך</p>
+          <h2>{t("favorites.emptyTitle")}</h2>
+          <p>{t("favorites.emptyText")}</p>
           <div className="empty-actions">
             <button
               className="btn btn-primary"
               onClick={() => navigate("/deals")}
             >
-              חפש דילים
+              {t("favorites.searchDeals")}
             </button>
             <button
               className="btn btn-secondary"
               onClick={() => navigate("/attractions")}
             >
-              חפש אטרקציות
+              {t("favorites.searchAttractions")}
             </button>
           </div>
         </div>
@@ -161,9 +99,9 @@ const Favorites = () => {
         <div className="hero-content">
           <h1 className="hero-title">
             <Heart className="title-icon" />
-            המועדפים שלי
+            {t("favorites.title")}
           </h1>
-          <p>{favoriteItems.length} פריטים שאהבת</p>
+          <p>{t("favorites.itemsYouLiked", { count: favoriteItems.length })}</p>
         </div>
       </section>
 
@@ -175,45 +113,44 @@ const Favorites = () => {
                 className={`filter-tab ${filter === "all" ? "active" : ""}`}
                 onClick={() => setFilter("all")}
               >
-                הכל ({favoriteItems.length})
+                {t("favorites.all", { count: favoriteItems.length })}
               </button>
               <button
                 className={`filter-tab ${filter === "attraction" ? "active" : ""}`}
                 onClick={() => setFilter("attraction")}
               >
-                <MapPin className="tab-icon attraction-icon" /> אטרקציות (
-                {favoriteItems.filter((i) => i.type === "attraction").length})
+                <MapPin className="tab-icon attraction-icon" /> {t("favorites.attractions", { count: favoriteItems.filter((i) => i.type === "attraction").length })}
               </button>
               <button
                 className={`filter-tab ${filter === "deal" ? "active" : ""}`}
                 onClick={() => setFilter("deal")}
               >
-                <Flame className="tab-icon deal-icon" /> דילים (
-                {favoriteItems.filter((i) => i.type === "deal").length})
+                <Flame className="tab-icon deal-icon" /> {t("favorites.deals", { count: favoriteItems.filter((i) => i.type === "deal").length })}
               </button>
             </div>
 
-            <button className="clear-all-btn" onClick={clearAllFavorites}>
-              מחק הכל
+            <button className="clear-all-btn" onClick={() => setConfirmClear(true)}>
+              {t("favorites.clearAll")}
             </button>
           </div>
 
           {filteredItems.length === 0 && (
             <div className="filter-empty-state">
-              <p>אין פריטים בקטגוריה זו</p>
+              <p>{t("favorites.noItemsInCategory")}</p>
             </div>
           )}
 
           <div className="favorites-grid">
             {filteredItems.map((item, index) => (
               <div
-                key={`${item.id}-${item.type}-${index}`}
+                key={`${itemKey(item)}-${item.type}-${index}`}
                 className="favorite-card"
               >
                 <button
                   className="remove-favorite-btn"
-                  onClick={() => removeFromFavorites(item.id, item.type)}
-                  title="הסר מהמועדפים"
+                  onClick={() => removeFavorite(item)}
+                  title={t("favorites.removeFav")}
+                  aria-label={t("favorites.removeFav")}
                 >
                   <Trash2 className="remove-icon" />
                 </button>
@@ -222,7 +159,7 @@ const Favorites = () => {
                   <img src={item.image} alt={getItemDisplayName(item)} />
                   <span className="type-badge">
                     {item.type === "attraction" ? <MapPin className="type-badge-icon attraction-icon" /> : <Flame className="type-badge-icon deal-icon" />}
-                    {item.type === "attraction" ? "אטרקציה" : "דיל"}
+                    {item.type === "attraction" ? t("common.attraction") : t("common.deal")}
                   </span>
                 </div>
 
@@ -239,20 +176,20 @@ const Favorites = () => {
                   )}
 
                   {item.type === "attraction" && item.duration && (
-                    <p className="favorite-duration"><Clock3 className="meta-icon" />{item.duration}</p>
+                    <p className="favorite-duration"><Clock3 className="meta-icon" />{tc(item, "duration")}</p>
                   )}
 
                   {item.type === "deal" && item.dates && (
-                    <p className="favorite-dates"><CalendarDays className="meta-icon" />{item.dates}</p>
+                    <p className="favorite-dates"><CalendarDays className="meta-icon" />{[].concat(tc(item, "dates")).join(" · ")}</p>
                   )}
 
                   <div className="favorite-footer">
-                    <div className="favorite-price">₪{item.price}</div>
+                    <div className="favorite-price">{price(item.price)}</div>
                     <button
                       className="add-to-cart-btn"
                       onClick={() => addToCart(item)}
                     >
-                      <ShoppingCart className="btn-icon" /> הוסף לעגלה
+                      <ShoppingCart className="btn-icon" /> {t("favorites.addToCart")}
                     </button>
                   </div>
                 </div>
@@ -262,6 +199,16 @@ const Favorites = () => {
         </div>
       </section>
 
+      {confirmClear && (
+        <ConfirmDialog
+          message={t("favorites.confirmClear")}
+          onCancel={() => setConfirmClear(false)}
+          onConfirm={() => {
+            clearFavorites();
+            setConfirmClear(false);
+          }}
+        />
+      )}
     </div>
   );
 };

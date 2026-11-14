@@ -81,7 +81,7 @@
 .modal-overlay {
     position: fixed;
     top: 0;
-    left: 0;
+    inset-inline-end: 0;
     width: 100vw;
     height: 100vh;
     background: rgba(20, 78, 165, 0.18);
@@ -119,7 +119,7 @@
 .modal-close {
     position: absolute;
     top: 1.1rem;
-    left: 1.1rem;
+    inset-inline-end: 1.1rem;
     background: none;
     border: none;
     color: #fff;
@@ -215,7 +215,7 @@
 }
 .checkbox-group {
     align-items: flex-start;
-    text-align: right;
+    text-align:  start;
     color: #e3f6ff;
     font-size: 0.98rem;
 }
@@ -252,12 +252,12 @@
     padding: 0;
     color: #fff;
     font-size: 1rem;
-    text-align: right;
+    text-align:  start;
     margin: 0 0 0 1.2rem;
 }
 .confirmation-info li {
     margin-bottom: 0.5rem;
-    direction: rtl;
+    direction: var(--dir, rtl);
 }
 .confirmation-details {
     background: rgba(255,255,255,0.08);
@@ -266,7 +266,7 @@
     padding: 1rem 0.5rem 0.5rem;
     color: #e3f6ff;
     font-size: 1rem;
-    text-align: right;
+    text-align:  start;
 }
 * {
     margin: 0;
@@ -280,7 +280,7 @@
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    direction: rtl;
+    direction: var(--dir, rtl);
 }
 
 /* Hero Section */
@@ -578,7 +578,7 @@
 .item-type-badge {
     position: absolute;
     top: 0.5rem;
-    right: 0.5rem;
+    inset-inline-start: 0.5rem;
     background: rgba(255, 255, 255, 0.95);
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
@@ -965,15 +965,15 @@
     overflow-x: hidden;
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-    direction: rtl;
-    text-align: right;
+    direction: var(--dir, rtl);
+    text-align:  start;
     scrollbar-width: none;
 }
 .attr-booking-modal::-webkit-scrollbar { display: none; }
 
 .attr-close-btn {
     position: absolute;
-    top: 1rem; left: 1rem;
+    top: 1rem; inset-inline-end: 1rem;
     z-index: 20;
     width: 32px; height: 32px;
     border-radius: 50%;
@@ -1015,7 +1015,7 @@
 .attr-header-price-per   { font-size: 0.8rem; opacity: 0.8; }
 
 .attr-modal-body { display: grid; grid-template-columns: 1fr 300px; gap: 0; min-height: 340px; }
-.attr-options-col { padding: 28px 32px; border-left: 1px solid #eef0f4; }
+.attr-options-col { padding: 28px 32px; border-inline-end: 1px solid #eef0f4; }
 .attr-section { padding: 8px 0; }
 .attr-section-title { font-size: 1.05rem; font-weight: 700; color: #1a1a2e; margin: 0 0 8px; }
 
@@ -1046,7 +1046,7 @@
     box-shadow: 0 2px 12px rgba(0,0,0,0.07);
     display: flex; flex-direction: column; gap: 16px; flex: 1;
 }
-.attr-price-title { font-size: 1rem; font-weight: 700; color: #1a1a2e; margin: 0; text-align: right; }
+.attr-price-title { font-size: 1rem; font-weight: 700; color: #1a1a2e; margin: 0; text-align:  start; }
 .attr-price-rows { display: flex; flex-direction: column; gap: 8px; }
 .attr-price-row { display: flex; justify-content: space-between; font-size: 0.85rem; color: #555; }
 .attr-price-row span:last-child { font-weight: 600; color: #333; }
@@ -1068,7 +1068,7 @@
 @media (max-width: 680px) {
     .attr-modal-body { grid-template-columns: 1fr; }
     .attr-summary-col { border-radius: 0 0 20px 20px; }
-    .attr-options-col { border-left: none; border-bottom: 1px solid #eef0f4; }
+    .attr-options-col { border-inline-end: none; border-bottom: 1px solid #eef0f4; }
 }
 
 /* Booking modal (shared with DealDetails) — redefine here for Cart page scope */
@@ -1081,8 +1081,8 @@
     overflow-x: hidden;
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-    direction: rtl;
-    text-align: right;
+    direction: var(--dir, rtl);
+    text-align:  start;
     animation: bookingFadeIn 0.25s cubic-bezier(.4, 0, .2, 1);
     scrollbar-width: none;
 }
@@ -1096,7 +1096,7 @@
 .deal-close-btn {
     position: absolute;
     top: 1rem;
-    left: 1rem;
+    inset-inline-end: 1rem;
     z-index: 20;
     width: 34px; height: 34px;
     border-radius: 50%;
@@ -1145,7 +1145,7 @@
 }
 .booking-options-col {
     padding: 22px 26px;
-    border-left: 1px solid #eef0f4;
+    border-inline-end: 1px solid #eef0f4;
     display: flex; flex-direction: column; gap: 2px;
 }
 .booking-section {
@@ -1190,7 +1190,7 @@
 }
 .toggle-slider::before {
     content: ''; position: absolute;
-    width: 18px; height: 18px; right: 3px; top: 3px;
+    width: 18px; height: 18px; inset-inline-start: 3px; top: 3px;
     background: #fff; border-radius: 50%;
     box-shadow: 0 1px 4px rgba(0,0,0,0.18); transition: transform 0.22s;
 }
@@ -1249,7 +1249,7 @@
 @media (max-width: 640px) {
     .booking-modal-body { grid-template-columns: 1fr; }
     .booking-summary-col { border-radius: 0 0 20px 20px; border-top: 1px solid #eef0f4; }
-    .booking-options-col { border-left: none; padding: 18px 16px; }
+    .booking-options-col { border-inline-end: none; padding: 18px 16px; }
     .booking-header-row { flex-direction: column; gap: 10px; }
 }
 
@@ -1320,7 +1320,7 @@
 .abm-confirm-btn:hover { transform: translateY(-1px); box-shadow: 0 7px 16px rgba(26,86,196,0.42); }
 
 .abm-close {
-    position: absolute !important; top: 12px !important; left: 12px !important; z-index: 10;
+    position: absolute !important; top: 12px !important; inset-inline-end: 12px !important; z-index: 10;
     background: rgba(0,0,0,0.35) !important; color: #fff !important;
     border: none; width: 32px; height: 32px; border-radius: 50%;
     font-size: 16px; font-weight: 700; cursor: pointer;
@@ -1361,4 +1361,20 @@
     font-size: 0.75rem;
     color: #aaa;
     margin-top: 2px;
+}
+/* Empty cart inside the 2-column grid: span the full width and stay centered */
+.cart-container > .cart-empty-state {
+    grid-column: 1 / -1;
+    min-height: auto;
+    margin-top: 0;
+    padding: 4rem 1rem;
+}
+.cart-empty-state .cart-empty-icon {
+    color: #144ea5;
+    margin-bottom: 0.5rem;
+}
+.cart-empty-state .checkout-btn {
+    width: auto;
+    min-width: 240px;
+    padding: 1rem 2.5rem;
 }

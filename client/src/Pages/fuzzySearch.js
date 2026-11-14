@@ -176,6 +176,8 @@ export function fuzzySearchDestinations(query, limit = 8) {
 const MONTH_MAP = {
   ינואר: 0, פברואר: 1, מרץ: 2, אפריל: 3, מאי: 4, יוני: 5,
   יולי: 6, אוגוסט: 7, ספטמבר: 8, אוקטובר: 9, נובמבר: 10, דצמבר: 11,
+  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+  july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
 };
 
 /**
@@ -220,47 +222,49 @@ export function parseHebrewVacationQuery(text) {
   if (!text.trim()) return result;
 
   // ── Kosher ──
-  if (/כשר|כשרה|כשרות|שומר.{0,4}כשרות/.test(text)) {
+  if (/כשר|כשרה|כשרות|שומר.{0,4}כשרות|kosher/i.test(text)) {
     result.isKosher = true;
     result.vibe = "kosher";
   }
 
   // ── Vibe (only if not already set by kosher) ──
   if (!result.vibe) {
-    if (/בטן.{0,3}גב|חוף|ים|שמש|טרופי|ביקיני|beach/.test(text)) {
+    if (/בטן.{0,3}גב|חוף|ים|שמש|טרופי|ביקיני|beach|tropical/i.test(text)) {
       result.vibe = "beach";
-    } else if (/אקסטרים|אדרנלין|הרפתק|ספורט קיצון|extreme|סקי|גלישה/.test(text)) {
+    } else if (/אקסטרים|אדרנלין|הרפתק|ספורט קיצון|extreme|adventure|סקי|ski|גלישה|surf/i.test(text)) {
       result.vibe = "adventure";
-    } else if (/זול|זולה|תקציב|מוזל|ב.{0,3}זול|budget|cheap/.test(text)) {
+    } else if (/זול|זולה|תקציב|מוזל|ב.{0,3}זול|budget|cheap/i.test(text)) {
       result.vibe = "cheap";
-    } else if (/רומנטי|רומנטית|זוגי|רומנס|romantic/.test(text)) {
+    } else if (/רומנטי|רומנטית|זוגי|רומנס|romantic|honeymoon/i.test(text)) {
       result.vibe = "romantic";
-    } else if (/סיטי|עיר|תרבות|מוזיאון|city.?trip/.test(text)) {
+    } else if (/סיטי|עיר|תרבות|מוזיאון|city.?trip|city|culture|museum/i.test(text)) {
       result.vibe = "city";
     }
   }
 
   // ── Guests ──
-  if (/זוג|שניים|שניינו|אני וה/.test(text)) {
+  if (/זוג|שניים|שניינו|אני וה|couple|two of us/i.test(text)) {
     result.guests = 2;
-  } else if (/לבד|סולו|יחיד|יחידה/.test(text)) {
+  } else if (/לבד|סולו|יחיד|יחידה|solo|alone/i.test(text)) {
     result.guests = 1;
-  } else if (/משפחה/.test(text)) {
+  } else if (/משפחה|family/i.test(text)) {
     result.guests = 4;
   } else {
-    const m = text.match(/(\d+)\s*(נוסעים|אנשים|כאלה|אנשי)/);
+    const m = text.match(/(\d+)\s*(נוסעים|אנשים|כאלה|אנשי|people|travell?ers|guests|adults)/i);
     if (m) result.guests = parseInt(m[1], 10);
   }
 
   // ── Budget ──
-  const budgetMatch = text.match(/(\d[\d,]+)\s*(₪|שקל|שקלים|ש"ח|ש״ח)/);
+  const budgetMatch =
+    text.match(/(\d[\d,]+)\s*(₪|שקל|שקלים|ש"ח|ש״ח|ils|nis|shekels?)/i) || text.match(/₪\s*(\d[\d,]+)/);
   if (budgetMatch) {
     result.budget = parseInt(budgetMatch[1].replace(/,/g, ""), 10);
   }
 
   // ── Month → full-month date range ──
+  const lowerText = text.toLowerCase();
   for (const [name, idx] of Object.entries(MONTH_MAP)) {
-    if (text.includes(name)) {
+    if (lowerText.includes(name)) {
       const year = new Date().getFullYear();
       const start = new Date(year, idx, 1);
       // end = last day of that month

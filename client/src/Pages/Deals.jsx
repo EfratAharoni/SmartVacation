@@ -5,47 +5,22 @@ import { CalendarDays, X, Search } from 'lucide-react';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import './Deals.css';
-import { VIBE_DESTINATIONS, VIBE_LABELS } from './fuzzySearch';
+import { he as heLocale, enUS } from 'date-fns/locale';
+import { VIBE_DESTINATIONS } from './fuzzySearch';
 import { API_BASE_URL } from '../utils/api';
-
-// Helper: get user-specific localStorage key
-const getUserKey = () => {
-    const name = localStorage.getItem('userName');
-    return name ? name.replace(/\s/g, '_') : 'guest';
-};
-
-const HEBREW_MONTH_MAP = {
-    ינואר: 0,
-    פברואר: 1,
-    מרץ: 2,
-    אפריל: 3,
-    מאי: 4,
-    יוני: 5,
-    יולי: 6,
-    אוגוסט: 7,
-    ספטמבר: 8,
-    אוקטובר: 9,
-    נובמבר: 10,
-    דצמבר: 11,
-};
-
-const parseDealStartDate = (dateText) => {
-    const text = typeof dateText === 'string' ? dateText : null;
-    if (!text) return null;
-    const match = text.match(/(\d{1,2})\s*-\s*\d{1,2}\s+([^\s]+)\s+(\d{4})/);
-    if (!match) return null;
-
-    const day = Number(match[1]);
-    const month = HEBREW_MONTH_MAP[match[2]];
-    const year = Number(match[3]);
-    if (Number.isNaN(day) || Number.isNaN(year) || month === undefined) return null;
-
-    return new Date(year, month, day);
-};
+import useLocalize from '../utils/useLocalize';
+import { DESTINATION_EN } from '../utils/destinations';
+import { departsBetween } from '../utils/dealDates';
+import { toast } from '../components/Toast';
+import { useUserLists } from '../context/UserListsContext';
+import { usePreferences } from '../context/PreferencesContext';
 
 const Deals = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const { t, isEn, tc, formatDate } = useLocalize();
+    const { price } = usePreferences();
+    const { isLoggedIn, favorites, toggleFavorite, removeFavorite } = useUserLists();
     
     // --- הוספת State לניהול הנתונים מה-DB ---
     const [deals, setDeals] = useState([]);
@@ -71,7 +46,6 @@ const Deals = () => {
     const [sortBy, setSortBy] = useState('price-low');
     const [isKosherOnly, setIsKosherOnly] = useState(false);
     const [vibeFilter, setVibeFilter] = useState(null); // 'beach' | 'adventure' | 'cheap' | 'romantic' | 'city'
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const datePickerRef = useRef(null);
     const sliderWrapperRef = useRef(null);
     const sliderMinRef = useRef(null);
@@ -92,22 +66,6 @@ const Deals = () => {
           )
         : null;
     const aiQuery = location.state?.aiQuery ?? null;
-
-    const [favorites, setFavorites] = useState(() => {
-        const name = localStorage.getItem('userName');
-        if (!name) return [];
-        const userKey = name.replace(/\s/g, '_');
-        const saved = localStorage.getItem(`favorites_${userKey}`);
-        return saved ? JSON.parse(saved) : [];
-    });
-
-    const [cart, setCart] = useState(() => {
-        const name = localStorage.getItem('userName');
-        if (!name) return [];
-        const userKey = name.replace(/\s/g, '_');
-        const saved = localStorage.getItem(`cart_${userKey}`);
-        return saved ? JSON.parse(saved) : [];
-    });
 
     const isKosherDeal = (deal) => Boolean(deal?.isKosherFriendly);
 
@@ -133,19 +91,6 @@ const Deals = () => {
             }
         };
         fetchDeals();
-    }, []);
-
-    // Sync login state on mount and reload favorites/cart per user
-    useEffect(() => {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loggedIn);
-        if (loggedIn) {
-            const userKey = getUserKey();
-            const savedFavs = JSON.parse(localStorage.getItem(`favorites_${userKey}`) || '[]');
-            const savedCart = JSON.parse(localStorage.getItem(`cart_${userKey}`) || '[]');
-            setFavorites(savedFavs);
-            setCart(savedCart);
-        }
     }, []);
 
     useEffect(() => {
@@ -209,86 +154,15 @@ const Deals = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    useEffect(() => {
-        if (!sliderWrapperRef.current || !sliderMinRef.current || !sliderMaxRef.current) return;
-        const wrapper = sliderWrapperRef.current.getBoundingClientRect();
-        const sliderMin = sliderMinRef.current.getBoundingClientRect();
-        const sliderMax = sliderMaxRef.current.getBoundingClientRect();
-        console.group('[SliderDiag] BoundingClientRects');
-        console.log('wrapper :', { left: wrapper.left, right: wrapper.right, width: wrapper.width });
-        console.log('sliderMin:', { left: sliderMin.left, right: sliderMin.right, width: sliderMin.width });
-        console.log('sliderMax:', { left: sliderMax.left, right: sliderMax.right, width: sliderMax.width });
-        console.log('sliderMin offset from wrapper → left gap:', sliderMin.left - wrapper.left, 'right gap:', wrapper.right - sliderMin.right);
-        console.log('sliderMax offset from wrapper → left gap:', sliderMax.left - wrapper.left, 'right gap:', wrapper.right - sliderMax.right);
-        console.groupEnd();
-    }, []);
-
-    const toggleFavorite = (dealId) => {
-        if (!isLoggedIn) {
-            alert('כדי להוסיף למועדפים יש להתחבר תחילה');
-            navigate('/login');
-            return;
-        }
-        const userKey = getUserKey();
-        const deal = deals.find(d => d._id === dealId || d.id === dealId);
-        if (!deal) return;
-        
-        let updated;
-        if (favorites.some(fav => fav._id === dealId || fav.id === dealId)) {
-            updated = favorites.filter(fav => fav._id !== dealId && fav.id !== dealId);
-        } else {
-            updated = [...favorites, { ...deal, type: 'deal' }];
-        }
-        setFavorites(updated);
-        localStorage.setItem(`favorites_${userKey}`, JSON.stringify(updated));
-        window.dispatchEvent(new Event('userDataUpdated'));
-    };
-
-    const addToCart = (deal, e) => {
-        e.stopPropagation();
-        if (!isLoggedIn) {
-            alert('כדי להוסיף לעגלה יש להתחבר תחילה');
-            navigate('/login');
-            return;
-        }
-        const userKey = getUserKey();
-        const dealId = deal._id || deal.id;
-        const existing = cart.find(item => (item._id === dealId || item.id === dealId) && item.type === 'deal');
-        if (existing) {
-            alert(`${deal.destination} כבר נמצא בעגלה שלך!`);
-            return;
-        }
-        const updated = [...cart, { ...deal, type: 'deal', addedAt: new Date().toISOString() }];
-        setCart(updated);
-        localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
-        window.dispatchEvent(new Event('userDataUpdated'));
-        alert(`${deal.destination} נוסף לעגלה! 🛒`);
-    };
-
     const toggleDestinationFavorite = (destCard) => {
         if (!isLoggedIn) {
-            alert('כדי להוסיף למועדפים יש להתחבר תחילה');
+            toast.info(t('common.loginToFav'));
             navigate('/login');
             return;
         }
-
-        const userKey = getUserKey();
-        const isDestinationFavorite = favorites.some(
-            fav => fav.type === 'deal' && fav.destination === destCard.destination
-        );
-
-        let updated;
-        if (isDestinationFavorite) {
-            updated = favorites.filter(
-                fav => !(fav.type === 'deal' && fav.destination === destCard.destination)
-            );
-        } else {
-            updated = [...favorites, { ...destCard.representativeDeal, type: 'deal' }];
-        }
-
-        setFavorites(updated);
-        localStorage.setItem(`favorites_${userKey}`, JSON.stringify(updated));
-        window.dispatchEvent(new Event('userDataUpdated'));
+        const favDeals = favorites.filter(fav => fav.type === 'deal' && fav.destination === destCard.destination);
+        if (favDeals.length) favDeals.forEach(removeFavorite);
+        else toggleFavorite({ ...destCard.representativeDeal, type: 'deal' });
     };
 
     const filterDeals = () => {
@@ -301,8 +175,12 @@ const Deals = () => {
         let filtered = [...deals];
 
         if (destinationKeyword.trim()) {
+            // match the Hebrew name or its English translation, so either language works
+            const kw = destinationKeyword.trim().toLowerCase();
             filtered = filtered.filter((deal) =>
-                deal.destination.toLowerCase().includes(destinationKeyword.toLowerCase())
+                [deal.destination, deal.en?.destination, DESTINATION_EN[deal.destination]]
+                    .filter(Boolean)
+                    .some((name) => name.toLowerCase().includes(kw))
             );
         }
 
@@ -326,18 +204,8 @@ const Deals = () => {
         }
 
         if (isDateRangeActive) {
-            const startDate = new Date(dateRangeSelection[0].startDate);
-            startDate.setHours(0, 0, 0, 0);
-            const endDate = new Date(dateRangeSelection[0].endDate);
-            endDate.setHours(23, 59, 59, 999);
-
-            filtered = filtered.filter((deal) => {
-                const allDates = Array.isArray(deal.dates) ? deal.dates : [deal.dates];
-                return allDates.some((dateText) => {
-                    const dealStart = parseDealStartDate(dateText);
-                    return dealStart && dealStart >= startDate && dealStart <= endDate;
-                });
-            });
+            const { startDate, endDate } = dateRangeSelection[0];
+            filtered = filtered.filter((deal) => departsBetween(deal, startDate, endDate));
         }
 
         // Group deals by destination
@@ -435,19 +303,14 @@ const Deals = () => {
         return `/deals/${encodeURIComponent(destination)}${query ? `?${query}` : ''}`;
     };
 
-    const formatDateLabel = (date) =>
-        new Intl.DateTimeFormat('he-IL', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        }).format(date);
+    const formatDateLabel = (date) => formatDate(date);
 
     const dateRangeLabel = isDateRangeActive
         ? `${formatDateLabel(dateRangeSelection[0].startDate)} - ${formatDateLabel(dateRangeSelection[0].endDate)}`
-        : 'כל התאריכים';
+        : t('deals.allDates');
 
     if (isLoading) {
-        return <div className="deals-page" style={{ textAlign: 'center', padding: '50px' }}>טוען דילים מדהימים...</div>;
+        return <div className="deals-page" style={{ textAlign: 'center', padding: '50px' }}>{t('deals.loading')}</div>;
     }
 
     return (
@@ -456,8 +319,8 @@ const Deals = () => {
             {/* Hero Section */}
             <section className="deals-hero">
                 <div className="hero-content">
-                    <h1 className="floating">דילים חמים לחופשות בלתי נשכחות</h1>
-                    <p>הנחות עד 30% על חבילות נופש מובחרות</p>
+                    <h1 className="floating">{t('deals.heroTitle')}</h1>
+                    <p>{t('deals.heroSubtitle')}</p>
                 </div>
             </section>
 
@@ -466,14 +329,14 @@ const Deals = () => {
                 <div className="filter-container">
                     <div className="filter-row">
                         <div className="filter-group">
-                            <label>חיפוש יעד</label>
+                            <label>{t('deals.searchDestination')}</label>
                             <div className="search-input-wrapper">
                                 <Search size={16} className="search-icon" />
                                 <input
                                     type="text"
                                     value={destinationKeyword}
                                     onChange={(e) => setDestinationKeyword(e.target.value)}
-                                    placeholder="חפש יעד..."
+                                    placeholder={t('deals.searchPlaceholder')}
                                     className="search-input"
                                 />
                                 {destinationKeyword && (
@@ -481,7 +344,7 @@ const Deals = () => {
                                         type="button"
                                         className="search-clear"
                                         onClick={() => setDestinationKeyword('')}
-                                        aria-label="נקה חיפוש"
+                                        aria-label={t('deals.clearSearch')}
                                     >
                                         <X size={14} />
                                     </button>
@@ -490,7 +353,7 @@ const Deals = () => {
                         </div>
 
                         <div className="filter-group date-filter" ref={datePickerRef}>
-                            <label>תאריכים</label>
+                            <label>{t('deals.dates')}</label>
                             <button
                                 type="button"
                                 className="date-picker-trigger"
@@ -503,12 +366,12 @@ const Deals = () => {
                             {isDatePickerOpen && (
                                 <div className="date-picker-popover">
                                     <div className="date-picker-popover-header">
-                                        <span>בחר תאריכים</span>
+                                        <span>{t('common.selectDates')}</span>
                                         <button
                                             type="button"
                                             className="date-picker-close"
                                             onClick={() => setIsDatePickerOpen(false)}
-                                            aria-label="סגירה"
+                                            aria-label={t('common.close')}
                                         >
                                             <X size={16} />
                                         </button>
@@ -528,6 +391,7 @@ const Deals = () => {
                                         editableDateInputs={false}
                                         moveRangeOnFirstSelection={false}
                                         rangeColors={['#667eea']}
+                                        locale={isEn ? enUS : heLocale}
                                     />
 
                                     <div className="date-picker-actions">
@@ -539,14 +403,14 @@ const Deals = () => {
                                                 setIsDatePickerOpen(false);
                                             }}
                                         >
-                                            נקה
+                                            {t('common.clear')}
                                         </button>
                                         <button
                                             type="button"
                                             className="date-action-btn"
                                             onClick={() => setIsDatePickerOpen(false)}
                                         >
-                                            סגירה
+                                            {t('common.close')}
                                         </button>
                                     </div>
                                 </div>
@@ -554,7 +418,7 @@ const Deals = () => {
                         </div>
 
                         <div className="filter-group price-filter">
-                            <label>מחיר: ₪{priceRange[0].toLocaleString()} - ₪{priceRange[1].toLocaleString()}</label>
+                            <label>{t('deals.priceLabel', { min: price(priceRange[0]), max: price(priceRange[1]) })}</label>
                             <div className="price-range-wrapper" ref={sliderWrapperRef}>
                                 <div className="price-range-track-container">
                                     <div className="price-range-track-bg" />
@@ -596,40 +460,40 @@ const Deals = () => {
                         </div>
 
                         <div className="filter-group">
-                            <label>מיון לפי</label>
+                            <label>{t('common.sortBy')}</label>
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
                                 className="filter-select"
                             >
-                                <option value="price-low">מחיר נמוך לגבוה</option>
-                                <option value="price-high">מחיר גבוה לנמוך</option>
-                                <option value="rating">דירוג</option>
-                                <option value="discount">הנחה</option>
+                                <option value="price-low">{t('deals.sortPriceLow')}</option>
+                                <option value="price-high">{t('deals.sortPriceHigh')}</option>
+                                <option value="rating">{t('deals.sortRating')}</option>
+                                <option value="discount">{t('deals.sortDiscount')}</option>
                             </select>
                         </div>
 
                         {vibeFilter && (
                             <div className="filter-group">
-                                <label>סוכן AI</label>
+                                <label>{t('deals.aiAgent')}</label>
                                 <button
                                     type="button"
                                     className="kosher-toggle active"
                                     onClick={() => setVibeFilter(null)}
                                 >
-                                    {VIBE_LABELS[vibeFilter]} ✕
+                                    {t(`vibes.${vibeFilter}`, { defaultValue: vibeFilter })} ✕
                                 </button>
                             </div>
                         )}
 
                         <div className="filter-group kosher-filter-group">
-                            <label>כשרות</label>
+                            <label>{t('deals.kosher')}</label>
                             <button
                                 type="button"
                                 className={`kosher-toggle ${isKosherOnly ? 'active' : ''}`}
                                 onClick={() => setIsKosherOnly(prev => !prev)}
                             >
-                                {isKosherOnly ? 'כשר בלבד' : 'כל החבילות'}
+                                {isKosherOnly ? t('deals.kosherOnly') : t('deals.allPackages')}
                             </button>
                         </div>
 
@@ -649,7 +513,7 @@ const Deals = () => {
                                 </span>
                             </span>
                             <div className="ai-results-text">
-                                <h2>המלצות סוכן AI</h2>
+                                <h2>{t('deals.aiRecommendations')}</h2>
                                 {aiQuery && <p className="ai-results-query">{aiQuery}</p>}
                             </div>
                         </div>
@@ -666,7 +530,7 @@ const Deals = () => {
                                 navigate('/deals', { replace: true });
                             }}
                         >
-                            ✕ נקה סינון
+                            {t('deals.clearFilters')}
                         </button>
                     </div>
                     </div>
@@ -679,16 +543,16 @@ const Deals = () => {
                                 style={{ cursor: 'pointer' }}
                             >
                                 {score !== null && (
-                                    <div className="ai-score-badge">התאמה {score.toFixed(1)}/10</div>
+                                    <div className="ai-score-badge">{t('deals.match', { score: score.toFixed(1) })}</div>
                                 )}
                                 <div className="deal-badge">
-                                    <span className="discount">עד -{deal.discount}%</span>
+                                    <span className="discount">{t('deals.upToDiscount', { discount: deal.discount })}</span>
                                 </div>
                                 <div className="deal-image">
-                                    <img src={deal.image} alt={deal.destination} />
+                                    <img src={deal.image} alt={tc(deal, 'destination')} />
                                 </div>
                                 <div className="deal-content">
-                                    <h3>{deal.destination}</h3>
+                                    <h3>{tc(deal, 'destination')}</h3>
                                     <div className="rating-section">
                                         <div className="stars">{renderStars(deal.rating)}</div>
                                         <span className="rating-text">{deal.rating?.toFixed(1)}</span>
@@ -698,14 +562,14 @@ const Deals = () => {
                                     )}
                                     <div className="price-section">
                                         <div className="price-info">
-                                            <span className="price-label">החל מ-</span>
-                                            <span className="current-price">₪{deal.price}</span>
+                                            <span className="price-label">{t('common.from')}</span>
+                                            <span className="current-price">{price(deal.price)}</span>
                                         </div>
                                         <button
                                             className="view-packages-btn"
                                             onClick={(e) => { e.stopPropagation(); navigate(`/deals/${encodeURIComponent(deal.destination)}`); }}
                                         >
-                                            צפה בחבילות
+                                            {t('deals.viewPackages')}
                                         </button>
                                     </div>
                                 </div>
@@ -719,7 +583,7 @@ const Deals = () => {
             {!(aiRankedDeals && aiRankedDeals.length > 0) && <section className="deals-grid-section">
                 <div className="results-info">
                     <div className="results-info-row">
-                        <h2>נמצאו {filteredDestinations.length} יעדים</h2>
+                        <h2>{t('deals.foundDestinations', { count: filteredDestinations.length })}</h2>
                         {(destinationKeyword || isDateRangeActive || isKosherOnly || vibeFilter || priceRange[0] > minDealPrice || priceRange[1] < maxDealPrice) && (
                             <button
                                 type="button"
@@ -734,11 +598,11 @@ const Deals = () => {
                                     navigate('/deals', { replace: true });
                                 }}
                             >
-                                ✕ נקה סינון
+                                {t('deals.clearFilters')}
                             </button>
                         )}
                     </div>
-                    <p className="hot-tip">💡 לחץ על יעד לצפייה בכל החבילות הזמינות</p>
+                    <p className="hot-tip">{t('deals.hotTip')}</p>
                 </div>
 
                 <div className="deals-grid">
@@ -755,15 +619,15 @@ const Deals = () => {
                             style={{ cursor: 'pointer' }}
                         >
                             <div className="deal-badge">
-                                <span className="discount">עד -{destCard.maxDiscount}%</span>
+                                <span className="discount">{t('deals.upToDiscount', { discount: destCard.maxDiscount })}</span>
                                 {/* {destCard.hasKosherPackage && (
                                     <span className="kosher-destination-badge">מותאם לשומרי כשרות</span>
                                 )} */}
-                                <span className="package-count">{destCard.packageCount} חבילות</span>
+                                <span className="package-count">{t('deals.packagesCount', { count: destCard.packageCount })}</span>
                             </div>
 
                             <div className="deal-image">
-                                <img src={destCard.image} alt={destCard.destination} />
+                                <img src={destCard.image} alt={tc(destCard.representativeDeal, 'destination')} />
 
                                 <button
                                     className={`deals-favorite-heart ${isFavDestination ? 'active' : ''}`}
@@ -773,37 +637,37 @@ const Deals = () => {
                                         toggleDestinationFavorite(destCard);
                                     }}
                                     onPointerDown={(e) => e.stopPropagation()}
-                                    aria-label={isFavDestination ? 'הסר ממועדפים' : 'הוסף למועדפים'}
+                                    aria-label={isFavDestination ? t('common.removeFav') : t('common.addFav')}
                                 >
                                     <HeartSVG filled={isFavDestination} />
                                 </button>
                             </div>
 
                             <div className="deal-content">
-                                <h3>{destCard.destination}</h3>
+                                <h3>{tc(destCard.representativeDeal, 'destination')}</h3>
 
                                 <div className="rating-section">
                                     <div className="stars">{renderStars(destCard.avgRating)}</div>
                                     <span className="rating-text">{destCard.avgRating.toFixed(1)}</span>
-                                    <span className="reviews">({destCard.totalReviews} ביקורות)</span>
+                                    <span className="reviews">{t('common.reviewsCount', { count: destCard.totalReviews })}</span>
                                 </div>
 
                                 <div className="destination-highlights">
                                     <div className="highlight-item">
                                         <span className="icon">✈️</span>
-                                        <span>{destCard.flightTime}</span>
+                                        <span>{tc(destCard.representativeDeal, 'flightTime')}</span>
                                     </div>
                                     <div className="highlight-item">
                                         <span className="icon">📦</span>
-                                        <span>{destCard.packageCount} חבילות נופש זמינות</span>
+                                        <span>{t('deals.packagesAvailable', { count: destCard.packageCount })}</span>
                                     </div>
                                 </div>
 
                                 <div className="price-section">
                                     <div className="price-info">
-                                        <span className="price-label">החל מ-</span>
-                                        <span className="current-price">₪{destCard.minPrice}</span>
-                                        <span className="price-note">למבוגר</span>
+                                        <span className="price-label">{t('common.from')}</span>
+                                        <span className="current-price">{price(destCard.minPrice)}</span>
+                                        <span className="price-note">{t('common.perAdult')}</span>
                                     </div>
                                     <button 
                                         className="view-packages-btn"
@@ -812,7 +676,7 @@ const Deals = () => {
                                             navigate(buildDestinationUrl(destCard.destination));
                                         }}
                                     >
-                                        צפה בחבילות
+                                        {t('deals.viewPackages')}
                                     </button>
                                 </div>
                             </div>
@@ -823,8 +687,8 @@ const Deals = () => {
                 {filteredDestinations.length === 0 && (
                     <div className="no-results">
                         <div className="no-results-icon">😕</div>
-                        <h3>לא נמצאו יעדים</h3>
-                        <p>נסה לשנות את הפילטרים או לחפש יעד אחר</p>
+                        <h3>{t('deals.noResults')}</h3>
+                        <p>{t('deals.noResultsHint')}</p>
                     </div>
                 )}
             </section>}

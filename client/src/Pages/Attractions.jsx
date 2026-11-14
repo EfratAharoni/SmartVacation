@@ -4,33 +4,33 @@ import { useNavigate } from "react-router-dom";
 import { Globe, Landmark, Images, Trees, Building2, Gift, Star, MapPin } from "lucide-react";
 import "./Attractions.css";
 import { API_BASE_URL } from "../utils/api";
-
-const getUserKey = () => {
-  const name = localStorage.getItem("userName");
-  return name ? name.replace(/\s/g, "_") : "guest";
-};
+import useLocalize from "../utils/useLocalize";
+import Reviews from "../components/Reviews";
+import AttractionBookingModal from "../components/AttractionBookingModal";
+import { toast } from "../components/Toast";
+import { useUserLists } from "../context/UserListsContext";
+import { usePreferences } from "../context/PreferencesContext";
 
 const Attractions = () => {
   const navigate = useNavigate();
+  const { t, tc } = useLocalize();
+  const { price } = usePreferences();
+  const { isLoggedIn, isFavorite, toggleFavorite: toggleFav, addToCart } = useUserLists();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [attractions, setAttractions] = useState([]); // הנתונים מגיעים מכאן
+  const [attractions, setAttractions] = useState([]);
   const [filteredAttractions, setFilteredAttractions] = useState([]);
   const [selectedAttraction, setSelectedAttraction] = useState(null);
   const [bookingAttraction, setBookingAttraction] = useState(null);
-  const [bookingQty, setBookingQty] = useState({ adults: 1, children: 0, infants: 0 });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [favorites, setFavorites] = useState([]);
-  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: "all", name: "הכל", icon: Globe },
-    { id: "landmarks", name: "ציוני דרך", icon: Landmark },
-    { id: "museums", name: "מוזיאונים", icon: Images },
-    { id: "nature", name: "טבע", icon: Trees },
-    { id: "temples", name: "מקדשים", icon: Building2 },
-    { id: "free", name: "חינם", icon: Gift },
+    { id: "all", icon: Globe },
+    { id: "landmarks", icon: Landmark },
+    { id: "museums", icon: Images },
+    { id: "nature", icon: Trees },
+    { id: "temples", icon: Building2 },
+    { id: "free", icon: Gift },
   ];
 
   // טעינת נתונים מהשרת וטעינת נתוני משתמש
@@ -46,24 +46,13 @@ const Attractions = () => {
         setAttractions(data);
         setFilteredAttractions(data);
       } catch (error) {
-        console.error("שגיאה במשיכת הנתונים מהשרת:", error);
+        console.error("Failed to load attractions:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchAttractions();
-
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-
-    if (loggedIn) {
-      const userKey = getUserKey();
-      const savedFavs = JSON.parse(localStorage.getItem(`favorites_${userKey}`) || "[]");
-      const savedCart = JSON.parse(localStorage.getItem(`cart_${userKey}`) || "[]");
-      setFavorites(savedFavs);
-      setCart(savedCart);
-    }
   }, []);
 
   // סינון אטרקציות
@@ -77,88 +66,46 @@ const Attractions = () => {
       }
     }
     if (searchTerm) {
-      filtered = filtered.filter(
-        (attr) =>
-          attr.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          attr.location.toLowerCase().includes(searchTerm.toLowerCase())
+      // search both the Hebrew and English names/locations
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter((attr) =>
+        [attr.name, attr.location, attr.en?.name, attr.en?.location]
+          .filter(Boolean)
+          .some((v) => v.toLowerCase().includes(term))
       );
     }
     setFilteredAttractions(filtered);
   }, [selectedCategory, searchTerm, attractions]);
 
-  // פונקציית מועדפים - משתמשת ב _id
   const toggleFavorite = (attractionId) => {
-    if (!isLoggedIn) {
-      alert("כדי להוסיף למועדפים יש להתחבר תחילה");
-      navigate("/login");
-      return;
-    }
-    
-    const userKey = getUserKey();
-    const attraction = attractions.find(a => a._id === attractionId);
-    
+    const attraction = attractions.find((a) => a._id === attractionId);
     if (!attraction) return;
-    
-    const isAlreadyFavorite = favorites.some(fav => fav._id === attractionId);
-    
-    const updated = isAlreadyFavorite
-      ? favorites.filter(fav => fav._id !== attractionId)
-      : [...favorites, { ...attraction, type: 'attraction' }]; 
-
-    setFavorites(updated);
-    localStorage.setItem(`favorites_${userKey}`, JSON.stringify(updated));
-    window.dispatchEvent(new Event("userDataUpdated"));
-  };
-
-  const getChildPrice = (attraction) =>
-    attraction.childPrice != null
-      ? attraction.childPrice
-      : Math.round(attraction.price * 0.6);
-
-  const calcAttractionTotal = (attraction, qty) => {
-    if (attraction.price === 0) return 0;
-    const adultTotal = attraction.price * qty.adults;
-    const childTotal = getChildPrice(attraction) * qty.children;
-    return adultTotal + childTotal; // תינוקות תמיד חינם
+    if (toggleFav({ ...attraction, type: "attraction" }) === "login") {
+      toast.info(t("common.loginToFav"));
+      navigate("/login");
+    }
   };
 
   const openAttractionBooking = (attraction, e) => {
     e?.stopPropagation();
     if (!isLoggedIn) {
-      alert("כדי להזמין יש להתחבר תחילה");
+      toast.info(t("common.loginToBook"));
       navigate("/login");
       return;
     }
-    setBookingQty({ adults: 1, children: 0, infants: 0 });
     setBookingAttraction(attraction);
     setSelectedAttraction(null);
   };
 
-  const confirmAttractionBooking = () => {
-    const userKey = getUserKey();
-    const alreadyIn = cart.some(
-      (item) => item._id === bookingAttraction._id && item.type === "attraction"
-    );
-    if (alreadyIn) {
-      alert(`${bookingAttraction.name} כבר נמצא בעגלה שלך!`);
+  const confirmAttractionBooking = (bookingQty, totalPrice) => {
+    const name = tc(bookingAttraction, "name");
+    const result = addToCart({ ...bookingAttraction, type: "attraction", bookingQty, totalPrice });
+    if (result === "exists") {
+      toast.info(t("common.alreadyInCart", { name }));
       return;
     }
-    const totalPrice = calcAttractionTotal(bookingAttraction, bookingQty);
-    const updated = [
-      ...cart,
-      {
-        ...bookingAttraction,
-        type: "attraction",
-        addedAt: new Date().toISOString(),
-        bookingQty: { ...bookingQty },
-        totalPrice,
-      },
-    ];
-    setCart(updated);
-    localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
-    window.dispatchEvent(new Event("userDataUpdated"));
     setBookingAttraction(null);
-    alert(`${bookingAttraction.name} נוסף לעגלה! 🛒`);
+    toast.success(t("common.addedToCart", { name }));
   };
 
   const openAttractionModal = (attraction) => setSelectedAttraction(attraction);
@@ -188,15 +135,15 @@ const Attractions = () => {
     </svg>
   );
 
-  if (loading) return <div className="loader" style={{textAlign: "center", padding: "50px", fontSize: "20px"}}>טוען אטרקציות...</div>;
+  if (loading) return <div className="loader" style={{textAlign: "center", padding: "50px", fontSize: "20px"}}>{t("attractions.loading")}</div>;
 
   return (
     <div className="attractions-page">
       {/* Hero */}
       <section className="attractions-hero">
         <div className="hero-content">
-          <h1 className="floating">גלה את האטרקציות המדהימות בעולם</h1>
-          <p>חוויות בלתי נשכחות בכל פינה בעולם</p>
+          <h1 className="floating">{t("attractions.heroTitle")}</h1>
+          <p>{t("attractions.heroSubtitle")}</p>
         </div>
       </section>
 
@@ -207,7 +154,7 @@ const Attractions = () => {
             <span className="search-icon">🔍</span>
             <input
               type="text"
-              placeholder="     חפש אטרקציה או יעד..."
+              placeholder={`     ${t("attractions.searchPlaceholder")}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -224,7 +171,7 @@ const Attractions = () => {
                   <span className="cat-icon" aria-hidden="true">
                     <IconComponent size={18} strokeWidth={2} />
                   </span>
-                  <span>{cat.name}</span>
+                  <span>{t(`attractions.cat.${cat.id}`)}</span>
                 </button>
               );
             })}
@@ -235,12 +182,12 @@ const Attractions = () => {
       {/* Grid */}
       <section className="attractions-grid-section">
         <div className="results-count">
-          <h2>נמצאו {filteredAttractions.length} אטרקציות</h2>
+          <h2>{t("attractions.found", { count: filteredAttractions.length })}</h2>
         </div>
 
         <div className="attractions-grid">
           {filteredAttractions.map((attraction) => {
-            const isFav = favorites.some(fav => fav._id === attraction._id);
+            const isFav = isFavorite({ ...attraction, type: "attraction" });
             return (
               <div
                 key={attraction._id}
@@ -248,7 +195,7 @@ const Attractions = () => {
                 onClick={() => openAttractionModal(attraction)}
               >
                 <div className="attraction-image">
-                  <img src={attraction.image} alt={attraction.name} />
+                  <img src={attraction.image} alt={tc(attraction, "name")} />
 
                   {/* דירוג */}
                   <div className="attraction-badge">
@@ -267,29 +214,29 @@ const Attractions = () => {
                       toggleFavorite(attraction._id);
                     }}
                     onPointerDown={(e) => e.stopPropagation()}
-                    aria-label={isFav ? "הסר ממועדפים" : "הוסף למועדפים"}
+                    aria-label={isFav ? t("common.removeFav") : t("common.addFav")}
                   >
                     <HeartSVG filled={isFav} />
                   </button>
                 </div>
 
                 <div className="attraction-content">
-                  <h3>{attraction.name}</h3>
+                  <h3>{tc(attraction, "name")}</h3>
                   <p className="location location-inline">
                     <MapPin size={15} className="inline-icon" />
-                    {attraction.location}
+                    {tc(attraction, "location")}
                   </p>
                   <div className="attraction-details">
                     <span className="price">
-                      {attraction.price === 0 ? "חינם" : `₪${attraction.price}`}
+                      {attraction.price === 0 ? t("common.free") : price(attraction.price)}
                     </span>
-                    <span className="duration">⏱️ {attraction.duration}</span>
+                    <span className="duration">⏱️ {tc(attraction, "duration")}</span>
                   </div>
                   <button
                     className="book-btn"
                     onClick={(e) => openAttractionBooking(attraction, e)}
                   >
-                    הזמן עכשיו
+                    {t("common.bookNow")}
                   </button>
                 </div>
               </div>
@@ -298,122 +245,15 @@ const Attractions = () => {
         </div>
       </section>
 
-      {/* Attraction Booking Modal */}
-      {bookingAttraction && createPortal(
-        <div className="attr-booking-overlay" onClick={() => setBookingAttraction(null)}>
-          <div className="attr-booking-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="attr-close-btn" onClick={() => setBookingAttraction(null)}>✕</button>
-
-            {/* Header */}
-            <div className="attr-modal-header">
-              <div className="attr-header-row">
-                <div className="attr-destination-info">
-                  <h2 className="attr-destination">{bookingAttraction.name}</h2>
-                  <div className="attr-header-chips">
-                    <span className="attr-header-chip">📍 {bookingAttraction.location}</span>
-                    <span className="attr-header-chip">⭐ {bookingAttraction.rating}</span>
-                    <span className="attr-header-chip">⏱ {bookingAttraction.duration}</span>
-                  </div>
-                </div>
-                <div className="attr-header-price">
-                  <span className="attr-header-price-label">מחיר</span>
-                  <span className="attr-header-price-value">
-                    {bookingAttraction.price === 0 ? "חינם" : `₪${bookingAttraction.price}`}
-                  </span>
-                  <span className="attr-header-price-per">למבוגר</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Body */}
-            <div className="attr-modal-body">
-
-              {/* Options Column */}
-              <div className="attr-options-col">
-                <div className="attr-section">
-                  <h3 className="attr-section-title">מבקרים</h3>
-
-                  <div className="attr-passenger-row">
-                    <div className="attr-passenger-info">
-                      <span className="attr-passenger-label">מבוגרים</span>
-                      <span className="attr-passenger-desc">גיל 13+ | {bookingAttraction.price === 0 ? "חינם" : `₪${bookingAttraction.price} לאדם`}</span>
-                    </div>
-                    <div className="attr-passenger-counter">
-                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, adults: Math.max(1, q.adults - 1) }))} disabled={bookingQty.adults <= 1}>−</button>
-                      <span className="attr-counter-val">{bookingQty.adults}</span>
-                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, adults: Math.min(20, q.adults + 1) }))}>+</button>
-                    </div>
-                  </div>
-
-                  {bookingAttraction.price > 0 && (
-                    <div className="attr-passenger-row">
-                      <div className="attr-passenger-info">
-                        <span className="attr-passenger-label">ילדים</span>
-                        <span className="attr-passenger-desc">גיל 3–12 | ₪{getChildPrice(bookingAttraction)} לילד</span>
-                      </div>
-                      <div className="attr-passenger-counter">
-                        <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, children: Math.max(0, q.children - 1) }))} disabled={bookingQty.children <= 0}>−</button>
-                        <span className="attr-counter-val">{bookingQty.children}</span>
-                        <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, children: Math.min(20, q.children + 1) }))}>+</button>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="attr-passenger-row">
-                    <div className="attr-passenger-info">
-                      <span className="attr-passenger-label">תינוקות</span>
-                      <span className="attr-passenger-desc">גיל 0–2 | חינם</span>
-                    </div>
-                    <div className="attr-passenger-counter">
-                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, infants: Math.max(0, q.infants - 1) }))} disabled={bookingQty.infants <= 0}>−</button>
-                      <span className="attr-counter-val">{bookingQty.infants}</span>
-                      <button className="attr-counter-btn" onClick={() => setBookingQty(q => ({ ...q, infants: Math.min(10, q.infants + 1) }))}>+</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Price Summary Column */}
-              <div className="attr-summary-col">
-                <div className="attr-price-card">
-                  <h3 className="attr-price-title">סיכום מחיר</h3>
-                  <div className="attr-price-rows">
-                    <div className="attr-price-row">
-                      <span>{bookingQty.adults} מבוגרים × ₪{bookingAttraction.price}</span>
-                      <span>₪{bookingAttraction.price * bookingQty.adults}</span>
-                    </div>
-                    {bookingQty.children > 0 && (
-                      <div className="attr-price-row">
-                        <span>{bookingQty.children} ילדים × ₪{getChildPrice(bookingAttraction)}</span>
-                        <span>₪{getChildPrice(bookingAttraction) * bookingQty.children}</span>
-                      </div>
-                    )}
-                    {bookingQty.infants > 0 && (
-                      <div className="attr-price-row">
-                        <span>{bookingQty.infants} תינוקות</span>
-                        <span className="attr-free">חינם</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="attr-price-divider"></div>
-                  <div className="attr-price-total">
-                    <span>סה״כ לתשלום</span>
-                    <span className="attr-price-total-amount">
-                      {calcAttractionTotal(bookingAttraction, bookingQty) === 0
-                        ? "חינם"
-                        : `₪${calcAttractionTotal(bookingAttraction, bookingQty)}`}
-                    </span>
-                  </div>
-                  <button className="attr-confirm-btn" onClick={confirmAttractionBooking}>
-                    הוסף לסל
-                  </button>
-                  <p className="attr-price-note">לאחר ההוספה תוכלו לעיין ולערוך בעמוד הסל</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>,
-        document.body
+      {/* Attraction Booking Modal (shared with the cart) */}
+      {bookingAttraction && (
+        <AttractionBookingModal
+          attraction={bookingAttraction}
+          onClose={() => setBookingAttraction(null)}
+          onConfirm={confirmAttractionBooking}
+          confirmLabel={t("common.addToCart")}
+          note={t("booking.addNote")}
+        />
       )}
 
       {/* Modal - השלמתי את החלק החסר */}
@@ -426,14 +266,14 @@ const Attractions = () => {
             <button className="close-btn" onClick={closeAttractionModal}>✕</button>
 
             <div className="modal-image">
-              <img src={selectedAttraction.image} alt={selectedAttraction.name} />
+              <img src={selectedAttraction.image} alt={tc(selectedAttraction, "name")} />
             </div>
 
             <div className="modal-info">
-              <h2>{selectedAttraction.name}</h2>
+              <h2>{tc(selectedAttraction, "name")}</h2>
               <p className="modal-location location-inline">
                 <MapPin size={16} className="inline-icon" />
-                {selectedAttraction.location}
+                {tc(selectedAttraction, "location")}
               </p>
               <div className="modal-rating">
                 <span className="rating-inline">
@@ -442,13 +282,13 @@ const Attractions = () => {
                 </span>
               </div>
 
-              <p className="modal-description">{selectedAttraction.description}</p>
+              <p className="modal-description">{tc(selectedAttraction, "description")}</p>
 
               <div className="modal-highlights">
-                <h4>מה כלול:</h4>
+                <h4>{t("attractions.whatsIncluded")}</h4>
                 <ul>
                   {/* השתמשתי בסימן שאלה למקרה שלאטרקציה מסוימת אין מפרט */}
-                  {selectedAttraction.highlights?.slice(0, 3).map((h, i) => (
+                  {tc(selectedAttraction, "highlights")?.slice(0, 3).map((h, i) => (
                     <li key={i}>✓ {h}</li>
                   ))}
                 </ul>
@@ -456,18 +296,20 @@ const Attractions = () => {
 
               <div className="modal-footer">
                 <div className="modal-price">
-                  <span className="price-label">מחיר: </span>
+                  <span className="price-label">{t("attractions.priceLabel")}</span>
                   <span className="price-value">
-                    {selectedAttraction.price === 0 ? "חינם" : `₪${selectedAttraction.price} למבוגר`}
+                    {selectedAttraction.price === 0 ? t("common.free") : t("attractions.perAdultPrice", { price: price(selectedAttraction.price) })}
                   </span>
                 </div>
                 <button
                   className="modal-book-btn"
                   onClick={(e) => openAttractionBooking(selectedAttraction, e)}
                 >
-                  הזמן עכשיו
+                  {t("common.bookNow")}
                 </button>
               </div>
+
+              <Reviews itemType="attraction" itemKey={selectedAttraction._id} />
             </div>
           </div>
         </div>,

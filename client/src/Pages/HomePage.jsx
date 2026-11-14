@@ -1,18 +1,20 @@
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import React, { useEffect, useRef, useState } from "react";
-import Header from "../Header&Footer/Header";
-import Footer from "../Header&Footer/Footer";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 import { BedDouble, CalendarDays, Search, Sparkles, X } from "lucide-react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { fuzzySearchDestinations, parseHebrewVacationQuery, VIBE_LABELS } from "./fuzzySearch";
-import { API_BASE_URL } from "../utils/api";
+import { he as heLocale, enUS } from "date-fns/locale";
+import { fuzzySearchDestinations, parseHebrewVacationQuery } from "./fuzzySearch";
+import { apiFetch } from "../utils/api";
+import useLocalize from "../utils/useLocalize";
+import { usePreferences } from "../context/PreferencesContext";
+import { toast } from "../components/Toast";
 
 const HomePage = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [, setIsScrolled] = useState(false);
   const [destinationQuery, setDestinationQuery] = useState("");
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
@@ -37,6 +39,10 @@ const HomePage = () => {
   const datePickerRef = useRef(null);
   const aiInputRef = useRef(null);
   const navigate = useNavigate();
+  const { t, isEn, tDest, formatDate } = useLocalize();
+  const { price } = usePreferences();
+  const [splitForm, setSplitForm] = useState({ name: "", phone: "" });
+  const [splitSent, setSplitSent] = useState(false);
 
   // Focus AI input when entering AI mode
   useEffect(() => {
@@ -108,16 +114,13 @@ const HomePage = () => {
     setAiResult(null);
     setFilledByAi(false);
 
-    const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
-
     let data = null;
     let rankedDeals = null;
 
     try {
-      const resp = await fetch(`${API_BASE_URL}/ai/search`, {
+      const resp = await apiFetch("/ai/search", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: aiQuery }),
+        body: { query: aiQuery },
       });
 
       if (resp.ok) {
@@ -135,13 +138,13 @@ const HomePage = () => {
     const hasResult = data && (data.destination || data.startDate || data.budget || data.guests || data.isKosher || data.vibe);
 
     if (!hasResult) {
-      setAiError("לא הצלחתי לזהות פרטים - נסי לכלול יעד, חודש, תקציב או נוסעים.");
+      setAiError(t("home.aiNoMatch"));
       setAiLoading(false);
       return;
     }
 
     setAiResult(data);
-    if (data.destination) setDestinationQuery(data.destination);
+    if (data.destination) setDestinationQuery(tDest(data.destination));
     if (data.startDate && data.endDate) {
       setDateRange([{ startDate: new Date(data.startDate), endDate: new Date(data.endDate), key: "selection" }]);
       setIsDateActive(true);
@@ -188,52 +191,60 @@ const HomePage = () => {
   };
 
   /* ── Helpers ── */
-  const formatDateLabel = (date) =>
-    new Intl.DateTimeFormat("he-IL", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(date);
+  const formatDateLabel = (date) => formatDate(date);
 
   const dateLabel = isDateActive
     ? `${formatDateLabel(dateRange[0].startDate)} - ${formatDateLabel(dateRange[0].endDate)}`
-    : "תאריך צ'ק-אין - תאריך צ'ק-אאוט";
+    : t("home.datesPlaceholder");
 
   /* ── Summary badge text ── */
   const buildAiSummary = (r) => {
     const parts = [];
-    if (r.destination) parts.push(r.destination);
+    if (r.destination) parts.push(tDest(r.destination));
     if (r.startDate && r.endDate) {
-      const fmt = (d) =>
-        new Intl.DateTimeFormat("he-IL", { day: "2-digit", month: "2-digit" }).format(
-          new Date(d)
-        );
+      const fmt = (d) => formatDate(d, { day: "2-digit", month: "2-digit" });
       parts.push(`${fmt(r.startDate)} – ${fmt(r.endDate)}`);
     }
-    if (r.guests) parts.push(`${r.guests} נוסעים`);
-    if (r.budget) parts.push(`עד ₪${r.budget.toLocaleString()}`);
-    if (r.vibe && VIBE_LABELS[r.vibe]) parts.push(VIBE_LABELS[r.vibe]);
-    return parts.join(" · ");
+    if (r.guests) parts.push(t("home.travelers", { count: r.guests }));
+    if (r.budget) parts.push(t("home.upTo", { amount: price(r.budget) }));
+    if (r.vibe) parts.push(t(`vibes.${r.vibe}`, { defaultValue: "" }));
+    return parts.filter(Boolean).join(" · ");
+  };
+
+  /* ── Quick "call me back" form ── */
+  const submitSplitForm = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await apiFetch("/contact", {
+        method: "POST",
+        body: { name: splitForm.name, phone: splitForm.phone, subject: "callback", message: "Callback request / בקשה לחזרה טלפונית" },
+      });
+      if (!res.ok) throw new Error();
+      setSplitSent(true);
+      setSplitForm({ name: "", phone: "" });
+    } catch {
+      toast.error(t("common.networkError"));
+    }
   };
 
   return (
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero" id="home">
-        <h1 className="floating">החופשה המושלמת שלך מתחילה כאן</h1>
+        <h1 className="floating">{t("home.heroTitle")}</h1>
         <div className="hero-slogans">
-          <span>תכנון חכם</span>
+          <span>{t("home.slogan1")}</span>
           <span className="hero-icon"> ✦ </span>
-          <span>חופשה בלתי נשכחת</span>
+          <span>{t("home.slogan2")}</span>
           <span className="hero-icon"> ✦ </span>
-          <span>היעדים הכי מדהימים בעולם</span>
+          <span>{t("home.slogan3")}</span>
         </div>
 
         {/* ── Unified search bar (regular ↔ AI mode) ── */}
         <div
           className={`hero-search-bar${filledByAi ? " search-bar--ai-filled" : ""}${aiMode ? " hero-search-bar--ai-mode" : ""}`}
           role="search"
-          aria-label="חיפוש חופשה"
+          aria-label={t("home.searchLabel")}
         >
           {aiMode ? (
             /* ── AI mode content ── */
@@ -242,10 +253,10 @@ const HomePage = () => {
                 type="button"
                 className="ai-back-btn"
                 onClick={exitAiMode}
-                aria-label="חזרה לחיפוש רגיל"
+                aria-label={t("home.backToRegular")}
               >
                 <X size={14} />
-                <span>חזרה</span>
+                <span>{t("common.back")}</span>
               </button>
 
               <Sparkles size={18} className="ai-mode-sparkle" />
@@ -254,7 +265,7 @@ const HomePage = () => {
                 ref={aiInputRef}
                 type="text"
                 className="ai-mode-input"
-                placeholder='תאר לי את החופשה שלך: "שבוע באיטליה באוגוסט, 5000 ₪ לזוג"'
+                placeholder={t("home.aiPlaceholder")}
                 value={aiQuery}
                 onChange={(e) => { setAiQuery(e.target.value); setAiError(null); }}
                 onKeyDown={(e) => e.key === "Enter" && handleAiSearch()}
@@ -269,7 +280,7 @@ const HomePage = () => {
               >
                 {aiLoading
                   ? <span className="ai-spinner" aria-hidden="true" />
-                  : "נתח"}
+                  : t("home.analyze")}
               </button>
             </>
           ) : (
@@ -280,7 +291,7 @@ const HomePage = () => {
                 <input
                   type="text"
                   className="search-input"
-                  placeholder="לאן נוסעים?"
+                  placeholder={t("home.whereTo")}
                   value={destinationQuery}
                   onChange={(e) => { setDestinationQuery(e.target.value); setIsDestinationsOpen(true); }}
                   onFocus={() => setIsDestinationsOpen(true)}
@@ -290,12 +301,12 @@ const HomePage = () => {
                     {destinationSuggestions.length > 0 ? (
                       destinationSuggestions.map((item) => (
                         <button key={item} type="button" className="search-suggestion-item"
-                          onClick={() => { setDestinationQuery(item); setIsDestinationsOpen(false); }}>
-                          {item}
+                          onClick={() => { setDestinationQuery(tDest(item)); setIsDestinationsOpen(false); }}>
+                          {tDest(item)}
                         </button>
                       ))
                     ) : (
-                      <div className="search-suggestion-empty">לא נמצאו יעדים</div>
+                      <div className="search-suggestion-empty">{t("home.noDestinations")}</div>
                     )}
                   </div>
                 )}
@@ -310,9 +321,9 @@ const HomePage = () => {
                 {isDatePickerOpen && (
                   <div className="search-popover date-popover">
                     <div className="search-popover-header">
-                      <span>בחר תאריכים</span>
+                      <span>{t("common.selectDates")}</span>
                       <button type="button" className="popover-close"
-                        onClick={() => setIsDatePickerOpen(false)} aria-label="סגירה">
+                        onClick={() => setIsDatePickerOpen(false)} aria-label={t("common.close")}>
                         <X size={16} />
                       </button>
                     </div>
@@ -327,15 +338,16 @@ const HomePage = () => {
                       editableDateInputs={false}
                       moveRangeOnFirstSelection={false}
                       rangeColors={["#667eea"]}
+                      locale={isEn ? enUS : heLocale}
                     />
                     <div className="date-popover-actions">
                       <button type="button" className="popover-action-btn ghost"
                         onClick={() => { setIsDateActive(false); setIsDatePickerOpen(false); }}>
-                        נקה
+                        {t("common.clear")}
                       </button>
                       <button type="button" className="popover-action-btn"
                         onClick={() => setIsDatePickerOpen(false)}>
-                        אישור
+                        {t("common.confirm")}
                       </button>
                     </div>
                   </div>
@@ -344,7 +356,7 @@ const HomePage = () => {
 
               <button type="button" className="search-submit-btn" onClick={startPlanning}>
                 <Search size={18} />
-                חיפוש
+                {t("home.searchBtn")}
               </button>
 
               {/* AI toggle button — lives inside the pill */}
@@ -352,10 +364,10 @@ const HomePage = () => {
                 type="button"
                 className="ai-pill-btn"
                 onClick={() => { setAiMode(true); setAiError(null); }}
-                title="חיפוש חכם בשפה חופשית"
+                title={t("home.aiTitle")}
               >
                 <Sparkles size={15} />
-                <span>סוכן AI</span>
+                <span>{t("home.aiAgent")}</span>
               </button>
             </>
           )}
@@ -380,7 +392,7 @@ const HomePage = () => {
                 setDestinationQuery("");
                 setIsDateActive(false);
               }}
-              aria-label="נקה תוצאת AI"
+              aria-label={t("home.clearAi")}
             >
               <X size={12} />
             </button>
@@ -390,18 +402,19 @@ const HomePage = () => {
 
       {/* Destinations Preview */}
       <section className="destinations" id="packages">
-        <h2 className="section-title">היעדים הפופולריים שלנו</h2>
+        <h2 className="section-title">{t("home.popular")}</h2>
         <div className="destinations-grid">
           {[
-            { img: "/images/paris.jpg",     alt: "פריז, צרפת",        title: "פריז, צרפת",        desc: "עיר האורות - רומנטיקה, תרבות ואמנות",                        keyword: "פריז" },
-            { img: "/images/rome.jpg",      alt: "רומא, איטליה",      title: "רומא, איטליה",      desc: "ההיסטוריה העתיקה פוגשת את המודרניות",                        keyword: "רומא" },
-            { img: "/images/tokyo.jpg",     alt: "טוקיו, יפן",        title: "טוקיו, יפן",        desc: "מזרח פוגש מערב בעיר המרתקת",                                 keyword: "טוקיו" },
-            { img: "/images/bali.jpg",      alt: "באלי, אינדונזיה",   title: "באלי, אינדונזיה",   desc: "גן עדן טרופי עם חופים מדהימים",                              keyword: "באלי" },
-            { img: "/images/new-york.jpg",  alt: 'ניו יורק, ארה"ב',  title: 'ניו יורק, ארה"ב',  desc: 'התפוח הגדול - גורדי שחקים, שופינג ואנרגיה ללא הפסקה',       keyword: "ניו יורק" },
-            { img: "/images/london.jpg",    alt: "לונדון, אנגליה",    title: "לונדון, אנגליה",    desc: "שילוב מלכותי של מסורת, אופנה ותרבות תוססת",                  keyword: "לונדון" },
-            { img: "/images/amsterdam.jpg", alt: "אמסטרדם, הולנד",   title: "אמסטרדם, הולנד",   desc: "תעלות ציוריות, רכיבה על אופניים ואווירה חופשית",             keyword: "אמסטרדם" },
-            { img: "/images/barcelona.jpg", alt: "ברצלונה, ספרד",    title: "ברצלונה, ספרד",    desc: "אדריכלות מופלאה, חופים זהובים וחיי לילה סוערים",             keyword: "ברצלונה" },
-          ].map(({ img, alt, title, desc, keyword }) => (
+            { img: "/images/paris.jpg",     name: "פריז, צרפת",        descKey: "paris",     keyword: "פריז" },
+            { img: "/images/rome.jpg",      name: "רומא, איטליה",      descKey: "rome",      keyword: "רומא" },
+            { img: "/images/tokyo.jpg",     name: "טוקיו, יפן",        descKey: "tokyo",     keyword: "טוקיו" },
+            { img: "/images/bali.jpg",      name: "באלי, אינדונזיה",   descKey: "bali",      keyword: "באלי" },
+            { img: "/images/new-york.jpg",  name: 'ניו יורק, ארה"ב',   descKey: "newYork",   keyword: "ניו יורק" },
+            { img: "/images/london.jpg",    name: "לונדון, אנגליה",    descKey: "london",    keyword: "לונדון" },
+            { img: "/images/amsterdam.jpg", name: "אמסטרדם, הולנד",    descKey: "amsterdam", keyword: "אמסטרדם" },
+            { img: "/images/barcelona.jpg", name: "ברצלונה, ספרד",     descKey: "barcelona", keyword: "ברצלונה" },
+          ].map(({ img, name, descKey, keyword }) => ({ img, keyword, alt: tDest(name), title: tDest(name), desc: t(`home.dest.${descKey}`) }))
+           .map(({ img, alt, title, desc, keyword }) => (
             <div
               key={keyword}
               className="destination-card"
@@ -424,28 +437,30 @@ const HomePage = () => {
       <section className="split-section">
         <div className="side about-side">
           <div className="side-content">
-            <h2 className="title-light">הסיפור שלנו</h2>
-            <p className="text-light">
-              אנחנו ב-SmartVacation מאמינים שתכנון טיול לא צריך להיות עבודה קשה.
-              יצרנו מערכת חכמה שחוסכת לכם זמן, כסף וכאבי ראש, כדי שתוכלו להתמקד
-              במה שחשוב באמת – החופשה שלכם.
-            </p>
+            <h2 className="title-light">{t("home.ourStory")}</h2>
+            <p className="text-light">{t("home.storyText")}</p>
             <div className="mini-bullets">
-              <div className="bullet">✦ תכנון אוטומטי</div>
-              <div className="bullet">✦ מחירים ללא תיווך</div>
-              <div className="bullet">✦ ביטחון מלא</div>
+              <div className="bullet">{t("home.bullet1")}</div>
+              <div className="bullet">{t("home.bullet2")}</div>
+              <div className="bullet">{t("home.bullet3")}</div>
             </div>
           </div>
         </div>
 
         <div className="side contact-side">
           <div className="side-content">
-            <h2 className="title-dark">דברו איתנו</h2>
-            <form className="split-form">
-              <input type="text" placeholder="שם מלא" required />
-              <input type="tel" placeholder="טלפון" required />
-              <button type="submit">שלחו הודעה</button>
-            </form>
+            <h2 className="title-dark">{t("home.talkToUs")}</h2>
+            {splitSent ? (
+              <p className="split-form-sent" role="status">{t("home.sent")}</p>
+            ) : (
+              <form className="split-form" onSubmit={submitSplitForm}>
+                <input type="text" placeholder={t("common.fullName")} required minLength={2}
+                  value={splitForm.name} onChange={(e) => setSplitForm((f) => ({ ...f, name: e.target.value }))} />
+                <input type="tel" placeholder={t("common.phone")} required pattern="[0-9+\-\s()]{7,20}"
+                  value={splitForm.phone} onChange={(e) => setSplitForm((f) => ({ ...f, phone: e.target.value }))} />
+                <button type="submit">{t("home.send")}</button>
+              </form>
+            )}
 
             <div className="social-links-minimal">
               <a href="#" target="_blank" rel="noopener noreferrer">

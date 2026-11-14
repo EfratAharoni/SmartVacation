@@ -159,7 +159,7 @@
 
 .input-icon {
     position: absolute;
-    right: 1rem;
+    inset-inline-start: 1rem;
     font-size: 1.2rem;
     pointer-events: none;
 }
@@ -192,7 +192,7 @@
 
 .toggle-password {
     position: absolute;
-    left: 1rem;
+    inset-inline-end: 1rem;
     background: none;
     border: none;
     cursor: pointer;
@@ -248,7 +248,7 @@
     content: '';
     position: absolute;
     top: 2px;
-    left: 6px;
+    inset-inline-end: 6px;
     width: 4px;
     height: 8px;
     border: solid black;
@@ -335,8 +335,8 @@
     content: '';
     position: absolute;
     top: 50%;
-    right: 0;
-    left: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     height: 1px;
     background: #e0e0e0;
 }
@@ -484,8 +484,8 @@
 .decorative-circles {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    inset-inline-end: 0;
+    inset-inline-start: 0;
     bottom: 0;
     z-index: 1;
 }
@@ -500,7 +500,7 @@
     width: 400px;
     height: 400px;
     top: -200px;
-    right: -200px;
+    inset-inline-start: -200px;
     animation: float 20s infinite ease-in-out;
 }
 
@@ -508,7 +508,7 @@
     width: 300px;
     height: 300px;
     bottom: -150px;
-    left: -150px;
+    inset-inline-end: -150px;
     animation: float 15s infinite ease-in-out reverse;
 }
 

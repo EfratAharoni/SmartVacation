@@ -1,52 +1,28 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import PreferencesControls from "../components/PreferencesControls";
+import { useUserLists } from "../context/UserListsContext";
 import "./Header.css";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
-  const [favoritesCount, setFavoritesCount] = useState(0);
-
-  const refreshCounts = () => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const name = localStorage.getItem('userName');
-    setIsLoggedIn(loggedIn);
-    setUserName(name || '');
-
-    if (loggedIn && name) {
-      const userKey = name.replace(/\s/g, '_');
-      const cart = JSON.parse(localStorage.getItem(`cart_${userKey}`) || '[]');
-      setCartCount(cart.length);
-      const favorites = JSON.parse(localStorage.getItem(`favorites_${userKey}`) || '[]');
-      setFavoritesCount(favorites.length);
-    } else {
-      setCartCount(0);
-      setFavoritesCount(0);
-    }
-  };
+  // login state + counts come from the shared cart/favorites context
+  const { isLoggedIn, cart, favorites } = useUserLists();
+  const userName = isLoggedIn ? localStorage.getItem('userName') || '' : '';
+  const isAdmin = isLoggedIn && localStorage.getItem('userRole') === 'admin';
+  const cartCount = cart.length;
+  const favoritesCount = favorites.length;
 
   useEffect(() => {
-    refreshCounts();
-
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener('storage', refreshCounts);
-    // Custom event for same-tab updates
-    window.addEventListener('userDataUpdated', refreshCounts);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener('storage', refreshCounts);
-      window.removeEventListener('userDataUpdated', refreshCounts);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -60,10 +36,8 @@ const Header = () => {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('authToken');
-    setIsLoggedIn(false);
-    setUserName('');
-    setCartCount(0);
-    setFavoritesCount(0);
+    localStorage.removeItem('userRole');
+    window.dispatchEvent(new Event('userDataUpdated'));
     closeMobileMenu();
     navigate('/');
   };
@@ -97,7 +71,7 @@ const Header = () => {
             </span>
             <span className="drawer-brand-name">Smart <span>Vacation</span></span>
           </div>
-          <button className="drawer-close-btn" onClick={closeMobileMenu} aria-label="סגור תפריט">
+          <button className="drawer-close-btn" onClick={closeMobileMenu} aria-label={t("header.closeMenu")}>
             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" fill="none">
               <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
@@ -112,8 +86,12 @@ const Header = () => {
             </svg>
           </div>
           <div className="drawer-greeting-text">
-            <div className="drawer-hello">שלום{isLoggedIn && userName ? `, ${userName.split(' ')[0]}` : ''}!</div>
-            <div className="drawer-tagline">החופשה המושלמת מתחילה כאן</div>
+            <div className="drawer-hello">{t("header.helloName", { name: isLoggedIn && userName ? `, ${userName.split(' ')[0]}` : '' })}</div>
+            <div className="drawer-tagline">{t("header.tagline")}</div>
+            <div className="drawer-prefs">
+              <LanguageSwitcher className="drawer-lang" />
+              <PreferencesControls />
+            </div>
           </div>
         </div>
 
@@ -127,7 +105,7 @@ const Header = () => {
                   <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
               </span>
-              <span>עמוד הבית</span>
+              <span>{t("header.home")}</span>
             </NavLink>
           </li>
           <li>
@@ -139,7 +117,7 @@ const Header = () => {
                   <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
               </span>
-              <span>קצת עלינו</span>
+              <span>{t("header.about")}</span>
             </NavLink>
           </li>
           <li>
@@ -150,7 +128,7 @@ const Header = () => {
                   <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                 </svg>
               </span>
-              <span>חבילות נופש</span>
+              <span>{t("header.deals")}</span>
             </NavLink>
           </li>
           <li>
@@ -161,7 +139,7 @@ const Header = () => {
                   <circle cx="12" cy="10" r="3"/>
                 </svg>
               </span>
-              <span>אטרקציות</span>
+              <span>{t("header.attractions")}</span>
             </NavLink>
           </li>
           <li>
@@ -173,9 +151,21 @@ const Header = () => {
                   <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
                 </svg>
               </span>
-              <span>צור קשר</span>
+              <span>{t("header.contact")}</span>
             </NavLink>
           </li>
+          {isAdmin && (
+            <li>
+              <NavLink to="/admin" className={({ isActive }) => isActive ? "active" : ""} onClick={closeMobileMenu}>
+                <span className="nav-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </span>
+                <span>{t("header.admin")}</span>
+              </NavLink>
+            </li>
+          )}
         </ul>
 
         {/* Auth section */}
@@ -183,18 +173,18 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <div className="drawer-icons-row">
-                <button className="icon-btn profile-btn" onClick={handleProfileClick} title="הפרופיל שלי">
+                <button className="icon-btn profile-btn" onClick={handleProfileClick} title={t("header.myProfile")}>
                   <svg viewBox="0 0 24 24" className="profile-icon-svg" aria-hidden="true">
                     <path d="M20 21a8 8 0 00-16 0"/><circle cx="12" cy="8" r="4"/>
                   </svg>
                 </button>
-                <button className="icon-btn favorites-btn" onClick={handleFavoritesClick} title="המועדפים שלי">
+                <button className="icon-btn favorites-btn" onClick={handleFavoritesClick} title={t("header.myFavorites")}>
                   <svg viewBox="0 0 24 24" className="heart-icon-header" aria-hidden="true">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                   </svg>
                   {favoritesCount > 0 && <span className="icon-badge">{favoritesCount}</span>}
                 </button>
-                <button className="icon-btn cart-btn" onClick={handleCartClick} title="עגלת הקניות">
+                <button className="icon-btn cart-btn" onClick={handleCartClick} title={t("header.cart")}>
                   <svg viewBox="0 0 24 24" className="cart-icon-svg" aria-hidden="true">
                     <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
                     <line x1="3" y1="6" x2="21" y2="6"/>
@@ -203,7 +193,7 @@ const Header = () => {
                   {cartCount > 0 && <span className="icon-badge">{cartCount}</span>}
                 </button>
               </div>
-              <button className="btn btn-logout drawer-full-btn" onClick={handleLogout}>התנתק</button>
+              <button className="btn btn-logout drawer-full-btn" onClick={handleLogout}>{t("header.logout")}</button>
             </>
           ) : (
             <>
@@ -211,14 +201,14 @@ const Header = () => {
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                   <path d="M20 21a8 8 0 00-16 0"/><circle cx="12" cy="8" r="4"/>
                 </svg>
-                התחברות
+                {t("header.login")}
               </button>
               <button className="drawer-btn-register" onClick={handleRegister}>
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
                   <path d="M20 21a8 8 0 00-16 0"/><circle cx="12" cy="8" r="4"/>
                   <line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/>
                 </svg>
-                הרשמה
+                {t("header.register")}
               </button>
             </>
           )}
@@ -310,37 +300,42 @@ const Header = () => {
           </span>
         </div>
 
-        <button className="mobile-menu-btn" onClick={toggleMobileMenu}>☰</button>
+        <button className="mobile-menu-btn" onClick={toggleMobileMenu} aria-label={t("header.openMenu")}>☰</button>
 
         <div className="nav-center">
+          {isLoggedIn && (
+            <div className="user-greeting header-greeting">
+              <span className="greeting-text">{t("header.hello")}</span>
+              <span className="user-name">{userName}</span>
+            </div>
+          )}
           <ul className="nav-links">
-            <li><NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>עמוד הבית</NavLink></li>
-            <li><NavLink to="/about" className={({ isActive }) => isActive ? "active" : ""}>קצת עלינו</NavLink></li>
-            <li><NavLink to="/deals" className={({ isActive }) => isActive ? "active" : ""}>חבילות נופש</NavLink></li>
-            <li><NavLink to="/attractions" className={({ isActive }) => isActive ? "active" : ""}>אטרקציות</NavLink></li>
-            <li><NavLink to="/contact" className={({ isActive }) => isActive ? "active" : ""}>צור קשר</NavLink></li>
+            <li><NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>{t("header.home")}</NavLink></li>
+            <li><NavLink to="/about" className={({ isActive }) => isActive ? "active" : ""}>{t("header.about")}</NavLink></li>
+            <li><NavLink to="/deals" className={({ isActive }) => isActive ? "active" : ""}>{t("header.deals")}</NavLink></li>
+            <li><NavLink to="/attractions" className={({ isActive }) => isActive ? "active" : ""}>{t("header.attractions")}</NavLink></li>
+            <li><NavLink to="/contact" className={({ isActive }) => isActive ? "active" : ""}>{t("header.contact")}</NavLink></li>
+            {isAdmin && <li><NavLink to="/admin" className={({ isActive }) => isActive ? "active" : ""}>{t("header.admin")}</NavLink></li>}
           </ul>
 
           <div className="auth-section">
+            <LanguageSwitcher compact className="header-lang" />
+            <PreferencesControls />
             {isLoggedIn ? (
               <>
-                <div className="user-greeting">
-                  <span className="greeting-text">שלום, </span>
-                  <span className="user-name">{userName}</span>
-                </div>
                 <div className="header-icons">
-                  <button className="icon-btn profile-btn" onClick={handleProfileClick} title="הפרופיל שלי">
+                  <button className="icon-btn profile-btn" onClick={handleProfileClick} title={t("header.myProfile")}>
                     <svg viewBox="0 0 24 24" className="profile-icon-svg" aria-hidden="true">
                       <path d="M20 21a8 8 0 00-16 0"/><circle cx="12" cy="8" r="4"/>
                     </svg>
                   </button>
-                  <button className="icon-btn favorites-btn" onClick={handleFavoritesClick} title="המועדפים שלי">
+                  <button className="icon-btn favorites-btn" onClick={handleFavoritesClick} title={t("header.myFavorites")}>
                     <svg viewBox="0 0 24 24" className="heart-icon-header" aria-hidden="true">
                       <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
                     {favoritesCount > 0 && <span className="icon-badge">{favoritesCount}</span>}
                   </button>
-                  <button className="icon-btn cart-btn" onClick={handleCartClick} title="עגלת הקניות">
+                  <button className="icon-btn cart-btn" onClick={handleCartClick} title={t("header.cart")}>
                     <svg viewBox="0 0 24 24" className="cart-icon-svg" aria-hidden="true">
                       <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
                       <line x1="3" y1="6" x2="21" y2="6"/>
@@ -349,7 +344,7 @@ const Header = () => {
                     {cartCount > 0 && <span className="icon-badge">{cartCount}</span>}
                   </button>
                 </div>
-                <button className="btn btn-logout" onClick={handleLogout}>התנתק</button>
+                <button className="btn btn-logout" onClick={handleLogout}>{t("header.logout")}</button>
               </>
             ) : (
               <div className="auth-buttons">
@@ -360,7 +355,7 @@ const Header = () => {
                         <path d="M20 21a8 8 0 00-16 0"/><circle cx="12" cy="8" r="4"/>
                       </svg>
                     </span>
-                    <span className="btn-auth-text">התחברות</span>
+                    <span className="btn-auth-text">{t("header.login")}</span>
                   </span>
                 </button>
                 <button className="btn btn-register" onClick={handleRegister}>
@@ -370,7 +365,7 @@ const Header = () => {
                         <path d="M20 21a8 8 0 00-16 0"/><circle cx="12" cy="8" r="4"/>
                       </svg>
                     </span>
-                    <span className="btn-auth-text">הרשמה</span>
+                    <span className="btn-auth-text">{t("header.register")}</span>
                   </span>
                 </button>
               </div>

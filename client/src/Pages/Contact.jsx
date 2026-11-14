@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   FaWhatsapp,
   FaInstagram,
@@ -9,9 +8,12 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import "./Contact.css";
+import { apiJson } from "../utils/api";
+import useLocalize from "../utils/useLocalize";
 
 const Contact = () => {
-  const navigate = useNavigate();
+  const { t } = useLocalize();
+  const [submitError, setSubmitError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -43,30 +45,31 @@ const Contact = () => {
 
     // Name validation
     if (!formData.name.trim()) {
-      newErrors.name = "נא להזין שם מלא";
+      newErrors.name = t("contact.err.nameRequired");
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = "שם חייב להכיל לפחות 2 תווים";
+      newErrors.name = t("contact.err.nameShort");
     }
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = "נא להזין כתובת אימייל";
+      newErrors.email = t("contact.err.emailRequired");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "כתובת אימייל לא תקינה";
+      newErrors.email = t("contact.err.emailInvalid");
     }
 
     // Phone validation
     if (!formData.phone) {
-      newErrors.phone = "נא להזין מספר טלפון";
-    } else if (!/^0\d{1,2}-?\d{7}$/.test(formData.phone.replace(/\s/g, ""))) {
-      newErrors.phone = "מספר טלפון לא תקין";
+      newErrors.phone = t("contact.err.phoneRequired");
+    } else if (!/^(0\d{1,2}-?\d{7}|\+?[\d\s\-()]{7,20})$/.test(formData.phone.replace(/\s/g, ""))) {
+      // Israeli format, or an international number
+      newErrors.phone = t("contact.err.phoneInvalid");
     }
 
     // Message validation
     if (!formData.message.trim()) {
-      newErrors.message = "נא להזין הודעה";
+      newErrors.message = t("contact.err.messageRequired");
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "ההודעה חייבת להכיל לפחות 10 תווים";
+      newErrors.message = t("contact.err.messageShort");
     }
 
     setErrors(newErrors);
@@ -81,60 +84,33 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
+    setSubmitError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Contact form data:", formData);
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
-
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "general",
-        message: "",
+    try {
+      await apiJson("/contact", {
+        method: "POST",
+        body: { ...formData, subject: formData.subject },
       });
-
-      // Hide success message after 5 seconds
-      setTimeout(() => {
-        setSubmitSuccess(false);
-      }, 5000);
-    }, 2000);
+      setSubmitSuccess(true);
+      setFormData({ name: "", email: "", phone: "", subject: "general", message: "" });
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (err) {
+      setSubmitError(err.message || t("common.networkError"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const faqItems = [
-    {
-      question: "מה זמני התגובה שלכם",
-      answer:
-        "אנחנו עונים לכל הפניות תוך 24 שעות בימי עסקים. בשבתות ובחגים העסק סגור",
-    },
-    {
-      question: "האם אפשר לבטל או לשנות הזמנה",
-      answer:
-        "כן, ניתן לבטל או לשנות הזמנה בהתאם לתנאי הביטול של כל חבילה. צור איתנו קשר ונשמח לעזור",
-    },
-    {
-      question: "האם המחירים כוללים מיסים",
-      answer:
-        'כן, כל המחירים המוצגים באתר כוללים מע"מ ומיסים. אין עלויות נסתרות',
-    },
-    {
-      question: "איך מתבצע התשלום",
-      answer:
-        "ניתן לשלם בכרטיס אשראי, PayPal או bit. התשלום מאובטח ומוצפן",
-    },
-  ];
+  const faqItems = t("contact.faqItems", { returnObjects: true }) || [];
 
   return (
-    <div className="contact-page" dir="rtl">
+    <div className="contact-page">
 
       {/* Hero Section */}
       <section className="contact-hero">
         <div className="hero-content">
-          <h1 className="floating">נשמח לשמוע ממך</h1>
-          <p>יש לך שאלה, רעיון או הצעה? אנחנו כאן בשבילך</p>
+          <h1 className="floating">{t("contact.heroTitle")}</h1>
+          <p>{t("contact.heroSubtitle")}</p>
         </div>
       </section>
 
@@ -147,31 +123,34 @@ const Contact = () => {
 
             <div className="contact-form-wrapper">
               <div className="form-header">
-                <h2>שלח לנו הודעה</h2>
-                <p>מלא את הפרטים ונחזור אליך בהקדם</p>
+                <h2>{t("contact.sendUs")}</h2>
+                <p>{t("contact.fillDetails")}</p>
               </div>
 
               {submitSuccess && (
                 <div className="success-message">
                   <span className="success-icon">✓</span>
                   <div>
-                    <h4>ההודעה נשלחה בהצלחה!</h4>
-                    <p>נחזור אליך בהקדם האפשרי</p>
+                    <h4>{t("contact.successTitle")}</h4>
+                    <p>{t("contact.successText")}</p>
                   </div>
                 </div>
+              )}
+              {submitError && (
+                <div className="error-message" role="alert" style={{ marginBottom: "1rem" }}>{submitError}</div>
               )}
 
               <form onSubmit={handleSubmit} className="contact-form">
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="name">שם מלא *</label>
+                    <label htmlFor="name">{t("contact.nameLabel")}</label>
                     <input
                       type="text"
                       id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="הזן שם מלא"
+                      placeholder={t("contact.namePlaceholder")}
                       className={errors.name ? "error" : ""}
                     />
                     {errors.name && (
@@ -180,14 +159,14 @@ const Contact = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="email">אימייל *</label>
+                    <label htmlFor="email">{t("contact.emailLabel")}</label>
                     <input
                       type="email"
                       id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="הזן כתובת אימייל"
+                      placeholder={t("contact.emailPlaceholder")}
                       className={errors.email ? "error" : ""}
                     />
                     {errors.email && (
@@ -198,14 +177,14 @@ const Contact = () => {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="phone">טלפון *</label>
+                    <label htmlFor="phone">{t("contact.phoneLabel")}</label>
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="הזן מספר טלפון"
+                      placeholder={t("contact.phonePlaceholder")}
                       className={errors.phone ? "error" : ""}
                     />
                     {errors.phone && (
@@ -214,30 +193,28 @@ const Contact = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="subject">נושא</label>
+                    <label htmlFor="subject">{t("contact.subject")}</label>
                     <select
                       id="subject"
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
                     >
-                      <option value="general">פנייה כללית</option>
-                      <option value="booking">הזמנה חדשה</option>
-                      <option value="support">תמיכה טכנית</option>
-                      <option value="complaint">תלונה</option>
-                      <option value="suggestion">הצעה/רעיון</option>
+                      {["general", "booking", "support", "complaint", "suggestion"].map((s) => (
+                        <option key={s} value={s}>{t(`contact.subjects.${s}`)}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="message">הודעה *</label>
+                  <label htmlFor="message">{t("contact.messageLabel")}</label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="ספר לנו במה נוכל לעזור..."
+                    placeholder={t("contact.messagePlaceholder")}
                     rows="6"
                     className={errors.message ? "error" : ""}
                   ></textarea>
@@ -254,11 +231,11 @@ const Contact = () => {
                   {isSubmitting ? (
                     <>
                       <span className="spinner"></span>
-                      שולח...
+                      {t("contact.sending")}
                     </>
                   ) : (
                     <>
-                      שלח הודעה
+                      {t("contact.send")}
                       <span className="send-icon"></span>
                     </>
                   )}
@@ -267,18 +244,18 @@ const Contact = () => {
             </div>
 
             <div className="info-card contact-details-card">
-              <h3>צור קשר</h3>
+              <h3>{t("contact.contactUs")}</h3>
               <div className="contact-details-list">
                 <div className="contact-item">
                   <FaEnvelope className="contact-icon" />
-                  <span>אימייל</span>
+                  <span>{t("common.email")}</span>
                   <a href="mailto:info@smartvacation.co.il">
                     info@smartvacation.co.il
                   </a>
                 </div>
                 <div className="contact-item">
                   <FaPhone className="contact-icon" />
-                  <span>טלפון</span>
+                  <span>{t("common.phone")}</span>
                   <a href="tel:036134587">03-6134587</a>
                 </div>
                 <div className="contact-item">
@@ -294,8 +271,8 @@ const Contact = () => {
                 </div>
                 <div className="contact-item">
                   <FaMapMarkerAlt className="contact-icon" />
-                  <span>כתובת</span>
-                  <span>דרך מנחם בגין 125, תל אביב</span>
+                  <span>{t("contact.address")}</span>
+                  <span>{t("contact.addressValue")}</span>
                 </div>
               </div>
             </div>
@@ -304,29 +281,29 @@ const Contact = () => {
           {/* Right Column */}
           <div className="right-column">
             <div className="info-card">
-              <h3>שעות פעילות</h3>
+              <h3>{t("contact.hours")}</h3>
               <div className="hours-list">
                 <div className="hours-item">
-                  <span>ראשון - חמישי</span>
+                  <span>{t("contact.sunThu")}</span>
                   <span>09:00 - 18:00</span>
                 </div>
                 <div className="hours-item">
-                  <span>שישי</span>
+                  <span>{t("contact.fri")}</span>
                   <span>09:00 - 13:00</span>
                 </div>
                 <div className="hours-item">
-                  <span>שבתות וחגים</span>
-                  <span>סגור</span>
+                  <span>{t("contact.satHolidays")}</span>
+                  <span>{t("contact.closed")}</span>
                 </div>
                 <div className="hours-notice">
-                     שימו לב: לא ניתן מענה מחוץ לשעות הפעילות
+                     {t("contact.hoursNotice")}
                 </div>
 
               </div>
             </div>
 
             <div className="info-card">
-              <h3>מיקום המשרד</h3>
+              <h3>{t("contact.officeLocation")}</h3>
               <div className="map-placeholder">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3380.7272469371564!2d34.78847731516893!3d32.07417908119073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d4ca6193b7c1f%3A0xc9e8c1f8f1b1b1b1!2z15DXkdeg15XXoNeV15g!5e0!3m2!1siw!2sil!4v1234567890123!5m2!1siw!2sil"
@@ -339,14 +316,14 @@ const Contact = () => {
                 ></iframe>
               </div>
               <p className="address-text">
-                דרך מנחם בגין 125
+                {t("contact.addressLine1")}
                 <br />
-                תל אביב, ישראל
+                {t("contact.addressLine2")}
               </p>
             </div>
 
             <div className="info-card social-card">
-              <h3>עקוב אחרינו</h3>
+              <h3>{t("contact.followUs")}</h3>
               <div className="social-links-formal">
                 <a
                   href="https://wa.me/9720501234567"
@@ -384,15 +361,15 @@ const Contact = () => {
       {/* FAQ Section */}
       <section className="faq-section">
         <div className="faq-container">
-          <h2 className="section-title">שאלות נפוצות</h2>
+          <h2 className="section-title">{t("contact.faq")}</h2>
           <div className="faq-grid">
             {faqItems.map((item, index) => (
               <div key={index} className="faq-card">
                 <div className="faq-question">
                   <span className="faq-icon">❓</span>
-                  <h3>{item.question}</h3>
+                  <h3>{item.q}</h3>
                 </div>
-                <p className="faq-answer">{item.answer}</p>
+                <p className="faq-answer">{item.a}</p>
               </div>
             ))}
           </div>

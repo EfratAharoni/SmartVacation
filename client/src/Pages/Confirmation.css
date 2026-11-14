@@ -1,7 +1,7 @@
 .confirmation-modal-overlay {
   position: fixed;
   top: 0;
-  left: 0;
+  inset-inline-end: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(20, 78, 165, 0.18);
@@ -38,7 +38,7 @@
 .confirmation-close {
   position: absolute;
   top: 1.1rem;
-  left: 1.1rem;
+  inset-inline-end: 1.1rem;
   background: none;
   border: none;
   color: #fff;
@@ -78,11 +78,11 @@
   padding: 0;
   color: #fff;
   font-size: 1rem;
-  text-align: right;
+  text-align:  start;
   margin: 0 0 0 1.2rem;
 }
 
 .confirmation-info li {
   margin-bottom: 0.5rem;
-  direction: rtl;
+  direction: var(--dir, rtl);
 }

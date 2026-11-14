@@ -141,8 +141,8 @@
 .decorative-shapes {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    inset-inline-end: 0;
+    inset-inline-start: 0;
     bottom: 0;
     z-index: 1;
 }
@@ -157,7 +157,7 @@
     width: 350px;
     height: 350px;
     top: -150px;
-    left: -150px;
+    inset-inline-end: -150px;
     animation: morph 20s infinite ease-in-out;
 }
 
@@ -165,7 +165,7 @@
     width: 250px;
     height: 250px;
     bottom: -100px;
-    right: -100px;
+    inset-inline-start: -100px;
     animation: morph 15s infinite ease-in-out reverse;
 }
 
@@ -173,7 +173,7 @@
     width: 150px;
     height: 150px;
     top: 40%;
-    right: 10%;
+    inset-inline-start: 10%;
     animation: morph 25s infinite ease-in-out;
 }
 
@@ -235,7 +235,7 @@
     position: absolute;
     z-index: 10;
     top: 1.5rem;
-    left: 1.5rem;
+    inset-inline-end: 1.5rem;
     background: linear-gradient(135deg, #27b4d3 0%, #144ea5 100%);
     color: white;
     border: none;
@@ -409,7 +409,7 @@
 
 .input-icon {
     position: absolute;
-    right: 1rem;
+    inset-inline-start: 1rem;
     font-size: 1.2rem;
     pointer-events: none;
 }
@@ -441,12 +441,12 @@
 }
 
 .input-wrapper input.has-icon {
-    padding-right: 2.4rem;
+    padding-inline-start: 2.4rem;
 }
 
 .toggle-password {
     position: absolute;
-    left: 1rem;
+    inset-inline-end: 1rem;
     background: none;
     border: none;
     cursor: pointer;
@@ -627,8 +627,8 @@
     content: '';
     position: absolute;
     top: 50%;
-    right: 0;
-    left: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     height: 1px;
     background: #e0e0e0;
 }
@@ -852,7 +852,7 @@
 }
 
 .benefits-list {
-    text-align: right;
+    text-align:  start;
 }
 
 /* שורת הטקסט */
@@ -865,7 +865,7 @@
 
 /* האייקון */
 .guest-link .guest-icon {
-  margin-left: 4px;
+  margin-inline-end: 4px;
 }
 
 /* הכפתור שנראה כמו קישור */

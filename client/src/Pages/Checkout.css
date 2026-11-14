@@ -13,7 +13,7 @@
   flex-direction: column;
   align-items: center;
   padding: 100px 3rem 3rem;
-  direction: rtl;
+  direction: var(--dir, rtl);
 }
 
 .checkout-content-wrapper {
@@ -157,11 +157,11 @@
 }
 
 .step1-half:first-child {
-  padding-right: 0;
+  padding-inline-start: 0;
 }
 
 .step1-half:last-child {
-  padding-left: 0;
+  padding-inline-end: 0;
 }
 
 /* תוכן הטופס נשאר בגובה טבעי — ללא פיזור אנכי */
@@ -672,7 +672,7 @@
 .package-detail-row strong {
   color: #0f2f6a;
   font-weight: 600;
-  text-align: left;
+  text-align:  end;
   max-width: 55%;
   word-break: break-all;
 }
@@ -705,13 +705,13 @@
   color: #78350f;
   font-size: 0.85rem;
   position: relative;
-  padding-right: 1.2rem;
+  padding-inline-start: 1.2rem;
 }
 
 .checkout-help-box li::before {
   content: "✓";
   position: absolute;
-  right: 0;
+  inset-inline-start: 0;
   color: #d97706;
   font-weight: 700;
 }
@@ -763,7 +763,7 @@
   padding: 1rem 1.2rem;
   margin-bottom: 1.2rem;
   width: 100%;
-  text-align: right;
+  text-align:  start;
 }
 
 .confirmation-details h4 {
@@ -808,7 +808,7 @@
 
 .confirmation-help-box {
   width: 100%;
-  text-align: right;
+  text-align:  start;
 }
 
 .checkout-confirmation-screen .step-actions.two-buttons {
@@ -900,4 +900,10 @@
   .payment-methods-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.checkout-currency-note {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  color: #6b7280;
 }

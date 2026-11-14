@@ -168,13 +168,18 @@ nav {
     }
 }
 
+/* Row layout (same in both languages): [logo] [links, centered] [user area].
+   The row itself is LTR so the user area is always on the right; the links and
+   the user area keep the page's reading direction inside. */
 .nav-center {
     display: flex;
     align-items: center;
-    gap: 4rem;
+    gap: 2rem;
     flex: 1;
-    justify-content: center;
-    margin: 0 4%;
+    justify-content: space-between;
+    direction: ltr;
+    margin-left: 240px; /* room for the absolutely positioned logo */
+    min-width: 0;
 }
 
 .nav-links {
@@ -182,6 +187,11 @@ nav {
     list-style: none;
     gap: 2.5rem;
     align-items: center;
+    flex: 1;
+    justify-content: center;
+    direction: var(--dir, rtl);
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
@@ -204,7 +214,7 @@ nav {
     content: '';
     position: absolute;
     bottom: -5px;
-    right: 0;
+    inset-inline-start: 0;
     width: 0;
     height: 2px;
     background: #667eea;
@@ -221,8 +231,28 @@ nav {
     display: flex;
     gap: 1rem;
     align-items: center;
-    position: absolute;
-    right: 3%;
+    flex-shrink: 0;
+    /* same visual order in both languages: [language] [greeting] [icons] [log out / log in] */
+    direction: ltr;
+}
+
+/* text inside the user area still follows the page language */
+/* "Hi, name" – right next to the logo, in both languages */
+.header-greeting {
+    flex-shrink: 0;
+    margin-left: 2rem; /* breathing room from the logo */
+    direction: var(--dir, rtl);
+    padding: 0.45rem 1rem;
+    max-width: 220px;
+}
+.header-greeting .user-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.auth-section .btn {
+    direction: var(--dir, rtl);
 }
 
 /* User Greeting */
@@ -344,7 +374,7 @@ nav {
 .icon-badge {
     position: absolute;
     top: -5px;
-    left: -5px;
+    inset-inline-end: -5px;
     background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
     color: white;
     font-size: 0.72rem;
@@ -450,6 +480,12 @@ nav {
     align-items: center;
 }
 
+/* The header's auth buttons sit inside .auth-section (already positioned) –
+   don't let leftover global .auth-buttons rules from page CSS move them */
+.auth-section .auth-buttons {
+    position: static;
+}
+
 .auth-buttons .btn {
     width: 168px;
     min-width: 168px;
@@ -458,7 +494,7 @@ nav {
 .btn-auth-content {
     display: inline-flex;
     align-items: center;
-    direction: rtl;
+    direction: var(--dir, rtl);
     justify-content: center;
     gap: 0.62rem;
     width: 100%;
@@ -503,8 +539,13 @@ nav {
 }
 
 /* Responsive */
+@media (max-width: 1500px) {
+    .nav-links { gap: 1.6rem; }
+    .nav-links a { font-size: 1.05rem; }
+}
+
 @media (max-width: 1024px) {
-    .nav-center { gap: 2rem; }
+    .nav-center { gap: 1rem; margin-left: 220px; }
     .nav-links { gap: 1.5rem; }
     .nav-links a { font-size: 0.9rem; }
 }
@@ -558,7 +599,7 @@ nav {
         display: flex;
         flex-direction: column;
         position: fixed;
-        right: 0;
+        inset-inline-start: 0;
         top: 0;
         width: min(340px, 92vw);
         height: 100vh;
@@ -607,7 +648,7 @@ nav {
     .drawer-greeting {
         display: flex;
         align-items: center;
-        direction: rtl;
+        direction: var(--dir, rtl);
         justify-content: space-between;
         padding: 14px 22px 20px;
         margin: 0;
@@ -640,7 +681,7 @@ nav {
     .drawer-nav-links a {
         display: flex;
         align-items: center;
-        direction: rtl;
+        direction: var(--dir, rtl);
         justify-content: flex-start;
         gap: 14px;
         padding: 11px 14px;
@@ -691,7 +732,7 @@ nav {
         background: #f9fafb; border: 1.5px solid #e5e7eb; color: #374151;
         border-radius: 14px; font-size: 1rem; font-weight: 700;
         display: flex; align-items: center; justify-content: center;
-        gap: 8px; direction: rtl; cursor: pointer;
+        gap: 8px; direction: var(--dir, rtl); cursor: pointer;
         transition: border-color 0.2s, color 0.2s, background 0.2s;
         -webkit-tap-highlight-color: transparent;
     }
@@ -704,7 +745,7 @@ nav {
         background: #6366f1; border: 2px solid #6366f1; color: #ffffff;
         border-radius: 14px; font-size: 1rem; font-weight: 700;
         display: flex; align-items: center; justify-content: center;
-        gap: 8px; direction: rtl; cursor: pointer;
+        gap: 8px; direction: var(--dir, rtl); cursor: pointer;
         box-shadow: 0 4px 16px rgba(99,102,241,0.38);
         transition: background 0.2s, box-shadow 0.2s;
         -webkit-tap-highlight-color: transparent;
@@ -723,4 +764,23 @@ nav {
     .drawer-travel-art svg {
         width: 100%; height: auto; display: block; opacity: 0.38;
     }
+}
+/* Language switcher */
+.header-lang {
+    flex-shrink: 0;
+}
+.drawer-lang {
+    margin-top: 10px;
+    align-self: flex-start;
+}
+
+.drawer-prefs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+.drawer-prefs .drawer-lang {
+    margin-top: 0;
 }

@@ -1,16 +1,18 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { CalendarDays, Hotel, PlaneTakeoff, Sparkles, BadgeDollarSign, Star } from 'lucide-react';
+import DealBookingModal from '../components/DealBookingModal';
+import { toast } from '../components/Toast';
+import { useUserLists } from '../context/UserListsContext';
+import { usePreferences } from '../context/PreferencesContext';
+import { departsBetween, firstDepartureTime } from '../utils/dealDates';
 import './DealDetails.css';
 
 import useDestinationInfo from './useDestinationInfo';
 import { Info } from 'lucide-react';
 import { API_BASE_URL } from '../utils/api';
-
-const getUserKey = () => {
-    const name = localStorage.getItem('userName');
-    return name ? name.replace(/\s/g, '_') : 'guest';
-};
+import useLocalize from '../utils/useLocalize';
+import Reviews from '../components/Reviews';
 
 const getDealId = (deal) => deal?._id || deal?.id;
 
@@ -18,7 +20,9 @@ const DealDetails = () => {
     const { destination } = useParams();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { t, tc, tDate, isEn } = useLocalize();
+    const { price } = usePreferences();
+    const { isLoggedIn, isFavorite, toggleFavorite: toggleFav, addToCart } = useUserLists();
     const [allDeals, setAllDeals] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedPackage, setSelectedPackage] = useState(null);
@@ -26,14 +30,6 @@ const DealDetails = () => {
     const [compareSelection, setCompareSelection] = useState([]);
     const [sortPackagesBy, setSortPackagesBy] = useState('price');
     const [bookingDeal, setBookingDeal] = useState(null);
-    const [bookingOptions, setBookingOptions] = useState({
-        adults: 2,
-        children: 0,
-        trolley: false,
-        suitcase: false,
-        transfer: false,
-        cancellable: false,
-    });
     const [selectedDates, setSelectedDates] = useState({});
 
     const getSelectedDate = (deal) => {
@@ -42,24 +38,8 @@ const DealDetails = () => {
         return Array.isArray(deal.dates) ? deal.dates[0] : deal.dates;
     };
 
-    const [favorites, setFavorites] = useState(() => {
-        const name = localStorage.getItem('userName');
-        if (!name) return [];
-        const userKey = name.replace(/\s/g, '_');
-        const saved = localStorage.getItem(`favorites_${userKey}`);
-        return saved ? JSON.parse(saved) : [];
-    });
-
     const destinationInfo = useDestinationInfo(decodeURIComponent(destination));
     const [showInfoModal, setShowInfoModal] = useState(false);
-
-    const [cart, setCart] = useState(() => {
-        const name = localStorage.getItem('userName');
-        if (!name) return [];
-        const userKey = name.replace(/\s/g, '_');
-        const saved = localStorage.getItem(`cart_${userKey}`);
-        return saved ? JSON.parse(saved) : [];
-    });
 
     useEffect(() => {
         const fetchDeals = async () => {
@@ -86,7 +66,7 @@ const DealDetails = () => {
             ...deal,
             attractions: existingAttractions.length >= 2
                 ? existingAttractions
-                : [...existingAttractions, 'אטרקציה מומלצת נוספת'].slice(0, 2)
+                : [...existingAttractions, t('dealDetails.extraAttraction')].slice(0, 2)
         };
     });
 
@@ -102,22 +82,7 @@ const DealDetails = () => {
 
     const filteredDestinationDeals = destinationDeals.filter(deal => {
         if (kosherFilter && !deal.isKosherFriendly) return false;
-        if (startDateParam && endDateParam) {
-            const startDate = new Date(startDateParam);
-            startDate.setHours(0, 0, 0, 0);
-            const endDate = new Date(endDateParam);
-            endDate.setHours(23, 59, 59, 999);
-            const dates = Array.isArray(deal.dates) ? deal.dates : [deal.dates];
-            const hasMatchingDate = dates.some(dateText => {
-                if (!dateText) return false;
-                const match = dateText.match(/(\d{1,2})\s*-\s*\d{1,2}\s+([^\s]+)\s+(\d{4})/);
-                if (!match) return false;
-                const hebrewMonths = { ינואר:0,פברואר:1,מרץ:2,אפריל:3,מאי:4,יוני:5,יולי:6,אוגוסט:7,ספטמבר:8,אוקטובר:9,נובמבר:10,דצמבר:11 };
-                const dealDate = new Date(Number(match[3]), hebrewMonths[match[2]], Number(match[1]));
-                return dealDate >= startDate && dealDate <= endDate;
-            });
-            if (!hasMatchingDate) return false;
-        }
+        if (startDateParam && endDateParam && !departsBetween(deal, startDateParam, endDateParam)) return false;
         return true;
     });
 
@@ -127,42 +92,18 @@ const DealDetails = () => {
             case 'price': return a.price - b.price;
             case 'rating': return b.rating - a.rating;
             case 'discount': return b.discount - a.discount;
-            case 'date': return new Date(Array.isArray(a.dates) ? a.dates[0] : a.dates) - new Date(Array.isArray(b.dates) ? b.dates[0] : b.dates);
+            case 'date': return firstDepartureTime(a) - firstDepartureTime(b);
             default: return 0;
         }
     });
 
-    useEffect(() => {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loggedIn);
-        if (loggedIn) {
-            const userKey = getUserKey();
-            const savedFavs = JSON.parse(localStorage.getItem(`favorites_${userKey}`) || '[]');
-            const savedCart = JSON.parse(localStorage.getItem(`cart_${userKey}`) || '[]');
-            setFavorites(savedFavs);
-            setCart(savedCart);
-        }
-    }, []);
-
     const toggleFavorite = (dealId) => {
-        if (!isLoggedIn) {
-            alert('כדי להוסיף למועדפים יש להתחבר תחילה');
-            navigate('/login');
-            return;
-        }
-        const userKey = getUserKey();
-        const deal = allDealsWithAttractions.find(d => d._id === dealId || d.id === dealId);
+        const deal = allDeals.find(d => getDealId(d) === dealId);
         if (!deal) return;
-
-        let updated;
-        if (favorites.some(fav => fav._id === dealId || fav.id === dealId)) {
-            updated = favorites.filter(fav => fav._id !== dealId && fav.id !== dealId);
-        } else {
-            updated = [...favorites, { ...deal, type: 'deal' }];
+        if (toggleFav({ ...deal, type: 'deal' }) === 'login') {
+            toast.info(t('common.loginToFav'));
+            navigate('/login');
         }
-        setFavorites(updated);
-        localStorage.setItem(`favorites_${userKey}`, JSON.stringify(updated));
-        window.dispatchEvent(new Event('userDataUpdated'));
     };
 
     const renderStars = (rating) => {
@@ -186,49 +127,27 @@ const DealDetails = () => {
     const openBookingModal = (deal, e) => {
         e.stopPropagation();
         if (!isLoggedIn) {
-            alert('כדי להזמין יש להתחבר תחילה');
+            toast.info(t('common.loginToBook'));
             navigate('/login');
             return;
         }
-        setBookingOptions({ adults: 2, children: 0, trolley: false, suitcase: false, transfer: false, cancellable: false });
         setBookingDeal(deal);
     };
 
-    const calculateTotal = () => {
-        if (!bookingDeal) return 0;
-        const basePrice = bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price;
-        const childPrice = Math.round(basePrice * 0.7);
-        let total = basePrice * bookingOptions.adults;
-        total += childPrice * bookingOptions.children;
-        if (bookingOptions.trolley) total += 102;
-        if (bookingOptions.suitcase) total += 224;
-        if (bookingOptions.transfer) total += 57 * (bookingOptions.adults + bookingOptions.children);
-        return total;
-    };
-
-    const confirmBooking = (e) => {
-        e.stopPropagation();
-        const userKey = getUserKey();
-        const dealId = bookingDeal._id || bookingDeal.id;
-        const existing = cart.find(item => (item._id === dealId || item.id === dealId) && item.type === 'deal');
-        if (existing) {
-            alert('חבילה זו כבר נמצאת בעגלה שלך!');
-            return;
-        }
-        const totalPrice = calculateTotal();
-        const updated = [...cart, {
-            ...bookingDeal,
+    const confirmBooking = (bookingOptions, totalPrice) => {
+        const result = addToCart({
+            ...allDeals.find(d => getDealId(d) === getDealId(bookingDeal)), // original (without filler attraction)
             dates: getSelectedDate(bookingDeal),
             type: 'deal',
-            addedAt: new Date().toISOString(),
-            bookingOptions: { ...bookingOptions },
+            bookingOptions,
             totalPrice,
-        }];
-        setCart(updated);
-        localStorage.setItem(`cart_${userKey}`, JSON.stringify(updated));
-        window.dispatchEvent(new Event('userDataUpdated'));
+        });
+        if (result === 'exists') {
+            toast.info(t('dealDetails.alreadyInCart'));
+            return;
+        }
         setBookingDeal(null);
-        alert('החבילה נוספה לעגלה! 🛒');
+        toast.success(t('dealDetails.addedToCart'));
     };
 
     const handleCompareToggle = (dealId) => {
@@ -237,21 +156,21 @@ const DealDetails = () => {
         } else if (compareSelection.length < 3) {
             setCompareSelection([...compareSelection, dealId]);
         } else {
-            alert('ניתן להשוות עד 3 חבילות בו זמנית');
+            toast.info(t('dealDetails.compareLimit'));
         }
     };
 
     if (isLoading) {
-        return <div className="deal-details-page" style={{ textAlign: 'center', padding: '80px' }}>טוען חבילות...</div>;
+        return <div className="deal-details-page" style={{ textAlign: 'center', padding: '80px' }}>{t('dealDetails.loading')}</div>;
     }
 
     if (destinationDeals.length === 0) {
         return (
             <div className="deal-details-page">
                 <div className="no-destination">
-                    <h2>יעד לא נמצא</h2>
+                    <h2>{t('dealDetails.notFound')}</h2>
                     <button onClick={() => navigate('/deals')} className="btn-back">
-                        חזרה לדילים
+                        {t('dealDetails.backToDeals')}
                     </button>
                 </div>
             </div>
@@ -264,7 +183,7 @@ const DealDetails = () => {
     return (
         <div className="deal-details-page">
             <button onClick={() => navigate('/deals')} className="btn-back-floating">
-                חזרה לדילים
+                {t('dealDetails.backToDeals')}
             </button>
 
             {/* Hero Section with Destination Background */}
@@ -272,30 +191,31 @@ const DealDetails = () => {
                 <div className="hero-overlay"></div>
                 <div className="hero-content-details">
                     <div className="destination-title-row">
-                        <h1 className="destination-title">{mainDeal.destination}</h1>
+                        <h1 className="destination-title">{tc(mainDeal, 'destination')}</h1>
                         {destinationInfo && (
                             <button
                                 className="destination-info-btn"
-                                title="מידע חשוב על היעד"
+                                title={t('dealDetails.importantInfo')}
+                                aria-label={t('dealDetails.importantInfo')}
                                 onClick={() => setShowInfoModal(true)}
                             >
                                 <Info size={26} color="#1e90ff" style={{ verticalAlign: 'middle' }} />
                             </button>
                         )}
                     </div>
-                    <p className="destination-subtitle">{destinationDeals.length} חבילות נופש זמינות</p>
+                    <p className="destination-subtitle">{t('dealDetails.packagesAvailable', { count: destinationDeals.length })}</p>
                     <div className="destination-meta">
                         <span className="meta-item">
                             <PlaneTakeoff size={16} className="meta-icon" />
-                            זמן טיסה: {mainDeal.flightTime}
+                            {t('dealDetails.flightTime', { time: tc(mainDeal, 'flightTime') })}
                         </span>
                         <span className="meta-item">
                             <BadgeDollarSign size={16} className="meta-icon money" />
-                            החל מ-₪{Math.min(...destinationDeals.map(d => d.price))}
+                            {t('dealDetails.fromPrice', { price: price(Math.min(...destinationDeals.map(d => d.price))) })}
                         </span>
                         <span className="meta-item">
                             <Star size={16} className="meta-icon star" />
-                            דירוג ממוצע: {(destinationDeals.reduce((sum, d) => sum + d.rating, 0) / destinationDeals.length).toFixed(1)}
+                            {t('dealDetails.avgRating', { rating: (destinationDeals.reduce((sum, d) => sum + d.rating, 0) / destinationDeals.length).toFixed(1) })}
                         </span>
                     </div>
                 </div>
@@ -307,11 +227,11 @@ const DealDetails = () => {
                     <div className="deal-modal-content destination-info-modal" onClick={e => e.stopPropagation()}>
                         <button className="deal-close-btn" onClick={() => setShowInfoModal(false)}>✕</button>
                         <div className="destination-info-header">
-                            <Info size={32} color="#1e90ff" style={{ marginLeft: 8 }} />
-                            <h2> דברים שחשוב לדעת לפני שטסים ל{destinationInfo.destination}</h2>
+                            <Info size={32} color="#1e90ff" style={{ marginInlineEnd: 8 }} />
+                            <h2>{t('dealDetails.beforeYouFly', { destination: tc(destinationInfo, 'destination') })}</h2>
                         </div>
                         <ul className="destination-info-list">
-                            {destinationInfo.info.map((item, idx) => (
+                            {(tc(destinationInfo, 'info') || []).map((item, idx) => (
                                 <li key={idx} className="destination-info-item">{item}</li>
                             ))}
                         </ul>
@@ -324,26 +244,26 @@ const DealDetails = () => {
                 <div className="filter-container">
                     <div className="filter-row details-filter-row">
                         <div className="filter-group">
-                            <label>מיון לפי</label>
+                            <label>{t('common.sortBy')}</label>
                             <select
                                 className="filter-select"
                                 value={sortPackagesBy}
                                 onChange={(e) => setSortPackagesBy(e.target.value)}
                             >
-                            <option value="price">מחיר נמוך לגבוה</option>
-                            <option value="rating">דירוג גבוה ביותר</option>
-                            <option value="discount">הנחה הכי גדולה</option>
-                            <option value="date">תאריכים</option>
+                            <option value="price">{t('dealDetails.sortPrice')}</option>
+                            <option value="rating">{t('dealDetails.sortRating')}</option>
+                            <option value="discount">{t('dealDetails.sortDiscount')}</option>
+                            <option value="date">{t('dealDetails.sortDate')}</option>
                         </select>
                         </div>
 
                         <div className="filter-group details-filter-action">
-                            <label>השוואת חבילות</label>
+                            <label>{t('dealDetails.compare')}</label>
                             <button
                                 className={`btn-compare ${compareMode ? 'active' : ''}`}
                                 onClick={() => setCompareMode(!compareMode)}
                             >
-                                {compareMode ? '✓ מצב השוואה פעיל' : 'השווה חבילות'}
+                                {compareMode ? t('dealDetails.compareActive') : t('dealDetails.compareBtn')}
                                 {compareSelection.length > 0 && ` (${compareSelection.length})`}
                             </button>
                         </div>
@@ -355,19 +275,19 @@ const DealDetails = () => {
             {compareMode && compareSelection.length > 0 && (
                 <div className="compare-bar">
                     <div className="compare-content">
-                        <span>נבחרו {compareSelection.length} חבילות להשוואה</span>
+                        <span>{t('dealDetails.selectedForCompare', { count: compareSelection.length })}</span>
                         <div className="compare-actions">
                             <button 
                                 className="btn-view-comparison"
                                 onClick={() => setSelectedPackage('compare')}
                             >
-                                צפה בהשוואה
+                                {t('dealDetails.viewComparison')}
                             </button>
                             <button 
                                 className="btn-clear-comparison"
                                 onClick={() => setCompareSelection([])}
                             >
-                                נקה
+                                {t('common.clear')}
                             </button>
                         </div>
                     </div>
@@ -393,13 +313,14 @@ const DealDetails = () => {
                             
                             <div className="package-badge">
                                 <span className="discount-badge">-{deal.discount}%</span>
-                                {deal.rating >= 4.8 && <span className="best-seller">מבוקש ביותר</span>}
-                                {deal.isKosherFriendly && <span className="kosher-package-badge">מותאם לשומרי כשרות</span>}
+                                {deal.rating >= 4.8 && <span className="best-seller">{t('dealDetails.bestSeller')}</span>}
+                                {deal.isKosherFriendly && <span className="kosher-package-badge">{t('dealDetails.kosherFriendly')}</span>}
                             </div>
 
                             <button
-                                className={`favorite-heart ${favorites.some(fav => fav._id === dealId || fav.id === dealId) ? 'active' : ''}`}
+                                className={`favorite-heart ${isFavorite({ _id: dealId, type: 'deal' }) ? 'active' : ''}`}
                                 onClick={(e) => { e.stopPropagation(); toggleFavorite(dealId); }}
+                                aria-label={isFavorite({ _id: dealId, type: 'deal' }) ? t('common.removeFav') : t('common.addFav')}
                             >
                                 <svg viewBox="0 0 24 24" className="heart-icon">
                                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -422,11 +343,11 @@ const DealDetails = () => {
                                             onClick={(e) => e.stopPropagation()}
                                         >
                                             {deal.dates.map((d) => (
-                                                <option key={d} value={d}>{d}</option>
+                                                <option key={d} value={d}>{tDate(d)}</option>
                                             ))}
                                         </select>
                                     ) : (
-                                        <span className="dates-text">{getSelectedDate(deal)}</span>
+                                        <span className="dates-text">{tDate(getSelectedDate(deal))}</span>
                                     )}
                                 </div>
                                 <div className="package-rating">
@@ -442,7 +363,7 @@ const DealDetails = () => {
                                         <PlaneTakeoff size={20} />
                                     </span>
                                     <div className="detail-text">
-                                        <strong>{deal.airline}</strong>
+                                        <strong>{tc(deal, 'airline')}</strong>
                                         <span>{deal.flightDetails?.departure || 'N/A'} - {deal.flightDetails?.arrival || 'N/A'}</span>
                                     </div>
                                 </div>
@@ -452,8 +373,8 @@ const DealDetails = () => {
                                         <Hotel size={20} />
                                     </span>
                                     <div className="detail-text">
-                                        <strong>{deal.hotelName || deal.hotel}</strong>
-                                        <span>{deal.hotel}</span>
+                                        <strong>{tc(deal, 'hotelName') || tc(deal, 'hotel')}</strong>
+                                        <span>{tc(deal, 'hotel')}</span>
                                     </div>
                                 </div>
 
@@ -462,16 +383,16 @@ const DealDetails = () => {
                                         <Sparkles size={20} />
                                     </span>
                                     <div className="detail-text">
-                                        <strong>אטרקציות מומלצות:</strong>
-                                        <span>{deal.attractions?.join(', ') || 'מגוון אטרקציות'}</span>
+                                        <strong>{t('dealDetails.recommendedAttractions')}</strong>
+                                        <span>{tc(deal, 'attractions')?.join(', ') || t('dealDetails.variousAttractions')}</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="package-included">
-                                <h4>מה כלול בחבילה:</h4>
+                                <h4>{t('dealDetails.whatsIncluded')}</h4>
                                 <ul className="included-compact">
-                                    {deal.included.map((item, idx) => (
+                                    {(tc(deal, 'included') || []).map((item, idx) => (
                                         <li key={idx}>✓ {item}</li>
                                     ))}
                                 </ul>
@@ -479,22 +400,22 @@ const DealDetails = () => {
 
                             <div className="package-footer">
                                 <div className="price-display">
-                                    <span className="original-price-small">₪{deal.originalPrice}</span>
-                                    <span className="current-price-large">₪{deal.price}</span>
-                                    <span className="price-per">למבוגר</span>
+                                    <span className="original-price-small">{price(deal.originalPrice)}</span>
+                                    <span className="current-price-large">{price(deal.price)}</span>
+                                    <span className="price-per">{t('common.perAdult')}</span>
                                 </div>
                                 <div className="package-actions">
                                     <button 
                                         className="btn-details"
                                         onClick={() => setSelectedPackage(deal)}
                                     >
-                                        פרטים מלאים
+                                        {t('dealDetails.fullDetails')}
                                     </button>
                                     <button
                                         className="btn-book-now"
                                         onClick={(e) => openBookingModal(deal, e)}
                                     >
-                                        הזמן עכשיו
+                                        {t('common.bookNow')}
                                     </button>
                                 </div>
                             </div>
@@ -510,34 +431,34 @@ const DealDetails = () => {
                     <div className="deal-modal-content deal-full-modal" onClick={(e) => e.stopPropagation()}>
                         <button className="deal-close-btn" onClick={() => setSelectedPackage(null)}>✕</button>
                         <div className="deal-modal-hero">
-                            <img src={selectedPackage.image} alt={selectedPackage.destination} className="deal-modal-hero-image" />
+                            <img src={selectedPackage.image} alt={tc(selectedPackage, 'destination')} className="deal-modal-hero-image" />
                             <div className="deal-modal-header deal-modal-header-overlay">
-                                <h2>{selectedPackage.destination}</h2>
-                                <p className="deal-modal-dates">{getSelectedDate(selectedPackage)}</p>
+                                <h2>{tc(selectedPackage, 'destination')}</h2>
+                                <p className="deal-modal-dates">{tDate(getSelectedDate(selectedPackage))}</p>
                             </div>
                         </div>
                         <div className="deal-modal-body">
                             <div className="deal-modal-details">
                                 <div className="detail-section">
-                                    <h3>פרטי טיסה</h3>
-                                    <p><strong>חברת תעופה:</strong> {selectedPackage.airline}</p>
-                                    <p><strong>זמן טיסה:</strong> {selectedPackage.flightTime}</p>
-                                    <p><strong>יציאה:</strong> {selectedPackage.flightDetails?.departure || 'N/A'}</p>
-                                    <p><strong>נחיתה:</strong> {selectedPackage.flightDetails?.arrival || 'N/A'}</p>
-                                    <p><strong>מחלקה:</strong> {selectedPackage.flightDetails?.class || 'תיירים'}</p>
+                                    <h3>{t('dealDetails.flightDetails')}</h3>
+                                    <p><strong>{t('dealDetails.airline')}</strong> {tc(selectedPackage, 'airline')}</p>
+                                    <p><strong>{t('dealDetails.flightDuration')}</strong> {tc(selectedPackage, 'flightTime')}</p>
+                                    <p><strong>{t('dealDetails.departure')}</strong> {selectedPackage.flightDetails?.departure || 'N/A'}</p>
+                                    <p><strong>{t('dealDetails.arrival')}</strong> {selectedPackage.flightDetails?.arrival || 'N/A'}</p>
+                                    <p><strong>{t('dealDetails.class')}</strong> {(isEn && selectedPackage.en?.flightClass) || selectedPackage.flightDetails?.class || t('dealDetails.economy')}</p>
                                 </div>
 
                                 <div className="detail-section">
-                                    <h3>פרטי מלון</h3>
-                                    <p><strong>מלון:</strong> {selectedPackage.hotelName || selectedPackage.hotel}</p>
-                                    <p><strong>סוג:</strong> {selectedPackage.hotel}</p>
-                                    <p><strong>דירוג:</strong> {selectedPackage.rating} ⭐ ({selectedPackage.reviewsCount} ביקורות)</p>
+                                    <h3>{t('dealDetails.hotelDetails')}</h3>
+                                    <p><strong>{t('dealDetails.hotel')}</strong> {tc(selectedPackage, 'hotelName') || tc(selectedPackage, 'hotel')}</p>
+                                    <p><strong>{t('dealDetails.type')}</strong> {tc(selectedPackage, 'hotel')}</p>
+                                    <p><strong>{t('dealDetails.rating')}</strong> {selectedPackage.rating} ⭐ {t('common.reviewsCount', { count: selectedPackage.reviewsCount })}</p>
                                 </div>
 
                                 <div className="detail-section">
-                                    <h3>מה כלול</h3>
+                                    <h3>{t('dealDetails.whatsIncludedTitle')}</h3>
                                     <ul>
-                                        {selectedPackage.included.map((item, idx) => (
+                                        {(tc(selectedPackage, 'included') || []).map((item, idx) => (
                                             <li key={idx}>✓ {item}</li>
                                         ))}
                                     </ul>
@@ -545,9 +466,9 @@ const DealDetails = () => {
 
                                 {selectedPackage.attractions && (
                                     <div className="detail-section">
-                                        <h3>אטרקציות מומלצות</h3>
+                                        <h3>{t('dealDetails.recommendedAttractionsTitle')}</h3>
                                         <ul>
-                                            {selectedPackage.attractions.map((attr, idx) => (
+                                            {(tc(selectedPackage, 'attractions') || []).map((attr, idx) => (
                                                 <li key={idx} className="attraction-list-item">
                                                     <Sparkles size={16} className="attraction-list-icon" />
                                                     {attr}
@@ -559,9 +480,9 @@ const DealDetails = () => {
 
                                 <div className="deal-modal-price-section">
                                     <div className="price-breakdown">
-                                        <p className="original-price-line">מחיר מקורי: <span>₪{selectedPackage.originalPrice}</span></p>
-                                        <p className="discount-line">הנחה: <span className="discount-amount">-{selectedPackage.discount}%</span></p>
-                                        <p className="final-price-line">מחיר סופי: <span className="final-price">₪{selectedPackage.price}</span></p>
+                                        <p className="original-price-line">{t('dealDetails.originalPrice')} <span>{price(selectedPackage.originalPrice)}</span></p>
+                                        <p className="discount-line">{t('dealDetails.discount')} <span className="discount-amount">-{selectedPackage.discount}%</span></p>
+                                        <p className="final-price-line">{t('dealDetails.finalPrice')} <span className="final-price">{price(selectedPackage.price)}</span></p>
                                     </div>
                                     <button
                                         className="deal-btn-modal-book"
@@ -570,198 +491,27 @@ const DealDetails = () => {
                                             openBookingModal(selectedPackage, e);
                                         }}
                                     >
-                                        הזמן את החבילה הזו
+                                        {t('dealDetails.bookThis')}
                                     </button>
                                 </div>
+
+                                <Reviews itemType="deal" itemKey={selectedPackage.destination} />
                             </div>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Booking Options Modal */}
+            {/* Booking Options Modal (shared with the cart) */}
             {bookingDeal && (
-                <div className="deal-modal-overlay" onClick={() => setBookingDeal(null)}>
-                    <div className="booking-modal" onClick={(e) => e.stopPropagation()}>
-                        <button className="deal-close-btn booking-close-btn" onClick={() => setBookingDeal(null)}>✕</button>
-
-                        {/* Header */}
-                        <div className="booking-modal-header">
-                            <div className="booking-header-row">
-                                <div className="booking-destination-info">
-                                    <h2 className="booking-destination">{bookingDeal.destination}</h2>
-                                    <div className="booking-header-chips">
-                                        <span className="booking-header-chip">
-                                            <PlaneTakeoff size={13} /> {bookingDeal.airline}
-                                        </span>
-                                        <span className="booking-header-chip">
-                                            <Hotel size={13} /> {bookingDeal.hotelName || bookingDeal.hotel}
-                                        </span>
-                                        <span className="booking-header-chip">
-                                            <CalendarDays size={13} /> {getSelectedDate(bookingDeal)}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="booking-header-price">
-                                    <span className="booking-header-price-label">החל מ</span>
-                                    <span className="booking-header-price-value">₪{bookingDeal.price}</span>
-                                    <span className="booking-header-price-per">למבוגר</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Body */}
-                        <div className="booking-modal-body">
-
-                            {/* Options Column */}
-                            <div className="booking-options-col">
-
-                                {/* Passengers */}
-                                <div className="booking-section">
-                                    <h3 className="booking-section-title">נוסעים</h3>
-                                    <div className="passenger-row">
-                                        <div className="passenger-info">
-                                            <span className="passenger-label">מבוגרים</span>
-                                            <span className="passenger-desc">גיל 12+</span>
-                                        </div>
-                                        <div className="passenger-counter">
-                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, adults: Math.max(1, p.adults - 1) }))} disabled={bookingOptions.adults <= 1}>−</button>
-                                            <span className="counter-value">{bookingOptions.adults}</span>
-                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, adults: Math.min(9, p.adults + 1) }))} disabled={bookingOptions.adults >= 9}>+</button>
-                                        </div>
-                                    </div>
-                                    <div className="passenger-row">
-                                        <div className="passenger-info">
-                                            <span className="passenger-label">ילדים</span>
-                                            <span className="passenger-desc">גיל 2–11</span>
-                                        </div>
-                                        <div className="passenger-counter">
-                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, children: Math.max(0, p.children - 1) }))} disabled={bookingOptions.children <= 0}>−</button>
-                                            <span className="counter-value">{bookingOptions.children}</span>
-                                            <button className="counter-btn" onClick={() => setBookingOptions(p => ({ ...p, children: Math.min(6, p.children + 1) }))} disabled={bookingOptions.children >= 6}>+</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Luggage */}
-                                <div className="booking-section">
-                                    <h3 className="booking-section-title">כבודה</h3>
-                                    <p className="booking-section-subtitle">גודל ומשקל</p>
-
-                                    <div className="booking-option-row">
-                                        <span className="booking-option-icon">🎒</span>
-                                        <div className="booking-option-info">
-                                            <span className="booking-option-name">טרולי</span>
-                                            <span className="booking-option-price">לכל הנוסעים, הלוך ושוב +₪102</span>
-                                        </div>
-                                        <label className="toggle-switch">
-                                            <input type="checkbox" checked={bookingOptions.trolley} onChange={(e) => setBookingOptions(p => ({ ...p, trolley: e.target.checked }))} />
-                                            <span className="toggle-slider"></span>
-                                        </label>
-                                    </div>
-
-                                    <div className="booking-option-row">
-                                        <span className="booking-option-icon">🧳</span>
-                                        <div className="booking-option-info">
-                                            <span className="booking-option-name">מזוודה</span>
-                                            <span className="booking-option-price">לכל הנוסעים, הלוך ושוב +₪224</span>
-                                        </div>
-                                        <label className="toggle-switch">
-                                            <input type="checkbox" checked={bookingOptions.suitcase} onChange={(e) => setBookingOptions(p => ({ ...p, suitcase: e.target.checked }))} />
-                                            <span className="toggle-slider"></span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                {/* Transfer */}
-                                <div className="booking-section">
-                                    <h3 className="booking-section-title">הסעות</h3>
-                                    <div className="booking-option-row">
-                                        <span className="booking-option-icon">🚌</span>
-                                        <div className="booking-option-info">
-                                            <span className="booking-option-name">שירות הסעות</span>
-                                            <span className="booking-option-price">החל מ-₪57 לאדם</span>
-                                        </div>
-                                        <label className="toggle-switch">
-                                            <input type="checkbox" checked={bookingOptions.transfer} onChange={(e) => setBookingOptions(p => ({ ...p, transfer: e.target.checked }))} />
-                                            <span className="toggle-slider"></span>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                {/* Cancellation Policy */}
-                                <div className="booking-section">
-                                    <h3 className="booking-section-title">תנאי החבילה</h3>
-                                    <label className="cancellation-option-row">
-                                        <input type="radio" name="cancellation" checked={!bookingOptions.cancellable} onChange={() => setBookingOptions(p => ({ ...p, cancellable: false }))} />
-                                        <div className="cancellation-option-info">
-                                            <span className="cancellation-option-name">ללא אפשרות ביטול</span>
-                                            <span className="cancellation-option-price">₪{bookingDeal.price} למבוגר</span>
-                                        </div>
-                                    </label>
-                                    <label className="cancellation-option-row">
-                                        <input type="radio" name="cancellation" checked={bookingOptions.cancellable} onChange={() => setBookingOptions(p => ({ ...p, cancellable: true }))} />
-                                        <div className="cancellation-option-info">
-                                            <span className="cancellation-option-name">ביטול חינם עד 30 יום לפני הנסיעה</span>
-                                            <span className="cancellation-option-price cancellation-free">₪{bookingDeal.price + 55} למבוגר</span>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-
-                            {/* Price Summary Column */}
-                            <div className="booking-summary-col">
-                                <div className="price-summary-card">
-                                    <h3 className="price-summary-title">סיכום מחיר</h3>
-
-                                    <div className="price-summary-rows">
-                                        <div className="price-summary-row">
-                                            <span>{bookingOptions.adults} מבוגרים × ₪{bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price}</span>
-                                            <span>₪{(bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price) * bookingOptions.adults}</span>
-                                        </div>
-                                        {bookingOptions.children > 0 && (
-                                            <div className="price-summary-row">
-                                                <span>{bookingOptions.children} ילדים × ₪{Math.round((bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price) * 0.7)}</span>
-                                                <span>₪{Math.round((bookingOptions.cancellable ? bookingDeal.price + 55 : bookingDeal.price) * 0.7 * bookingOptions.children)}</span>
-                                            </div>
-                                        )}
-                                        {bookingOptions.trolley && (
-                                            <div className="price-summary-row">
-                                                <span>טרולי (הלוך ושוב)</span>
-                                                <span>₪102</span>
-                                            </div>
-                                        )}
-                                        {bookingOptions.suitcase && (
-                                            <div className="price-summary-row">
-                                                <span>מזוודה (הלוך ושוב)</span>
-                                                <span>₪224</span>
-                                            </div>
-                                        )}
-                                        {bookingOptions.transfer && (
-                                            <div className="price-summary-row">
-                                                <span>הסעות × {bookingOptions.adults + bookingOptions.children} נוסעים</span>
-                                                <span>₪{57 * (bookingOptions.adults + bookingOptions.children)}</span>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="price-summary-divider"></div>
-
-                                    <div className="price-summary-total">
-                                        <span>סה״כ לתשלום</span>
-                                        <span className="price-summary-total-amount">₪{calculateTotal()}</span>
-                                    </div>
-
-                                    <button className="btn-confirm-booking" onClick={confirmBooking}>
-                                        הוסף לסל
-                                    </button>
-
-                                    <p className="booking-note">לאחר ההוספה תוכלו לעיין ולערוך בעמוד הסל</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <DealBookingModal
+                    deal={bookingDeal}
+                    dateLabel={tDate(getSelectedDate(bookingDeal))}
+                    onClose={() => setBookingDeal(null)}
+                    onConfirm={confirmBooking}
+                    confirmLabel={t('common.addToCart')}
+                    note={t('booking.addNote')}
+                />
             )}
 
             {/* Comparison Modal */}
@@ -769,7 +519,7 @@ const DealDetails = () => {
                 <div className="deal-modal-overlay" onClick={() => setSelectedPackage(null)}>
                     <div className="deal-modal-content deal-comparison-modal" onClick={(e) => e.stopPropagation()}>
                         <button className="deal-close-btn" onClick={() => setSelectedPackage(null)}>✕</button>
-                        <h2 className="comparison-title">השוואת חבילות - {mainDeal.destination}</h2>
+                        <h2 className="comparison-title">{t('dealDetails.comparisonTitle', { destination: tc(mainDeal, 'destination') })}</h2>
                         
                         <div className="comparison-grid">
                             {compareSelection.map(dealId => {
@@ -779,39 +529,39 @@ const DealDetails = () => {
                                 return (
                                     <div key={getDealId(deal)} className="comparison-column">
                                         <div className="comparison-header">
-                                            <h3>{deal.dates}</h3>
-                                            <span className="comparison-price">₪{deal.price}</span>
+                                            <h3>{tDate(getSelectedDate(deal))}</h3>
+                                            <span className="comparison-price">{price(deal.price)}</span>
                                             <span className="comparison-discount">-{deal.discount}%</span>
                                         </div>
                                         
                                         <div className="comparison-body">
                                             <div className="comparison-row">
-                                                <strong>דירוג:</strong>
+                                                <strong>{t('dealDetails.rating')}</strong>
                                                 <span>{deal.rating} ⭐</span>
                                             </div>
                                             <div className="comparison-row">
-                                                <strong>חברת תעופה:</strong>
-                                                <span>{deal.airline}</span>
+                                                <strong>{t('dealDetails.airline')}</strong>
+                                                <span>{tc(deal, 'airline')}</span>
                                             </div>
                                             <div className="comparison-row">
-                                                <strong>שעות טיסה:</strong>
+                                                <strong>{t('dealDetails.flightHours')}</strong>
                                                 <span>{deal.flightDetails?.departure} - {deal.flightDetails?.arrival}</span>
                                             </div>
                                             <div className="comparison-row">
-                                                <strong>מלון:</strong>
-                                                <span>{deal.hotelName || deal.hotel}</span>
+                                                <strong>{t('dealDetails.hotel')}</strong>
+                                                <span>{tc(deal, 'hotelName') || tc(deal, 'hotel')}</span>
                                             </div>
                                             <div className="comparison-row includes-row">
-                                                <strong>כולל:</strong>
+                                                <strong>{t('dealDetails.includes')}</strong>
                                                 <ul className="comparison-list">
-                                                    {deal.included.map((item, idx) => (
+                                                    {(tc(deal, 'included') || []).map((item, idx) => (
                                                         <li key={idx}>{item}</li>
                                                     ))}
                                                 </ul>
                                             </div>
                                             <div className="comparison-row">
-                                                <strong>חיסכון:</strong>
-                                                <span className="savings">₪{deal.originalPrice - deal.price}</span>
+                                                <strong>{t('dealDetails.savings')}</strong>
+                                                <span className="savings">{price(deal.originalPrice - deal.price)}</span>
                                             </div>
                                         </div>
                                         
@@ -822,7 +572,7 @@ const DealDetails = () => {
                                                 openBookingModal(deal, e);
                                             }}
                                         >
-                                            בחר חבילה זו
+                                            {t('dealDetails.selectThis')}
                                         </button>
                                     </div>
                                 );
