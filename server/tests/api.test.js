@@ -5,7 +5,7 @@
 import { expect } from "chai";
 import request from "supertest";
 import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import { MongoMemoryServer } from "mongodb-memory-server-core";
 
 process.env.NODE_ENV = "test";
 
